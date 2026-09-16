@@ -1,0 +1,82 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Portfolio and writing.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="wrapper site-header">
+      <a class="site-title" href="/">Your Name</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/projects">Projects</a>
+        <a href="/articles">Writing</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
+    <main class="wrapper">
+      <slot />
+    </main>
+    <footer class="wrapper site-footer">
+      <p>&copy; {new Date().getFullYear()} Your Name. Built with Astro, hosted on Vercel.</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+
+  .site-title {
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  nav {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  nav a {
+    text-decoration: none;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  nav a:hover {
+    color: var(--color-accent);
+  }
+
+  main {
+    padding-bottom: var(--space-5);
+    min-height: 60vh;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-4);
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+</style>

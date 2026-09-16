@@ -1,0 +1,61 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+---
+
+<Layout title={`${article.data.title} — Your Name`} description={article.data.description}>
+  <article>
+    <h1>{article.data.title}</h1>
+    <time datetime={article.data.publishDate.toISOString()}>
+      {
+        article.data.publishDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      }
+    </time>
+    <div class="tags">
+      {article.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  time {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+
+  .tags {
+    margin-top: var(--space-1);
+  }
+
+  .prose {
+    margin-top: var(--space-3);
+  }
+
+  .prose :global(p) {
+    margin: 0 0 var(--space-2);
+  }
+
+  .prose :global(h2) {
+    margin-top: var(--space-4);
+  }
+</style>

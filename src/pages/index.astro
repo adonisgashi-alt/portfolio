@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = [
+  {
+    name: 'Project One',
+    description: 'A short description of what this project is and the problem it solves.',
+    url: '#',
+  },
+  {
+    name: 'Project Two',
+    description: 'A short description of what this project is and the problem it solves.',
+    url: '#',
+  },
+];
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout title="Your Name — Portfolio">
+  <section>
+    <h1>Hi, I'm Your Name.</h1>
+    <p>
+      A short intro goes here — what you do, who you do it for, and what you're
+      currently working on. Keep it to two or three sentences.
+    </p>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <ul class="project-list">
+      {
+        projects.map((project) => (
+          <li>
+            <a href={project.url}>{project.name}</a>
+            <p>{project.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p><a href="/projects">See all projects &rarr;</a></p>
+  </section>
+
+  {
+    articles.length > 0 && (
+      <section>
+        <h2>Writing</h2>
+        <ul class="article-list">
+          {articles.map((article) => (
+            <li>
+              <a href={`/articles/${article.id}`}>{article.data.title}</a>
+            </li>
+          ))}
+        </ul>
+        <p><a href="/articles">Read more &rarr;</a></p>
+      </section>
+    )
+  }
+</Layout>
+
+<style>
+  section {
+    margin-bottom: var(--space-4);
+  }
+
+  .project-list,
+  .article-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .project-list li {
+    margin-bottom: var(--space-2);
+  }
+
+  .project-list a {
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .project-list p {
+    margin: 0.2rem 0 0;
+    color: var(--color-text-muted);
+  }
+</style>
