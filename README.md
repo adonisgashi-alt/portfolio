@@ -1,6 +1,7 @@
 # Portfolio — Adonis Gashi
 
-Personal portfolio site for a visual designer. The design is modelled on
+Personal portfolio site for Adonis Gashi, Senior Visual Designer at Commerce
+(formerly BigCommerce) in Austin, Texas. The design is modelled on
 Apple's marketing pages: a monochromatic palette, tight display typography,
 large imagery and generous vertical rhythm.
 
@@ -83,25 +84,30 @@ come from `src/data/site.ts`. Change them there once.
 > The email address in that file (`hello@adonisgashi.com`) is a placeholder.
 > Swap it for the address you want published before going live.
 
+**Case study copy** — the projects are real (the Commerce rebrand, BigSummit,
+NRF, B2B, CPQ, Catalyst) and the narrative is written from the actual scope of
+the role, but the section copy is a starting point, not a record. Read it
+through and correct anything that misstates what you did before publishing.
+
 **Adding a project** — copy any file in `src/content/work/` and edit the
 frontmatter:
 
 ```yaml
 title: Project name
-client: Client
+client: Commerce
 year: '2026'
-role: Your role
+role: Senior Visual Designer
 summary: One sentence, shown on the card and under the title.
-disciplines: ['Brand identity', 'Art direction']
+disciplines: ['Brand', 'Campaign', 'Web design']
 featured: true     # show it on the home page
 order: 1           # lower numbers come first on /work
 cover:
   label: What this image will be
   ratio: '16 / 9'
   tone: light      # light | mid | dark
-stats:             # optional band of numbers
-  - value: '40+'
-    label: Templates shipped
+scope:             # optional band describing what the work covered
+  - value: Web
+    label: Templates, landing pages, components
 sections:          # narrative sections, in order
   - eyebrow: The brief
     title: Section headline

@@ -4,10 +4,12 @@
  */
 export const site = {
   name: 'Adonis Gashi',
-  role: 'Visual Designer',
+  role: 'Senior Visual Designer',
   company: 'Commerce',
-  tagline: 'Visual designer shaping brand, product and campaign work at Commerce.',
-  location: 'Kansas City, Missouri',
+  formerly: 'BigCommerce',
+  tagline:
+    'Senior Visual Designer at Commerce (formerly BigCommerce), working across brand, digital, web, events and campaigns.',
+  location: 'Austin, Texas',
   /* TODO: swap for the address you want published. */
   email: 'hello@adonisgashi.com',
   linkedin: 'https://www.linkedin.com/in/adonisgashi/',

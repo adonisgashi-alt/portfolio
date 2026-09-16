@@ -25,7 +25,8 @@ const work = defineCollection({
     /** Lower numbers come first on /work. */
     order: z.number().default(99),
     featured: z.boolean().default(false),
-    stats: z
+    /** Short band of what the work covered — words, not invented metrics. */
+    scope: z
       .array(z.object({ value: z.string(), label: z.string() }))
       .default([]),
     sections: z

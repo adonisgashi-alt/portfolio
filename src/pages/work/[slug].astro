@@ -21,7 +21,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { entry, next } = Astro.props;
-const { title, client, year, role, summary, disciplines, cover, stats, sections, quote, gallery } =
+const { title, client, year, role, summary, disciplines, cover, scope, sections, quote, gallery } =
   entry.data;
 const { Content } = await render(entry);
 ---
@@ -78,14 +78,15 @@ const { Content } = await render(entry);
 
     <!-- Numbers -->
     {
-      stats.length > 0 && (
+      scope.length > 0 && (
         <section class="section section--dark section--tight">
           <div class="container container--wide">
-            <ul class="stats">
-              {stats.map((stat, i) => (
-                <li class="stats__item" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
-                  <span class="stats__value">{stat.value}</span>
-                  <span class="stats__label">{stat.label}</span>
+            <p class="eyebrow--caps scope__heading" data-reveal>Scope</p>
+            <ul class="scope">
+              {scope.map((item, i) => (
+                <li class="scope__item" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+                  <span class="scope__value">{item.value}</span>
+                  <span class="scope__label">{item.label}</span>
                 </li>
               ))}
             </ul>
@@ -227,24 +228,28 @@ const { Content } = await render(entry);
     max-width: 58ch;
   }
 
-  .stats {
+  .scope__heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .scope {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
     gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   }
 
-  .stats__value {
+  .scope__value {
     display: block;
-    font-size: var(--text-headline);
-    line-height: 1.1;
-    letter-spacing: -0.025em;
+    font-size: var(--text-title);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     font-weight: 600;
   }
 
-  .stats__label {
+  .scope__label {
     display: block;
     margin-top: 0.5rem;
     font-size: var(--text-body);

@@ -3,39 +3,37 @@ import Layout from '../layouts/Layout.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { site } from '../data/site';
 
+/* Add earlier roles here in the same shape — newest first. */
 const experience = [
   {
-    role: 'Visual Designer',
+    role: 'Senior Visual Designer',
     org: 'Commerce',
-    period: '2022 — Present',
-    body: 'Brand system, product surfaces, campaign art direction and the documentation that keeps them speaking the same language.',
+    period: '2025 — Present',
+    body: 'Lead visual design across brand, digital, web, events, campaigns and product marketing for Commerce and its portfolio of brands, including the transition from the BigCommerce brand to the broader Commerce organization.',
   },
   {
-    role: 'Designer',
-    org: 'Previous studio',
-    period: '2020 — 2022',
-    body: 'Identity and editorial work for clients across finance, culture and retail.',
-  },
-  {
-    role: 'Junior Designer',
-    org: 'Previous agency',
-    period: '2018 — 2020',
-    body: 'Production design, layout and retouching across print and digital campaigns.',
+    role: 'Visual Designer',
+    org: 'Commerce (formerly BigCommerce)',
+    period: '2022 — 2025',
+    body: 'High-impact creative for company-wide initiatives including BigSummit, NRF, B2B, CPQ and Catalyst — campaigns, landing pages, event experiences, social content and presentations.',
   },
 ];
+
+/* TODO: confirm — found via web search, not from your LinkedIn profile. */
+const education = 'Rochester Institute of Technology';
 
 const capabilities = [
   'Brand identity & systems',
-  'Art direction',
-  'Editorial & layout',
-  'Typography',
-  'Product & UI visual design',
-  'Iconography & illustration',
-  'Motion basics',
+  'Campaign & art direction',
+  'Web design and build',
+  'Event & environmental design',
+  'Product marketing design',
+  'Editorial & information design',
+  'Presentation design',
   'Print production',
 ];
 
-const tools = ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects', 'Blender'];
+const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects'];
 ---
 
 <Layout
@@ -60,21 +58,26 @@ const tools = ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects',
   <section class="section">
     <div class="container container--text prose body-lg" data-reveal>
       <p>
-        I'm {site.name}, a visual designer at {site.company} in {site.location}.
-        My work sits where brand meets product: the type scale, the palette,
-        the photography direction and the hundred small decisions that decide
-        whether a thing feels considered or assembled.
+        I'm {site.name}, a {site.role.toLowerCase()} at {site.company} —
+        formerly {site.formerly} — in {site.location}. I lead visual design
+        across brand, digital, web, events, campaigns and product marketing,
+        for the parent brand and the portfolio underneath it.
       </p>
       <p>
-        I like problems with real constraints — a page that has to hold
-        ninety numbers, a sign read from fifty feet, a screen that has to
-        work for someone checking a balance in a parking lot. Constraints
-        make the answer findable.
+        Most of my work is the kind that has to hold up in several places at
+        once: a campaign that's also a landing page, an event that's also a
+        social cut, a product story that's also a sales deck. I partner
+        closely with Brand, UX, Marketing, Web, Product and Engineering to
+        take ideas from early exploration through to what actually ships.
       </p>
       <p>
-        Most of what I do ends up as a system rather than a single artifact.
-        Not because systems are fashionable, but because the work has to keep
-        being good after I've moved on to the next thing.
+        I build and maintain digital experiences in Figma, Webflow, Makeswift
+        and other web platforms, which keeps me close to the line between
+        brand and UX — a useful place to stand when the two disagree.
+      </p>
+      <p>
+        Lately that's meant the evolution of the Commerce brand itself, and
+        the work of carrying a well-known name into a broader one.
       </p>
       <p>
         You can see the full career history on{' '}
@@ -102,6 +105,8 @@ const tools = ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects',
           ))
         }
       </ul>
+      <p class="caption timeline__education" data-reveal>Education &mdash; {education}</p>
+
       <p class="timeline__cta" data-reveal>
         <a class="link-chevron" href={site.linkedin} rel="me noopener" target="_blank">
           Full history on LinkedIn
@@ -136,9 +141,8 @@ const tools = ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects',
         <p class="eyebrow--caps">Off the clock</p>
         <h2 class="headline off-clock__title">Still drawing.</h2>
         <p class="body-lg muted off-clock__body">
-          Type experiments, film photography and a sketchbook that never gets
-          shown to a client. It's where most of the ideas that do get shown
-          start.
+          Type experiments, photography and a sketchbook nobody reviews. It's
+          where most of the ideas that do get reviewed start.
         </p>
         <p class="off-clock__link">
           <a class="link-chevron" href="/work">See the client work</a>
@@ -196,8 +200,12 @@ const tools = ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects',
     max-width: 52ch;
   }
 
+  .timeline__education {
+    margin-top: 1.75rem;
+  }
+
   .timeline__cta {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
 
   .capabilities {
