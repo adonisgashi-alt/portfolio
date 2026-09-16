@@ -1,14 +1,278 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../data/site';
+
+const experience = [
+  {
+    role: 'Visual Designer',
+    org: 'Commerce',
+    period: '2022 — Present',
+    body: 'Brand system, product surfaces, campaign art direction and the documentation that keeps them speaking the same language.',
+  },
+  {
+    role: 'Designer',
+    org: 'Previous studio',
+    period: '2020 — 2022',
+    body: 'Identity and editorial work for clients across finance, culture and retail.',
+  },
+  {
+    role: 'Junior Designer',
+    org: 'Previous agency',
+    period: '2018 — 2020',
+    body: 'Production design, layout and retouching across print and digital campaigns.',
+  },
+];
+
+const capabilities = [
+  'Brand identity & systems',
+  'Art direction',
+  'Editorial & layout',
+  'Typography',
+  'Product & UI visual design',
+  'Iconography & illustration',
+  'Motion basics',
+  'Print production',
+];
+
+const tools = ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects', 'Blender'];
 ---
 
-<Layout title="About — Your Name">
-  <h1>About</h1>
-  <p>
-    Write a longer bio here — background, what you're good at, and what
-    you're looking for. This page is <code>src/pages/about.astro</code>.
-  </p>
-  <p>
-    Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>.
-  </p>
+<Layout
+  title={`About — ${site.name}`}
+  description={`${site.role} at ${site.company}, based in ${site.location}.`}
+>
+  <!-- Hero -->
+  <section class="section section--flush-bottom">
+    <div class="container container--wide">
+      <p class="eyebrow" data-reveal>About</p>
+      <h1 class="display about-title" data-reveal style="--reveal-delay: 60ms">
+        I make things<br />look inevitable.
+      </h1>
+    </div>
+
+    <div class="container container--full about-cover" data-reveal style="--reveal-delay: 120ms">
+      <Placeholder label="Portrait or studio image" ratio="21 / 9" tone="mid" />
+    </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="section">
+    <div class="container container--text prose body-lg" data-reveal>
+      <p>
+        I'm {site.name}, a visual designer at {site.company} in {site.location}.
+        My work sits where brand meets product: the type scale, the palette,
+        the photography direction and the hundred small decisions that decide
+        whether a thing feels considered or assembled.
+      </p>
+      <p>
+        I like problems with real constraints — a page that has to hold
+        ninety numbers, a sign read from fifty feet, a screen that has to
+        work for someone checking a balance in a parking lot. Constraints
+        make the answer findable.
+      </p>
+      <p>
+        Most of what I do ends up as a system rather than a single artifact.
+        Not because systems are fashionable, but because the work has to keep
+        being good after I've moved on to the next thing.
+      </p>
+      <p>
+        You can see the full career history on{' '}
+        <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section section--surface">
+    <div class="container container--wide">
+      <p class="eyebrow--caps" data-reveal>Experience</p>
+      <ul class="timeline">
+        {
+          experience.map((item, i) => (
+            <li class="timeline__item" data-reveal style={`--reveal-delay: ${i * 60}ms`}>
+              <p class="caption timeline__period">{item.period}</p>
+              <div>
+                <h2 class="title timeline__role">
+                  {item.role}, {item.org}
+                </h2>
+                <p class="muted timeline__body">{item.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="timeline__cta" data-reveal>
+        <a class="link-chevron" href={site.linkedin} rel="me noopener" target="_blank">
+          Full history on LinkedIn
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="section section--dark">
+    <div class="container container--wide capabilities">
+      <div data-reveal>
+        <p class="eyebrow--caps">Capabilities</p>
+        <h2 class="headline capabilities__title">What I'm usually hired for.</h2>
+      </div>
+      <div data-reveal style="--reveal-delay: 80ms">
+        <ul class="capability-list">
+          {capabilities.map((item) => <li class="capability-list__item">{item}</li>)}
+        </ul>
+        <p class="caption capabilities__tools">Tools: {tools.join(' · ')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Off the clock -->
+  <section class="section">
+    <div class="container container--wide off-clock">
+      <div class="off-clock__media" data-reveal>
+        <Placeholder label="Personal work or sketchbook image" ratio="4 / 5" tone="light" />
+      </div>
+      <div class="off-clock__copy" data-reveal style="--reveal-delay: 80ms">
+        <p class="eyebrow--caps">Off the clock</p>
+        <h2 class="headline off-clock__title">Still drawing.</h2>
+        <p class="body-lg muted off-clock__body">
+          Type experiments, film photography and a sketchbook that never gets
+          shown to a client. It's where most of the ideas that do get shown
+          start.
+        </p>
+        <p class="off-clock__link">
+          <a class="link-chevron" href="/work">See the client work</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--surface center">
+    <div class="container">
+      <h2 class="headline" data-reveal>Let's talk.</h2>
+      <p class="subhead measure--wide about-cta__sub" data-reveal style="--reveal-delay: 60ms">
+        Freelance, collaboration, or a question about something above.
+      </p>
+      <div class="about-cta__actions" data-reveal style="--reveal-delay: 120ms">
+        <a class="button button--primary" href="/contact">Contact me</a>
+        <a class="button button--secondary" href={site.linkedin} rel="me noopener" target="_blank">
+          Connect on LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .about-title {
+    margin-top: 0.75rem;
+    text-wrap: balance;
+  }
+
+  .about-cover {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+
+  .timeline__item {
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .timeline__period {
+    margin-top: 0.35rem;
+  }
+
+  .timeline__body {
+    margin-top: 0.5rem;
+    max-width: 52ch;
+  }
+
+  .timeline__cta {
+    margin-top: 2rem;
+  }
+
+  .capabilities {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .capabilities__title {
+    margin-top: 0.875rem;
+  }
+
+  .capability-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .capability-list__item {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-body-lg);
+    letter-spacing: -0.018em;
+  }
+
+  .capabilities__tools {
+    margin-top: 1.5rem;
+  }
+
+  .off-clock {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .off-clock__title {
+    margin-top: 0.875rem;
+  }
+
+  .off-clock__body {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+  }
+
+  .off-clock__link {
+    margin-top: 1.5rem;
+  }
+
+  .about-cta__sub {
+    margin-top: 1rem;
+  }
+
+  .about-cta__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .timeline__item {
+      grid-template-columns: 10rem 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .capabilities,
+    .off-clock {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .off-clock__media {
+      max-width: 26rem;
+    }
+  }
+</style>

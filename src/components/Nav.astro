@@ -1,0 +1,191 @@
+---
+import { site, nav } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="nav">
+  <input type="checkbox" id="nav-toggle" class="nav__checkbox" />
+  <div class="nav__bar">
+    <div class="nav__inner">
+      <a class="nav__wordmark" href="/">{site.name}</a>
+
+      <nav class="nav__links" aria-label="Primary">
+        {
+          nav.map((item) => (
+            <a
+              href={item.href}
+              class="nav__link"
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <label class="nav__burger" for="nav-toggle">
+        <span class="visually-hidden">Menu</span>
+        <span class="nav__burger-line" aria-hidden="true"></span>
+        <span class="nav__burger-line" aria-hidden="true"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="nav__panel">
+    <nav class="nav__panel-inner" aria-label="Primary, mobile">
+      {
+        nav.map((item) => (
+          <a href={item.href} class="nav__panel-link">
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={site.linkedin} class="nav__panel-link" rel="me noopener" target="_blank">
+        LinkedIn
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .nav__checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav__bar {
+    background: var(--nav-bg);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--nav-border);
+  }
+
+  .nav__inner {
+    max-width: var(--width-wide);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav__wordmark {
+    font-size: var(--text-small);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .nav__links {
+    display: none;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+
+  .nav__link {
+    font-size: var(--text-fine);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: var(--color-ink);
+    opacity: 0.86;
+    transition: opacity 0.2s var(--ease);
+  }
+
+  .nav__link:hover {
+    opacity: 1;
+  }
+
+  .nav__link[aria-current='page'] {
+    opacity: 1;
+    font-weight: 600;
+  }
+
+  .nav__burger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .nav__burger-line {
+    display: block;
+    width: 17px;
+    height: 1px;
+    background: var(--color-ink);
+    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+
+  .nav__panel {
+    background: var(--nav-bg);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height 0.4s var(--ease), visibility 0s linear 0.4s;
+  }
+
+  .nav__panel-inner {
+    max-width: var(--width-wide);
+    margin-inline: auto;
+    padding: 0.5rem var(--gutter) 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav__panel-link {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line-soft);
+    font-size: var(--text-subhead);
+    letter-spacing: -0.016em;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .nav__checkbox:checked ~ .nav__panel {
+    max-height: 22rem;
+    visibility: visible;
+    transition: max-height 0.4s var(--ease), visibility 0s;
+    border-bottom: 1px solid var(--nav-border);
+  }
+
+  .nav__checkbox:checked ~ .nav__bar .nav__burger-line:nth-child(2) {
+    transform: translateY(3px) rotate(45deg);
+  }
+
+  .nav__checkbox:checked ~ .nav__bar .nav__burger-line:nth-child(3) {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+
+  .nav__checkbox:focus-visible ~ .nav__bar .nav__burger {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (min-width: 768px) {
+    .nav__links {
+      display: flex;
+    }
+
+    .nav__burger,
+    .nav__panel {
+      display: none;
+    }
+  }
+</style>
