@@ -1,14 +1,253 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const skills = [
+  'Brand Design',
+  'Visual Design',
+  'UX/UI Design',
+  'Production Design',
+];
+
+const experience = [
+  {
+    role: 'Senior Designer',
+    org: 'Commerce',
+    meta: 'Full-time · Aug 2025 - Present · Austin, Texas, United States · Hybrid',
+  },
+  {
+    role: 'Senior Visual Designer',
+    org: 'BigCommerce',
+    meta: 'Full-time · Sep 2023 - Aug 2025 · Austin, Texas, United States · Hybrid',
+  },
+  {
+    role: 'Visual Designer',
+    org: 'BigCommerce',
+    meta: 'Full-time · May 2021 - Sep 2023 · Remote',
+  },
+  {
+    role: 'Production Designer',
+    org: 'Charles Schwab',
+    meta: 'Contract · Sep 2019 - Jul 2020 · Austin, Texas, United States',
+    description:
+      "Created and designed hundreds of retirement plan print materials for companies like United Airlines, PayPal, EA, and REI, working under pressure and multitasking between projects to meet client deadlines. Decreased turnaround times by editing main templates to skip usual default edits, and provided quality assurance to maintain Schwab's brand identity, checking color, layout, typography, and spelling before mass printing.",
+  },
+  {
+    role: 'Visual Manager',
+    org: 'PECB',
+    meta: 'Full-time · Oct 2016 - Nov 2017 · Prishtina, Kosovo',
+    description:
+      'Directed, designed, and created all print and digital collateral — flyers, brochures, catalogues, magazines, PPT slides, icons, and web design — using Adobe InDesign, Illustrator, Photoshop, and Lightroom. Maintained the company and conference websites with WordPress, HTML, and CSS. Reduced the training development process by more than 60% by creating new templates and interactive charts, and branded final course materials to match brand identity.',
+  },
+  {
+    role: 'Graphic Designer',
+    org: 'Zhaki Advertising',
+    meta: 'Full-time · Jun 2016 - Sep 2016 · Prishtina, Kosovo',
+    description:
+      'Designed print pieces for large companies across banking, telecommunications, and retail while managing the team delivering the final product. Prepared designs for quality printing through meticulous review, increased social media impressions through regular content, and increased customer satisfaction through direct client collaboration.',
+  },
+  {
+    role: 'Web and Graphic Designer',
+    org: 'Center for Energy and Natural Resources',
+    meta: 'Internship · Sep 2014 - Jun 2015 · RIT Kosovo',
+    description:
+      'Managed the official CENR website, adding pages with the Drupal 7 CMS. Redesigned the official CENR logo through industry research, designed letterheads, business cards, and icon sets, and improved site efficiency by fixing overlooked issues.',
+  },
+  {
+    role: 'Web Designer',
+    org: 'PRECEDE Kosovo',
+    meta: 'Seasonal · Sep 2014 - Jun 2015 · Prishtina, Kosovo',
+    description:
+      'Built the official Precede website from the ground up using Drupal 7, maintained it with routine bug fixes and content updates, and trained the client\'s employees to manage the site themselves.',
+  },
+];
+
+const education = [
+  {
+    school: 'Rochester Institute of Technology',
+    degree: "Bachelor's degree, Multimedia and Web Design, Business Management",
+    meta: '2015 - 2019',
+  },
+  {
+    school: 'Xhevdet Doda High School',
+    degree: 'Diploma, Natural Sciences',
+    meta: '2008 - 2012',
+  },
+];
+
+const certifications = [
+  {
+    name: 'User Experience Nanodegree',
+    issuer: 'Udacity',
+    meta: 'Issued Feb 2021',
+  },
+  {
+    name: 'Figma for UX Design',
+    issuer: 'LinkedIn Learning',
+    meta: 'Issued Nov 2020',
+  },
+];
+
+const languages = [
+  { name: 'Albanian', level: 'Native or bilingual proficiency' },
+  { name: 'English', level: 'Full professional proficiency' },
+];
+
+const recommendations = [
+  {
+    quote:
+      "Adonis is a talented print production designer and a strong contributor to my team. He's a fast learner and detail-oriented, with a work ethic that was very beneficial for the quick-moving, busy print jobs we worked on. He is curious, thoughtful, and a great person to work with in a fast-paced environment.",
+    author: 'Jennifer Asako Gorzal',
+    title: 'Team Manager, Studio Production Design at Charles Schwab',
+  },
+  {
+    quote:
+      'Adonis is not only very talented, he is also a pleasure to work with. He does terrific creative, graphics, and layout work, and does it on time despite tight deadlines and changing criteria. I would absolutely work with him again.',
+    author: 'Scott Turner',
+  },
+];
 ---
 
-<Layout title="About — Your Name">
+<Layout title="About — Adonis Gashi">
   <h1>About</h1>
+  <p class="title-line">Senior Designer at Commerce · Austin, Texas, United States</p>
+
   <p>
-    Write a longer bio here — background, what you're good at, and what
-    you're looking for. This page is <code>src/pages/about.astro</code>.
+    Senior Visual Designer with experience building brand and digital
+    experiences across technology, B2B, e-commerce, and SaaS. I work across
+    brand, web, campaigns, events, and UX, combining strong visual design
+    with a focus on accessibility and consistency. Experienced in
+    collaborating with cross-functional teams to take projects from concept
+    through execution across web, digital, and physical experiences.
   </p>
+
   <p>
     Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>.
   </p>
+
+  <section>
+    <h2>Skills</h2>
+    <div>
+      {skills.map((skill) => <span class="tag">{skill}</span>)}
+    </div>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    <ul class="entry-list">
+      {
+        experience.map((job) => (
+          <li>
+            <h3>{job.role} · {job.org}</h3>
+            <p class="meta">{job.meta}</p>
+            {job.description && <p>{job.description}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <ul class="entry-list">
+      {
+        education.map((school) => (
+          <li>
+            <h3>{school.school}</h3>
+            <p class="meta">{school.degree} · {school.meta}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Licenses &amp; Certifications</h2>
+    <ul class="entry-list">
+      {
+        certifications.map((cert) => (
+          <li>
+            <h3>{cert.name}</h3>
+            <p class="meta">{cert.issuer} · {cert.meta}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Languages</h2>
+    <ul class="entry-list">
+      {
+        languages.map((lang) => (
+          <li>
+            <h3>{lang.name}</h3>
+            <p class="meta">{lang.level}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section>
+    <h2>Recommendations</h2>
+    <ul class="quote-list">
+      {
+        recommendations.map((rec) => (
+          <li>
+            <blockquote>{rec.quote}</blockquote>
+            <p class="meta">
+              — {rec.author}
+              {rec.title && `, ${rec.title}`}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </Layout>
+
+<style>
+  .title-line {
+    color: var(--color-text-muted);
+    margin-top: -0.5rem;
+  }
+
+  section {
+    margin-top: var(--space-4);
+  }
+
+  .entry-list,
+  .quote-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .entry-list li,
+  .quote-list li {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .entry-list li:last-child,
+  .quote-list li:last-child {
+    border-bottom: none;
+  }
+
+  .entry-list h3 {
+    margin: 0 0 0.2rem;
+    font-size: 1rem;
+  }
+
+  .meta {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin: 0 0 0.4rem;
+  }
+
+  blockquote {
+    margin: 0 0 0.4rem;
+    padding-left: var(--space-2);
+    border-left: 2px solid var(--color-border);
+    font-style: italic;
+  }
+</style>
