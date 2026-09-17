@@ -1,14 +1,213 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const experience = [
+  {
+    role: 'Senior Designer',
+    company: 'Commerce',
+    companyNote: '(formerly BigCommerce)',
+    meta: 'Aug 2025 – Present · Austin, TX · Hybrid',
+    bullets: [
+      'Lead visual design across brand, digital, web, events, campaigns, and product marketing for Commerce and its portfolio of brands.',
+      'Create high-impact creative for major initiatives including BigSummit, NRF, B2B, CPQ, Catalyst, and other company-wide campaigns.',
+      'Partner closely with Brand, UX, Marketing, Web, Product, and Engineering teams to bring concepts from early exploration through final production.',
+      'Design and maintain digital experiences across Figma, Webflow, Makeswift, and other web platforms, helping bridge brand and UX/UI.',
+      'Develop visual systems, campaign assets, presentations, landing pages, social content, event experiences, and physical/digital brand applications.',
+      'Collaborate with cross-functional teams to ensure consistency, usability, and quality across customer-facing experiences.',
+      'Contribute to the evolution of the Commerce brand and the transition from the BigCommerce brand to the broader Commerce organization.',
+    ],
+  },
+  {
+    role: 'BigCommerce',
+    meta: 'Austin, TX · 4 yrs 4 mos',
+    sub: [
+      { role: 'Senior Visual Designer', meta: 'Sep 2023 – Aug 2025 · Hybrid' },
+      { role: 'Visual Designer', meta: 'May 2021 – Sep 2023 · Remote' },
+    ],
+  },
+  {
+    role: 'Production Designer',
+    company: 'Charles Schwab',
+    companyNote: '(Contract)',
+    meta: 'Sep 2019 – Jul 2020 · Austin, TX',
+    bullets: [
+      'Created and designed hundreds of retirement plan print materials for companies like United Airlines, PayPal, EA, and REI, working under pressure and multitasking between projects to meet client deadlines.',
+      'Decreased turnaround times on projects by editing main templates to skip usual default edits.',
+      "Provided quality assurance for work to maintain Schwab's high standards and brand identity, and printed work locally to check color, layout, typography, and spelling before mass printing.",
+    ],
+  },
+  {
+    role: 'Visual Manager',
+    company: 'PECB',
+    meta: 'Oct 2016 – Nov 2017 · Prishtinë, Kosovo',
+    bullets: [
+      'Directed, designed, and created all print and digital collateral — flyers, brochures, catalogues, magazines, PPT slides, icons, web design, and more — using Adobe InDesign, Illustrator, Photoshop, and Lightroom.',
+      'Maintained the company and conference websites, designing and adding new pages with WordPress, HTML, and CSS.',
+      'Reduced the training development process by more than 60% by creating new templates and designing interactive charts for quickly and easily entering information.',
+      'Reviewed and branded final course materials to ensure they matched brand identity.',
+    ],
+  },
+  {
+    role: 'Graphic Designer',
+    company: 'Zhaki Advertising',
+    meta: 'Jun 2016 – Sep 2016 · Prishtinë, Kosovo',
+    bullets: [
+      'Designed multiple print pieces for large companies across banking, telecommunications, and retail while managing the team delivering the final product.',
+      'Communicated with the team and project stakeholders to ensure efficiency, and prepared designs for quality printing with meticulous document reviews before sending to print.',
+      'Increased social media impressions by managing and regularly posting engaging content, and increased customer satisfaction by interacting with clients and suggesting qualitative designs and print materials.',
+    ],
+  },
+  {
+    role: 'Web and Graphic Designer',
+    company: 'Center for Energy and Natural Resources',
+    companyNote: '(Internship, RIT Kosovo)',
+    meta: 'Sep 2014 – Jun 2015',
+    bullets: [
+      'Managed the official CENR website and added pages using the Drupal 7 CMS.',
+      'Redesigned the official CENR logo through heavy industry research to ensure relevance while maintaining aesthetic quality.',
+      'Designed letterheads, business cards, and various vector icons as requested.',
+      'Increased efficiency of the website by fixing overlooked issues.',
+    ],
+  },
+  {
+    role: 'Web Designer',
+    company: 'PRECEDE Kosovo',
+    companyNote: '(Seasonal)',
+    meta: 'Sep 2014 – Jun 2015 · Prishtinë, Kosovo',
+    bullets: [
+      'Built the official Precede website from the ground up using the Drupal 7 CMS.',
+      'Maintained the website by routinely fixing bugs and updating content per client requests.',
+      'Provided creative guidelines for Precede and trained their employees to easily manage the website.',
+    ],
+  },
+];
 ---
 
-<Layout title="About — Your Name">
+<Layout title="About — Adonis Gashi">
   <h1>About</h1>
   <p>
-    Write a longer bio here — background, what you're good at, and what
-    you're looking for. This page is <code>src/pages/about.astro</code>.
+    I'm Adonis Gashi, a Senior Designer at Commerce (formerly BigCommerce) in
+    Austin, TX. I work across brand, digital, web, events, and product
+    marketing — partnering with Brand, UX, Marketing, Web, Product, and
+    Engineering teams to take ideas from early exploration through final
+    production.
   </p>
   <p>
-    Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>.
+    Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>
+    · <a href="https://www.linkedin.com/in/adonisgashi/">LinkedIn</a>.
   </p>
+
+  <section>
+    <h2>Experience</h2>
+    <ul class="experience-list">
+      {
+        experience.map((job) => (
+          <li>
+            <div class="experience-header">
+              <h3>
+                {job.role}
+                {job.company && (
+                  <span class="experience-company"> · {job.company}</span>
+                )}
+                {job.companyNote && (
+                  <span class="experience-note"> {job.companyNote}</span>
+                )}
+              </h3>
+              <p class="experience-meta">{job.meta}</p>
+            </div>
+            {job.bullets && (
+              <ul class="experience-bullets">
+                {job.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            )}
+            {job.sub && (
+              <ul class="experience-sub">
+                {job.sub.map((role) => (
+                  <li>
+                    <span class="experience-sub-role">{role.role}</span>
+                    <span class="experience-meta">{role.meta}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </Layout>
+
+<style>
+  section {
+    margin-top: var(--space-4);
+  }
+
+  .experience-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-2) 0 0;
+  }
+
+  .experience-list > li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .experience-list > li:last-child {
+    border-bottom: none;
+  }
+
+  .experience-header h3 {
+    margin: 0 0 0.2rem;
+    font-size: 1.05rem;
+  }
+
+  .experience-company {
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .experience-note {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .experience-meta {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .experience-bullets {
+    margin: var(--space-1) 0 0;
+    padding-left: 1.2rem;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  .experience-bullets li {
+    margin-bottom: 0.4rem;
+  }
+
+  .experience-sub {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-1) 0 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .experience-sub li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: 0.3rem 0;
+  }
+
+  .experience-sub-role {
+    font-weight: 600;
+  }
+</style>
