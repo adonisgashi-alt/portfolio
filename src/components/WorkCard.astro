@@ -1,0 +1,110 @@
+---
+import Placeholder from './Placeholder.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  /** Large cards run full width with the copy beside the image. */
+  size?: 'default' | 'large';
+  ratio?: string;
+}
+
+const { entry, size = 'default', ratio } = Astro.props;
+const { title, client, year, summary, cover, disciplines } = entry.data;
+const href = `/work/${entry.id}`;
+---
+
+<article class:list={['work-card', `work-card--${size}`]}>
+  <a class="work-card__link" href={href}>
+    <span class="visually-hidden">View case study: {title}</span>
+  </a>
+
+  <div class="work-card__media">
+    <Placeholder
+      label={cover.label}
+      ratio={ratio ?? (size === 'large' ? '16 / 9' : '4 / 3')}
+      tone={cover.tone}
+    />
+  </div>
+
+  <div class="work-card__body">
+    <p class="eyebrow--caps">{client} &middot; {year}</p>
+    <h3 class="work-card__title">{title}</h3>
+    <p class="work-card__summary">{summary}</p>
+    <p class="link-chevron link-chevron--small work-card__cta" aria-hidden="true">
+      View case study
+    </p>
+    {
+      disciplines.length > 0 && (
+        <p class="caption work-card__tags">{disciplines.join(' · ')}</p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .work-card {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .work-card__link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: var(--radius-lg);
+  }
+
+  .work-card__media {
+    transition: transform 0.6s var(--ease);
+    will-change: transform;
+  }
+
+  .work-card:hover .work-card__media {
+    transform: scale(1.012);
+  }
+
+  .work-card__title {
+    font-size: var(--text-title);
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin-top: 0.35rem;
+  }
+
+  .work-card__summary {
+    color: var(--color-muted);
+    margin-top: 0.5rem;
+    max-width: 46ch;
+  }
+
+  .work-card__cta {
+    margin-top: 0.75rem;
+  }
+
+  .work-card:hover .work-card__cta {
+    opacity: 0.65;
+  }
+
+  .work-card__tags {
+    margin-top: 0.75rem;
+  }
+
+  @media (min-width: 900px) {
+    .work-card--large {
+      grid-template-columns: 1.35fr 1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: center;
+    }
+
+    .work-card--large .work-card__title {
+      font-size: var(--text-headline);
+    }
+
+    .work-card--large .work-card__summary {
+      font-size: var(--text-body-lg);
+      line-height: 1.42;
+    }
+  }
+</style>

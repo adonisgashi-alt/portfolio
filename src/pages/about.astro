@@ -1,213 +1,322 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../data/site';
 
+/* Full career history, newest first — from LinkedIn. */
 const experience = [
   {
     role: 'Senior Designer',
-    company: 'Commerce',
-    companyNote: '(formerly BigCommerce)',
-    meta: 'Aug 2025 – Present · Austin, TX · Hybrid',
-    bullets: [
-      'Lead visual design across brand, digital, web, events, campaigns, and product marketing for Commerce and its portfolio of brands.',
-      'Create high-impact creative for major initiatives including BigSummit, NRF, B2B, CPQ, Catalyst, and other company-wide campaigns.',
-      'Partner closely with Brand, UX, Marketing, Web, Product, and Engineering teams to bring concepts from early exploration through final production.',
-      'Design and maintain digital experiences across Figma, Webflow, Makeswift, and other web platforms, helping bridge brand and UX/UI.',
-      'Develop visual systems, campaign assets, presentations, landing pages, social content, event experiences, and physical/digital brand applications.',
-      'Collaborate with cross-functional teams to ensure consistency, usability, and quality across customer-facing experiences.',
-      'Contribute to the evolution of the Commerce brand and the transition from the BigCommerce brand to the broader Commerce organization.',
-    ],
+    org: 'Commerce',
+    period: '2025 — Present',
+    body: 'Lead visual design across brand, digital, web, events, campaigns and product marketing for Commerce and its portfolio of brands. Create high-impact creative for company-wide initiatives including BigSummit, NRF, B2B, CPQ and Catalyst, partnering with Brand, UX, Marketing, Web, Product and Engineering from early exploration through final production — and help carry the brand through its transition from BigCommerce to Commerce.',
   },
   {
-    role: 'BigCommerce',
-    meta: 'Austin, TX · 4 yrs 4 mos',
-    sub: [
-      { role: 'Senior Visual Designer', meta: 'Sep 2023 – Aug 2025 · Hybrid' },
-      { role: 'Visual Designer', meta: 'May 2021 – Sep 2023 · Remote' },
-    ],
+    role: 'Senior Visual Designer',
+    org: 'BigCommerce',
+    period: '2023 — 2025',
+    body: 'Owned visual design for major campaigns and digital experiences across Figma, Webflow and Makeswift, helping bridge brand and UX/UI as the company began its transition toward the Commerce brand.',
+  },
+  {
+    role: 'Visual Designer',
+    org: 'BigCommerce',
+    period: '2021 — 2023',
+    body: 'Built campaign assets, landing pages, presentations and social content across the brand’s digital properties, working remotely with cross-functional marketing and product teams.',
   },
   {
     role: 'Production Designer',
-    company: 'Charles Schwab',
-    companyNote: '(Contract)',
-    meta: 'Sep 2019 – Jul 2020 · Austin, TX',
-    bullets: [
-      'Created and designed hundreds of retirement plan print materials for companies like United Airlines, PayPal, EA, and REI, working under pressure and multitasking between projects to meet client deadlines.',
-      'Decreased turnaround times on projects by editing main templates to skip usual default edits.',
-      "Provided quality assurance for work to maintain Schwab's high standards and brand identity, and printed work locally to check color, layout, typography, and spelling before mass printing.",
-    ],
+    org: 'Charles Schwab (Contract)',
+    period: '2019 — 2020',
+    body: 'Produced hundreds of retirement-plan print materials for clients including United Airlines, PayPal, EA and REI. Tightened turnaround by streamlining templates and handled print QA in-house to protect Schwab’s brand standards.',
   },
   {
     role: 'Visual Manager',
-    company: 'PECB',
-    meta: 'Oct 2016 – Nov 2017 · Prishtinë, Kosovo',
-    bullets: [
-      'Directed, designed, and created all print and digital collateral — flyers, brochures, catalogues, magazines, PPT slides, icons, web design, and more — using Adobe InDesign, Illustrator, Photoshop, and Lightroom.',
-      'Maintained the company and conference websites, designing and adding new pages with WordPress, HTML, and CSS.',
-      'Reduced the training development process by more than 60% by creating new templates and designing interactive charts for quickly and easily entering information.',
-      'Reviewed and branded final course materials to ensure they matched brand identity.',
-    ],
+    org: 'PECB',
+    period: '2016 — 2017',
+    body: 'Directed all print and digital collateral — brochures, catalogues, training materials and the company website — and cut training-development time by more than 60% with new templates and interactive charts.',
   },
   {
     role: 'Graphic Designer',
-    company: 'Zhaki Advertising',
-    meta: 'Jun 2016 – Sep 2016 · Prishtinë, Kosovo',
-    bullets: [
-      'Designed multiple print pieces for large companies across banking, telecommunications, and retail while managing the team delivering the final product.',
-      'Communicated with the team and project stakeholders to ensure efficiency, and prepared designs for quality printing with meticulous document reviews before sending to print.',
-      'Increased social media impressions by managing and regularly posting engaging content, and increased customer satisfaction by interacting with clients and suggesting qualitative designs and print materials.',
-    ],
+    org: 'Zhaki Advertising',
+    period: '2016',
+    body: 'Designed print campaigns for banking, telecom and retail clients while managing the team through production, and grew social reach through a regular content cadence.',
   },
   {
     role: 'Web and Graphic Designer',
-    company: 'Center for Energy and Natural Resources',
-    companyNote: '(Internship, RIT Kosovo)',
-    meta: 'Sep 2014 – Jun 2015',
-    bullets: [
-      'Managed the official CENR website and added pages using the Drupal 7 CMS.',
-      'Redesigned the official CENR logo through heavy industry research to ensure relevance while maintaining aesthetic quality.',
-      'Designed letterheads, business cards, and various vector icons as requested.',
-      'Increased efficiency of the website by fixing overlooked issues.',
-    ],
+    org: 'Center for Energy and Natural Resources (Internship)',
+    period: '2014 — 2015',
+    body: 'Rebuilt the CENR website on Drupal, redesigned the organization’s logo and produced its print identity — letterheads, business cards and icon sets.',
   },
   {
     role: 'Web Designer',
-    company: 'PRECEDE Kosovo',
-    companyNote: '(Seasonal)',
-    meta: 'Sep 2014 – Jun 2015 · Prishtinë, Kosovo',
-    bullets: [
-      'Built the official Precede website from the ground up using the Drupal 7 CMS.',
-      'Maintained the website by routinely fixing bugs and updating content per client requests.',
-      'Provided creative guidelines for Precede and trained their employees to easily manage the website.',
-    ],
+    org: 'PRECEDE Kosovo (Seasonal)',
+    period: '2014 — 2015',
+    body: 'Built the official Precede website from scratch on Drupal, then maintained it and trained the client’s team to manage content independently.',
   },
 ];
+
+/* TODO: confirm — found via web search, not from your LinkedIn profile. */
+const education = 'Rochester Institute of Technology';
+
+const capabilities = [
+  'Brand identity & systems',
+  'Campaign & art direction',
+  'Web design and build',
+  'Event & environmental design',
+  'Product marketing design',
+  'Editorial & information design',
+  'Presentation design',
+  'Print production',
+];
+
+const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects'];
 ---
 
-<Layout title="About — Adonis Gashi">
-  <h1>About</h1>
-  <p>
-    I'm Adonis Gashi, a Senior Designer at Commerce (formerly BigCommerce) in
-    Austin, TX. I work across brand, digital, web, events, and product
-    marketing — partnering with Brand, UX, Marketing, Web, Product, and
-    Engineering teams to take ideas from early exploration through final
-    production.
-  </p>
-  <p>
-    Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>
-    · <a href="https://www.linkedin.com/in/adonisgashi/">LinkedIn</a>.
-  </p>
+<Layout
+  title={`About — ${site.name}`}
+  description={`${site.role} at ${site.company}, based in ${site.location}.`}
+>
+  <!-- Hero -->
+  <section class="section section--flush-bottom">
+    <div class="container container--wide">
+      <p class="eyebrow" data-reveal>About</p>
+      <h1 class="display about-title" data-reveal style="--reveal-delay: 60ms">
+        I make things<br />look inevitable.
+      </h1>
+    </div>
 
-  <section>
-    <h2>Experience</h2>
-    <ul class="experience-list">
-      {
-        experience.map((job) => (
-          <li>
-            <div class="experience-header">
-              <h3>
-                {job.role}
-                {job.company && (
-                  <span class="experience-company"> · {job.company}</span>
-                )}
-                {job.companyNote && (
-                  <span class="experience-note"> {job.companyNote}</span>
-                )}
-              </h3>
-              <p class="experience-meta">{job.meta}</p>
-            </div>
-            {job.bullets && (
-              <ul class="experience-bullets">
-                {job.bullets.map((bullet) => (
-                  <li>{bullet}</li>
-                ))}
-              </ul>
-            )}
-            {job.sub && (
-              <ul class="experience-sub">
-                {job.sub.map((role) => (
-                  <li>
-                    <span class="experience-sub-role">{role.role}</span>
-                    <span class="experience-meta">{role.meta}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))
-      }
-    </ul>
+    <div class="container container--full about-cover" data-reveal style="--reveal-delay: 120ms">
+      <Placeholder label="Portrait or studio image" ratio="21 / 9" tone="mid" />
+    </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="section">
+    <div class="container container--text prose body-lg" data-reveal>
+      <p>
+        I'm {site.name}, a {site.role.toLowerCase()} at {site.company} —
+        formerly {site.formerly} — in {site.location}. I lead visual design
+        across brand, digital, web, events, campaigns and product marketing,
+        for the parent brand and the portfolio underneath it.
+      </p>
+      <p>
+        Most of my work is the kind that has to hold up in several places at
+        once: a campaign that's also a landing page, an event that's also a
+        social cut, a product story that's also a sales deck. I partner
+        closely with Brand, UX, Marketing, Web, Product and Engineering to
+        take ideas from early exploration through to what actually ships.
+      </p>
+      <p>
+        I build and maintain digital experiences in Figma, Webflow, Makeswift
+        and other web platforms, which keeps me close to the line between
+        brand and UX — a useful place to stand when the two disagree.
+      </p>
+      <p>
+        Lately that's meant the evolution of the Commerce brand itself, and
+        the work of carrying a well-known name into a broader one.
+      </p>
+      <p>
+        You can see the full career history on{' '}
+        <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section section--surface">
+    <div class="container container--wide">
+      <p class="eyebrow--caps" data-reveal>Experience</p>
+      <ul class="timeline">
+        {
+          experience.map((item, i) => (
+            <li class="timeline__item" data-reveal style={`--reveal-delay: ${i * 60}ms`}>
+              <p class="caption timeline__period">{item.period}</p>
+              <div>
+                <h2 class="title timeline__role">
+                  {item.role}, {item.org}
+                </h2>
+                <p class="muted timeline__body">{item.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="caption timeline__education" data-reveal>Education &mdash; {education}</p>
+
+      <p class="timeline__cta" data-reveal>
+        <a class="link-chevron" href={site.linkedin} rel="me noopener" target="_blank">
+          Full history on LinkedIn
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="section section--dark">
+    <div class="container container--wide capabilities">
+      <div data-reveal>
+        <p class="eyebrow--caps">Capabilities</p>
+        <h2 class="headline capabilities__title">What I'm usually hired for.</h2>
+      </div>
+      <div data-reveal style="--reveal-delay: 80ms">
+        <ul class="capability-list">
+          {capabilities.map((item) => <li class="capability-list__item">{item}</li>)}
+        </ul>
+        <p class="caption capabilities__tools">Tools: {tools.join(' · ')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Off the clock -->
+  <section class="section">
+    <div class="container container--wide off-clock">
+      <div class="off-clock__media" data-reveal>
+        <Placeholder label="Personal work or sketchbook image" ratio="4 / 5" tone="light" />
+      </div>
+      <div class="off-clock__copy" data-reveal style="--reveal-delay: 80ms">
+        <p class="eyebrow--caps">Off the clock</p>
+        <h2 class="headline off-clock__title">Still drawing.</h2>
+        <p class="body-lg muted off-clock__body">
+          Type experiments, photography and a sketchbook nobody reviews. It's
+          where most of the ideas that do get reviewed start.
+        </p>
+        <p class="off-clock__link">
+          <a class="link-chevron" href="/work">See the client work</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--surface center">
+    <div class="container">
+      <h2 class="headline" data-reveal>Let's talk.</h2>
+      <p class="subhead measure--wide about-cta__sub" data-reveal style="--reveal-delay: 60ms">
+        Freelance, collaboration, or a question about something above.
+      </p>
+      <div class="about-cta__actions" data-reveal style="--reveal-delay: 120ms">
+        <a class="button button--primary" href="/contact">Contact me</a>
+        <a class="button button--secondary" href={site.linkedin} rel="me noopener" target="_blank">
+          Connect on LinkedIn
+        </a>
+      </div>
+    </div>
   </section>
 </Layout>
 
 <style>
-  section {
-    margin-top: var(--space-4);
+  .about-title {
+    margin-top: 0.75rem;
+    text-wrap: balance;
   }
 
-  .experience-list {
+  .about-cover {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .timeline {
     list-style: none;
+    margin: 1.5rem 0 0;
     padding: 0;
-    margin: var(--space-2) 0 0;
   }
 
-  .experience-list > li {
-    padding: var(--space-3) 0;
-    border-bottom: 1px solid var(--color-border);
+  .timeline__item {
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--color-line);
   }
 
-  .experience-list > li:last-child {
-    border-bottom: none;
+  .timeline__period {
+    margin-top: 0.35rem;
   }
 
-  .experience-header h3 {
-    margin: 0 0 0.2rem;
-    font-size: 1.05rem;
+  .timeline__body {
+    margin-top: 0.5rem;
+    max-width: 52ch;
   }
 
-  .experience-company {
-    font-weight: 400;
-    color: var(--color-text-muted);
+  .timeline__education {
+    margin-top: 1.75rem;
   }
 
-  .experience-note {
-    font-weight: 400;
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
+  .timeline__cta {
+    margin-top: 1.5rem;
   }
 
-  .experience-meta {
+  .capabilities {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .capabilities__title {
+    margin-top: 0.875rem;
+  }
+
+  .capability-list {
+    list-style: none;
     margin: 0;
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-  }
-
-  .experience-bullets {
-    margin: var(--space-1) 0 0;
-    padding-left: 1.2rem;
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-  }
-
-  .experience-bullets li {
-    margin-bottom: 0.4rem;
-  }
-
-  .experience-sub {
-    list-style: none;
     padding: 0;
-    margin: var(--space-1) 0 0;
-    padding-left: 1rem;
-    border-left: 2px solid var(--color-border);
+    display: grid;
+    gap: 0;
   }
 
-  .experience-sub li {
+  .capability-list__item {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-body-lg);
+    letter-spacing: -0.018em;
+  }
+
+  .capabilities__tools {
+    margin-top: 1.5rem;
+  }
+
+  .off-clock {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .off-clock__title {
+    margin-top: 0.875rem;
+  }
+
+  .off-clock__body {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+  }
+
+  .off-clock__link {
+    margin-top: 1.5rem;
+  }
+
+  .about-cta__sub {
+    margin-top: 1rem;
+  }
+
+  .about-cta__actions {
+    margin-top: 2rem;
     display: flex;
-    justify-content: space-between;
-    gap: var(--space-2);
-    padding: 0.3rem 0;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
   }
 
-  .experience-sub-role {
-    font-weight: 600;
+  @media (min-width: 768px) {
+    .timeline__item {
+      grid-template-columns: 10rem 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .capabilities,
+    .off-clock {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .off-clock__media {
+      max-width: 26rem;
+    }
   }
 </style>
