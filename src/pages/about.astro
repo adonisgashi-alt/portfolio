@@ -1,14 +1,124 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const experience = [
+  {
+    title: 'Senior Designer',
+    company: 'Commerce',
+    dates: 'Aug 2025 — Present',
+    location: 'Austin, TX',
+  },
+  {
+    title: 'Senior Visual Designer',
+    company: 'BigCommerce',
+    dates: 'Sep 2023 — Aug 2025',
+    location: 'Austin, TX',
+  },
+  {
+    title: 'Visual Designer',
+    company: 'BigCommerce',
+    dates: 'May 2021 — Sep 2023',
+    location: 'Remote',
+  },
+  {
+    title: 'Production Designer',
+    company: 'Charles Schwab',
+    dates: 'Sep 2019 — Jul 2020',
+    location: 'Austin, TX',
+  },
+  {
+    title: 'Visual Manager',
+    company: 'PECB',
+    dates: 'Oct 2016 — Nov 2017',
+    location: 'Prishtina, Kosovo',
+  },
+  {
+    title: 'Graphic Designer',
+    company: 'Zhaki Advertising',
+    dates: 'Jun 2016 — Sep 2016',
+    location: 'Prishtina, Kosovo',
+  },
+  {
+    title: 'Web & Graphic Designer',
+    company: 'Center for Energy and Natural Resources',
+    dates: 'Sep 2014 — Jun 2015',
+    location: 'Prishtina, Kosovo',
+  },
+  {
+    title: 'Web Designer',
+    company: 'PRECEDE Kosovo',
+    dates: 'Sep 2014 — Jun 2015',
+    location: 'Prishtina, Kosovo',
+  },
+];
 ---
 
-<Layout title="About — Your Name">
+<Layout title="About — Adonis Gashi">
   <h1>About</h1>
   <p>
-    Write a longer bio here — background, what you're good at, and what
-    you're looking for. This page is <code>src/pages/about.astro</code>.
+    I'm Adonis, a Senior Designer at Commerce in Austin, TX. I've spent the
+    last several years working across visual design, branding, and web —
+    most recently at BigCommerce, with earlier stops at Charles Schwab and
+    PECB. I care about clean systems, clear typography, and design that
+    holds up under real production constraints.
   </p>
   <p>
     Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>.
   </p>
+
+  <h2>Experience</h2>
+  <ul class="experience-list">
+    {
+      experience.map((role) => (
+        <li>
+          <div class="experience-row">
+            <span class="experience-title">{role.title}</span>
+            <span class="experience-dates">{role.dates}</span>
+          </div>
+          <div class="experience-row">
+            <span class="experience-company">{role.company}</span>
+            <span class="experience-location">{role.location}</span>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
 </Layout>
+
+<style>
+  .experience-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-3) 0 0;
+  }
+
+  .experience-list li {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .experience-list li:last-child {
+    border-bottom: none;
+  }
+
+  .experience-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .experience-title {
+    font-weight: 600;
+  }
+
+  .experience-company {
+    color: var(--color-text-muted);
+  }
+
+  .experience-dates,
+  .experience-location {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+</style>
