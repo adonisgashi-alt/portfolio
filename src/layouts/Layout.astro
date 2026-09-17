@@ -4,9 +4,20 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  /** Rendered edge-to-edge (the home page) rather than in the standard shell. */
+  bleed?: boolean;
 }
 
-const { title, description = 'Portfolio and writing.' } = Astro.props;
+const { title, description = 'Design engineer working on commerce platforms.', bleed = false } = Astro.props;
+
+const nav = [
+  { href: '/', label: 'Index' },
+  { href: '/projects', label: 'Work' },
+  { href: '/articles', label: 'Writing' },
+  { href: '/about', label: 'About' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <!doctype html>
@@ -16,67 +27,242 @@ const { title, description = 'Portfolio and writing.' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#050508" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
     <title>{title}</title>
+    <script is:inline>
+      // Runs before paint. Scroll reveals start hidden only once this flag is
+      // set, so the page still renders everything with JS off or motion reduced.
+      try {
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.dataset.motion = 'on';
+        }
+      } catch (error) {
+        /* no-op: reveals simply stay visible */
+      }
+    </script>
   </head>
   <body>
-    <header class="wrapper site-header">
-      <a class="site-title" href="/">Your Name</a>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/projects">Projects</a>
-        <a href="/articles">Writing</a>
-        <a href="/about">About</a>
-      </nav>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="wrapper site-header__inner">
+        <a class="site-title" href="/" data-dither-trigger>
+          <span class="site-title__mark" aria-hidden="true"></span>
+          <span data-scramble>Adonis Gashi</span>
+        </a>
+        <nav aria-label="Primary">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class="site-nav__link"
+                data-dither-trigger
+                aria-current={path === item.href ? 'page' : undefined}
+              >
+                <span data-scramble>{item.label}</span>
+              </a>
+            ))
+          }
+        </nav>
+      </div>
     </header>
-    <main class="wrapper">
+
+    <main id="main" class:list={[!bleed && 'wrapper', !bleed && 'main-shell']}>
       <slot />
     </main>
-    <footer class="wrapper site-footer">
-      <p>&copy; {new Date().getFullYear()} Your Name. Built with Astro, hosted on Vercel.</p>
+
+    <footer class="site-footer">
+      <div class="wrapper site-footer__inner">
+        <p class="mono">&copy; {new Date().getFullYear()} Adonis Gashi</p>
+        <p class="mono site-footer__status">
+          <span class="dot" aria-hidden="true"></span>
+          <span data-clock>--:--:--</span>
+        </p>
+        <p class="mono">
+          <a href="mailto:adonis.gashi@gmail.com">Email</a> &middot;
+          <a href="https://github.com/adonisgashi-alt" rel="me noopener">GitHub</a>
+        </p>
+      </div>
     </footer>
+
+    <div class="page-vignette" aria-hidden="true"></div>
+    <div class="page-grain" aria-hidden="true"></div>
+
+    <script>
+      import { mountDitherImages } from '../scripts/dither-image';
+      import { mountCursor, mountReveals, mountScramble } from '../scripts/interactions';
+
+      mountDitherImages();
+      mountScramble();
+      mountReveals();
+      mountCursor();
+
+      // Small live detail in the footer: a running local clock.
+      const clock = document.querySelector<HTMLElement>('[data-clock]');
+      if (clock) {
+        const tick = (): void => {
+          clock.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false });
+        };
+        tick();
+        setInterval(tick, 1000);
+      }
+    </script>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 100;
+        background: var(--accent);
+        color: var(--ink-900);
+        padding: 0.6rem 1rem;
+        font-family: var(--font-mono);
+      }
+
+      .skip:focus {
+        left: 0;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        backdrop-filter: blur(14px);
+        background: color-mix(in srgb, var(--ink-900) 78%, transparent);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .site-header__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+        min-height: 3.75rem;
+      }
+
+      .site-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: var(--font-mono);
+        font-size: var(--step--1);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--bone);
+      }
+
+      /* A four-cell dither swatch standing in for a monogram. */
+      .site-title__mark {
+        width: 14px;
+        height: 14px;
+        background-image: linear-gradient(45deg, currentColor 25%, transparent 25% 75%, currentColor 75%),
+          linear-gradient(45deg, currentColor 25%, transparent 25% 75%, currentColor 75%);
+        background-size: 7px 7px;
+        background-position: 0 0, 3.5px 3.5px;
+        color: var(--accent);
+        transition: color 300ms var(--ease), transform 300ms var(--ease);
+      }
+
+      .site-title:hover .site-title__mark {
+        color: var(--bone);
+        transform: rotate(90deg);
+      }
+
+      nav {
+        display: flex;
+        gap: var(--space-3);
+      }
+
+      .site-nav__link {
+        font-family: var(--font-mono);
+        font-size: var(--step--1);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--bone-3);
+        transition: color 240ms var(--ease);
+      }
+
+      .site-nav__link:hover,
+      .site-nav__link[aria-current='page'] {
+        color: var(--bone);
+      }
+
+      .site-nav__link[aria-current='page'] {
+        text-decoration: underline;
+        text-decoration-color: var(--accent);
+        text-underline-offset: 0.45em;
+      }
+
+      .main-shell {
+        padding-top: var(--space-5);
+        padding-bottom: var(--space-6);
+        min-height: 60vh;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--color-border);
+        padding: var(--space-3) 0 var(--space-4);
+      }
+
+      .site-footer__inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2) var(--space-4);
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .site-footer p {
+        margin: 0;
+      }
+
+      .site-footer a {
+        color: var(--bone-2);
+        text-decoration: none;
+      }
+
+      .site-footer a:hover {
+        color: var(--accent);
+      }
+
+      .site-footer__status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        animation: pulse 2.4s var(--ease) infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+
+      @media (max-width: 34rem) {
+        nav {
+          gap: var(--space-2);
+        }
+
+        .site-title span:not(.site-title__mark) {
+          display: none;
+        }
+      }
+    </style>
   </body>
 </html>
-
-<style>
-  .site-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: var(--space-3);
-    padding-bottom: var(--space-3);
-  }
-
-  .site-title {
-    font-weight: 700;
-    text-decoration: none;
-    color: var(--color-text);
-  }
-
-  nav {
-    display: flex;
-    gap: var(--space-2);
-  }
-
-  nav a {
-    text-decoration: none;
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-  }
-
-  nav a:hover {
-    color: var(--color-accent);
-  }
-
-  main {
-    padding-bottom: var(--space-5);
-    min-height: 60vh;
-  }
-
-  .site-footer {
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-2);
-    padding-bottom: var(--space-4);
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-  }
-</style>

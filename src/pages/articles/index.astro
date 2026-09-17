@@ -7,24 +7,42 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft)).so
 );
 ---
 
-<Layout title="Writing — Your Name">
-  <h1>Writing</h1>
-  {articles.length === 0 && <p>No articles yet — add one in <code>src/content/articles/</code>.</p>}
-  <ul class="article-list">
+<Layout title="Writing — Adonis Gashi" description="Notes on front-end, design systems and commerce.">
+  <header class="page-head" data-reveal>
+    <p class="eyebrow">Writing</p>
+    <h1>Notes from the build.</h1>
+  </header>
+
+  {
+    articles.length === 0 && (
+      <p class="empty">
+        Nothing published yet — add a Markdown file in <code>src/content/articles/</code>.
+      </p>
+    )
+  }
+
+  <ul class="list">
     {
-      articles.map((article) => (
-        <li>
-          <h2>
-            <a href={`/articles/${article.id}`}>{article.data.title}</a>
-          </h2>
-          <p>{article.data.description}</p>
-          <time datetime={article.data.publishDate.toISOString()}>
-            {article.data.publishDate.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </time>
+      articles.map((article, index) => (
+        <li data-dither-trigger data-reveal style={`--reveal-delay:${index}`}>
+          <a href={`/articles/${article.id}`}>
+            <span class="list__meta mono">
+              <time datetime={article.data.publishDate.toISOString()}>
+                {article.data.publishDate.toLocaleDateString('en-GB', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: '2-digit',
+                })}
+              </time>
+            </span>
+            <span class="list__main">
+              <span class="list__title" data-scramble>
+                {article.data.title}
+              </span>
+              <span class="list__desc">{article.data.description}</span>
+            </span>
+            <span class="list__arrow" aria-hidden="true">→</span>
+          </a>
         </li>
       ))
     }
@@ -32,32 +50,79 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft)).so
 </Layout>
 
 <style>
-  .article-list {
-    list-style: none;
-    padding: 0;
+  .page-head {
+    margin-bottom: var(--space-5);
   }
 
-  .article-list li {
-    padding: var(--space-3) 0;
+  .empty {
+    color: var(--bone-2);
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .list li {
     border-bottom: 1px solid var(--color-border);
   }
 
-  .article-list h2 {
-    margin: 0 0 0.3rem;
-    font-size: 1.15rem;
-  }
-
-  .article-list a {
+  .list a {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr) 2rem;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-3) 0;
     text-decoration: none;
+    transition: padding-inline 320ms var(--ease), background 320ms var(--ease);
   }
 
-  .article-list p {
-    color: var(--color-text-muted);
-    margin: 0 0 0.4rem;
+  .list a:hover,
+  .list a:focus-visible {
+    padding-inline: var(--space-2);
+    background: var(--ink-800);
   }
 
-  time {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
+  .list__meta {
+    font-size: var(--step--2);
+  }
+
+  .list__main {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .list__title {
+    font-size: var(--step-1);
+    letter-spacing: -0.02em;
+    color: var(--bone);
+  }
+
+  .list__desc {
+    color: var(--bone-2);
+    font-size: var(--step--1);
+  }
+
+  .list__arrow {
+    justify-self: end;
+    color: var(--bone-3);
+    transition: transform 300ms var(--ease), color 300ms var(--ease);
+  }
+
+  .list a:hover .list__arrow {
+    color: var(--accent);
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 40rem) {
+    .list a {
+      grid-template-columns: minmax(0, 1fr) 1.5rem;
+    }
+
+    .list__meta {
+      grid-column: 1 / -1;
+    }
   }
 </style>

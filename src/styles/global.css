@@ -1,38 +1,91 @@
-/* Design tokens — change these and the whole site updates. */
-:root {
-  --color-bg: #ffffff;
-  --color-bg-muted: #f6f5f3;
-  --color-text: #1a1a1a;
-  --color-text-muted: #5f5f5f;
-  --color-accent: #2f6f4f;
-  --color-border: #e6e3de;
+/* ==========================================================================
+   Design tokens
+   The whole site is built from these — change them and everything follows.
+   ========================================================================== */
 
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+:root {
+  color-scheme: dark;
+
+  /* Ink ramp: the substrate the dither resolves out of. */
+  --ink-900: #050508;
+  --ink-800: #0a0a11;
+  --ink-700: #10101a;
+  --ink-600: #181824;
+  --ink-500: #232331;
+
+  /* Bone ramp: the highlight end. */
+  --bone: #ecebe4;
+  --bone-2: #b6b4ab;
+  --bone-3: #76746c;
+
+  /* Accents. `--iris` is the house colour; the rest belong to the brands. */
+  --iris: #6c5cff;
+  --cyan: #03ead9;
+  --pink: #f849a0;
+  --amber: #ff8a3d;
+  --accent: var(--iris);
+
+  --color-bg: var(--ink-900);
+  --color-surface: var(--ink-800);
+  --color-text: var(--bone);
+  --color-text-muted: var(--bone-2);
+  --color-border: #1e1e2b;
+  --color-accent: var(--accent);
+
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --font-sans: 'Helvetica Neue', Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+
+  /* Fluid type scale. */
+  --step--2: clamp(0.66rem, 0.64rem + 0.08vw, 0.72rem);
+  --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
+  --step-0: clamp(0.95rem, 0.92rem + 0.16vw, 1.05rem);
+  --step-1: clamp(1.15rem, 1.08rem + 0.35vw, 1.4rem);
+  --step-2: clamp(1.45rem, 1.3rem + 0.75vw, 2rem);
+  --step-3: clamp(1.9rem, 1.55rem + 1.7vw, 3rem);
+  --step-4: clamp(2.6rem, 1.6rem + 4.6vw, 6.5rem);
 
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
   --space-4: 2.5rem;
   --space-5: 4rem;
+  --space-6: 6.5rem;
 
-  --content-width: 42rem;
-  --radius: 8px;
+  --shell: 76rem;
+  --measure: 38rem;
+  --content-width: var(--measure);
+  --radius: 2px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #16181a;
-    --color-bg-muted: #1e2124;
-    --color-text: #f2f1ee;
-    --color-text-muted: #a8a8a8;
-    --color-accent: #6fcf9b;
-    --color-border: #2c2f33;
-  }
-}
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 html,
@@ -45,33 +98,361 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+  font-size: var(--step-0);
   line-height: 1.6;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: var(--color-accent);
+/* The all-over grain: a 50% ordered-dither checkerboard (which is what a
+   Bayer threshold collapses to) plus scanlines and a vignette. Fixed, so the
+   texture stays welded to the glass while the page scrolls under it. */
+.page-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-image:
+    linear-gradient(45deg, rgba(236, 235, 228, 0.5) 25%, transparent 25% 75%, rgba(236, 235, 228, 0.5) 75%),
+    linear-gradient(45deg, rgba(236, 235, 228, 0.5) 25%, transparent 25% 75%, rgba(236, 235, 228, 0.5) 75%),
+    repeating-linear-gradient(0deg, rgba(5, 5, 8, 0.55) 0 1px, transparent 1px 3px);
+  background-size: 4px 4px, 4px 4px, 100% 3px;
+  background-position: 0 0, 2px 2px, 0 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
 }
 
-.wrapper {
-  max-width: var(--content-width);
-  margin: 0 auto;
-  padding: 0 var(--space-2);
+.page-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+  background: radial-gradient(130% 105% at 50% 0%, transparent 55%, rgba(5, 5, 8, 0.42) 100%);
 }
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
 
 h1,
 h2,
-h3 {
-  line-height: 1.2;
+h3,
+h4 {
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-wrap: balance;
 }
+
+h1 {
+  font-size: var(--step-3);
+}
+
+h2 {
+  font-size: var(--step-2);
+}
+
+h3 {
+  font-size: var(--step-1);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  text-underline-offset: 0.25em;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink-900);
+}
+
+code,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* The monospace voice: labels, eyebrows, metadata. */
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone-3);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bone-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+}
+
+.eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-image: linear-gradient(90deg, var(--color-border) 0 2px, transparent 2px 4px);
+  background-size: 4px 1px;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.wrapper {
+  width: 100%;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+
+.wrapper--measure {
+  max-width: calc(var(--measure) + var(--space-3) * 2);
+}
+
+.section {
+  padding: var(--space-6) 0;
+  position: relative;
+}
+
+.section + .section {
+  border-top: 1px solid var(--color-border);
+}
+
+/* Halftone density gradient — a dot field that fades out, the print-shop
+   cousin of the canvas dithering. */
+.halftone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--bone-3) 0.85px, transparent 1px);
+  background-size: 7px 7px;
+  opacity: 0.16;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 60%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 60%);
+}
+
+/* ==========================================================================
+   Dither plates
+   ========================================================================== */
+
+[data-dither] {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  background: var(--ink-800);
+  aspect-ratio: var(--plate-ratio, 4 / 3);
+}
+
+[data-dither] img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The <img> is the source of truth for the canvas and the fallback when JS
+     is off; once a plate mounts, the canvas covers it. */
+  filter: grayscale(1) contrast(1.3) brightness(0.75);
+}
+
+.dither-plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  opacity: 0;
+  transition: opacity 320ms var(--ease);
+}
+
+[data-dither-ready='true'] .dither-plate {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Cursor halo
+   ========================================================================== */
+
+.cursor-halo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 58;
+  width: 220px;
+  height: 220px;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 55%, transparent) 0%, transparent 65%);
+  /* Masking the glow with the same checkerboard keeps the halo 1-bit. */
+  -webkit-mask-image: linear-gradient(45deg, #000 25%, transparent 25% 75%, #000 75%),
+    linear-gradient(45deg, #000 25%, transparent 25% 75%, #000 75%);
+  -webkit-mask-size: 4px 4px;
+  -webkit-mask-position: 0 0, 2px 2px;
+  mask-image: linear-gradient(45deg, #000 25%, transparent 25% 75%, #000 75%),
+    linear-gradient(45deg, #000 25%, transparent 25% 75%, #000 75%);
+  mask-size: 4px 4px;
+  mask-position: 0 0, 2px 2px;
+  transition: opacity 400ms var(--ease), width 320ms var(--ease), height 320ms var(--ease);
+}
+
+.cursor-halo[data-visible='true'] {
+  opacity: 0.5;
+}
+
+.cursor-halo[data-active='true'] {
+  width: 340px;
+  height: 340px;
+  opacity: 0.75;
+}
+
+/* ==========================================================================
+   Reveals
+   ========================================================================== */
+
+/* Reveals are opt-in: the inline head script sets `data-motion` only when JS
+   is running and motion is allowed. Without it these rules never apply, so
+   content is never left invisible. */
+:root[data-motion='on'] [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+  transition-delay: calc(var(--reveal-delay, 0) * 80ms);
+}
+
+:root[data-motion='on'] [data-reveal][data-revealed='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
 
 .tag {
   display: inline-block;
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  background: var(--color-bg-muted);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-2);
   border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.15rem 0.6rem;
-  margin: 0 0.4rem 0.4rem 0;
+  padding: 0.2rem 0.55rem;
+  margin: 0 0.35rem 0.35rem 0;
+  background: var(--ink-800);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--bone-2);
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-border);
+  transition: color 220ms var(--ease), border-color 220ms var(--ease);
+}
+
+.link-arrow::after {
+  content: '→';
+  transition: transform 260ms var(--ease);
+}
+
+.link-arrow:hover,
+.link-arrow:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.link-arrow:hover::after {
+  transform: translateX(5px);
+}
+
+/* ==========================================================================
+   Prose (articles)
+   ========================================================================== */
+
+.prose {
+  max-width: var(--measure);
+  color: var(--bone-2);
+  font-size: var(--step-0);
+  line-height: 1.75;
+}
+
+.prose > * + * {
+  margin-top: var(--space-2);
+}
+
+.prose h2,
+.prose h3 {
+  color: var(--bone);
+  margin-top: var(--space-4);
+}
+
+.prose a {
+  color: var(--accent);
+}
+
+.prose code {
+  background: var(--ink-700);
+  border: 1px solid var(--color-border);
+  padding: 0.1em 0.35em;
+}
+
+.prose pre {
+  background: var(--ink-800);
+  border: 1px solid var(--color-border);
+  padding: var(--space-2);
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.prose blockquote {
+  margin-left: 0;
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--accent);
+  color: var(--bone);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

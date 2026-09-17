@@ -1,65 +1,138 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import WorkCard from '../components/WorkCard.astro';
+import DitherFigure from '../components/DitherFigure.astro';
+import { brands } from '../data/brands';
 
-const projects = [
+const sideProjects = [
   {
-    name: 'Project One',
-    description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
-    tags: ['Astro', 'TypeScript'],
+    name: 'This site',
+    description:
+      'An Astro portfolio built around a canvas ordered-dither engine — every plate develops as it scrolls in and resolves under the cursor.',
+    tags: ['Astro', 'Canvas', 'TypeScript'],
+    url: 'https://github.com/adonisgashi-alt/portfolio',
+    image: '/work/commerce.svg',
+    stops: '#050508,#8f82ff,#ecebe4',
   },
   {
     name: 'Project Two',
     description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
     tags: ['React'],
+    url: '#',
+    image: '/work/feedonomics.svg',
+    stops: '#050508,#ff8a3d,#ecebe4',
   },
 ];
 ---
 
-<Layout title="Projects — Your Name">
-  <h1>Projects</h1>
-  <ul class="project-list">
-    {
-      projects.map((project) => (
-        <li>
-          <h2>
-            <a href={project.url}>{project.name}</a>
-          </h2>
-          <p>{project.description}</p>
-          <div>
-            {project.tags.map((tag) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-        </li>
-      ))
-    }
-  </ul>
+<Layout title="Work — Adonis Gashi" description="Commerce platform work and side projects.">
+  <header class="page-head" data-reveal>
+    <p class="eyebrow">Work</p>
+    <h1>Commerce platforms, and the things around them.</h1>
+    <p class="page-head__lede">
+      Day to day I work across three brands under the same roof. Each one has a different
+      audience and a different set of constraints; the through-line is front-end that has
+      to hold up at scale.
+    </p>
+  </header>
+
+  <section class="work-grid" aria-label="Brands">
+    {brands.map((brand, index) => <WorkCard brand={brand} index={index} />)}
+  </section>
+
+  <section class="side" aria-labelledby="side-title">
+    <p class="eyebrow" id="side-title">Side projects</p>
+    <ul class="side__list">
+      {
+        sideProjects.map((project, index) => (
+          <li data-dither-trigger data-reveal style={`--reveal-delay:${index}`}>
+            <DitherFigure
+              src={project.image}
+              alt=""
+              stops={project.stops}
+              ratio="1 / 1"
+              cell={5}
+              reveal={0.5}
+              class="side__plate"
+            />
+            <div class="side__body">
+              <h2>
+                <a href={project.url} data-scramble>
+                  {project.name}
+                </a>
+              </h2>
+              <p>{project.description}</p>
+              <div>
+                {project.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </Layout>
 
 <style>
-  .project-list {
-    list-style: none;
-    padding: 0;
+  .page-head {
+    max-width: 44rem;
+    margin-bottom: var(--space-5);
   }
 
-  .project-list li {
+  .page-head__lede {
+    color: var(--bone-2);
+    margin: var(--space-2) 0 0;
+    max-width: 38rem;
+  }
+
+  .work-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    margin-bottom: var(--space-6);
+  }
+
+  .side__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .side__list li {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: center;
     padding: var(--space-3) 0;
     border-bottom: 1px solid var(--color-border);
   }
 
-  .project-list h2 {
-    margin: 0 0 0.3rem;
-    font-size: 1.15rem;
+  .side__plate {
+    --plate-ratio: 1 / 1;
   }
 
-  .project-list a {
+  .side__body h2 {
+    font-size: var(--step-1);
+    margin: 0 0 0.4rem;
+  }
+
+  .side__body a {
     text-decoration: none;
   }
 
-  .project-list p {
-    color: var(--color-text-muted);
-    margin: 0 0 0.6rem;
+  .side__body p {
+    margin: 0 0 var(--space-2);
+    color: var(--bone-2);
+    font-size: var(--step--1);
+  }
+
+  @media (max-width: 34rem) {
+    .side__list li {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+    }
   }
 </style>

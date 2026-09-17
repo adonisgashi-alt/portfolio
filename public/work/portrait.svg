@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100" role="img">
+  <title>Abstract portrait placeholder</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0" stop-color="#12121d"/>
+      <stop offset="1" stop-color="#05050a"/>
+    </linearGradient>
+    <radialGradient id="light" cx="0.42" cy="0.32" r="0.55">
+      <stop offset="0" stop-color="#ecebe4" stop-opacity="0.85"/>
+      <stop offset="0.5" stop-color="#6c5cff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#6c5cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shoulder" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ecebe4" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#ecebe4" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="1100" fill="url(#bg)"/>
+  <rect width="900" height="1100" fill="url(#light)"/>
+  <ellipse cx="450" cy="420" rx="185" ry="225" fill="url(#shoulder)"/>
+  <path d="M150 1100c0-220 134-330 300-330s300 110 300 330z" fill="url(#shoulder)"/>
+  <g fill="none" stroke="#6c5cff" stroke-opacity="0.4">
+    <ellipse cx="450" cy="420" rx="250" ry="290"/>
+    <ellipse cx="450" cy="420" rx="330" ry="380" stroke-opacity="0.2"/>
+  </g>
+  <g stroke="#ecebe4" stroke-opacity="0.1">
+    <path d="M0 260h900M0 560h900M0 860h900"/>
+  </g>
+</svg>

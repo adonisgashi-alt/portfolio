@@ -1,0 +1,45 @@
+---
+/**
+ * The interactive dither field behind the hero. Pointer pushes a bright bump
+ * through the plasma; the whole thing is rendered into a small buffer and
+ * scaled up, so the pixels stay chunky.
+ */
+interface Props {
+  /** CSS pixels per dither cell. */
+  cell?: number;
+  stops?: string;
+  levels?: number;
+  class?: string;
+}
+
+const { cell = 5, stops = '#050508,#231d6b,#6c5cff,#ecebe4', levels = 5, class: className } = Astro.props;
+---
+
+<canvas
+  class:list={['field', className]}
+  data-field
+  data-field-cell={String(cell)}
+  data-field-stops={stops}
+  data-field-levels={String(levels)}
+  aria-hidden="true"></canvas>
+
+<style>
+  .field {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+  }
+</style>
+
+<script>
+  import { mountField } from '../scripts/field';
+
+  for (const canvas of document.querySelectorAll<HTMLCanvasElement>('canvas[data-field]')) {
+    mountField(canvas, {
+      cell: Number(canvas.dataset.fieldCell ?? 5),
+      stops: (canvas.dataset.fieldStops ?? '#050508,#6c5cff,#ecebe4').split(','),
+      levels: Number(canvas.dataset.fieldLevels ?? 5),
+    });
+  }
+</script>

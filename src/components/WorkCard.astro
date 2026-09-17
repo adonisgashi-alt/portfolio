@@ -1,0 +1,156 @@
+---
+import BrandMark from './BrandMark.astro';
+import DitherFigure from './DitherFigure.astro';
+import type { Brand } from '../data/brands';
+
+interface Props {
+  brand: Brand;
+  index?: number;
+}
+
+const { brand, index = 0 } = Astro.props;
+---
+
+<article
+  class="card"
+  data-dither-trigger
+  data-reveal
+  style={`--brand-accent:${brand.accent}; --reveal-delay:${index}`}
+>
+  <a class="card__hit" href={brand.url} rel="noopener noreferrer" target="_blank">
+    <span class="visually-hidden">{brand.name} — open in a new tab</span>
+  </a>
+
+  <DitherFigure
+    src={brand.image}
+    alt={brand.imageAlt}
+    stops={brand.stops}
+    ratio="16 / 10"
+    cell={4}
+    focus={150}
+    reveal={0.45}
+    class="card__plate"
+  />
+
+  <div class="card__body">
+    <header class="card__head">
+      <BrandMark id={brand.id} name={brand.name} logo={brand.logo} size={24} />
+      <span class="card__years mono">{brand.years}</span>
+    </header>
+
+    <p class="card__role" data-scramble>{brand.role}</p>
+    <p class="card__summary">{brand.summary}</p>
+
+    <ul class="card__list">
+      {brand.contributions.map((item) => <li>{item}</li>)}
+    </ul>
+
+    <span class="card__cta link-arrow">Visit site</span>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    background: linear-gradient(180deg, var(--ink-800), var(--ink-900));
+    transition: border-color 360ms var(--ease), transform 360ms var(--ease);
+  }
+
+  .card:hover,
+  .card:focus-within {
+    border-color: color-mix(in srgb, var(--brand-accent) 55%, transparent);
+    transform: translateY(-3px);
+  }
+
+  /* A full-card hit area keeps the markup honest: one link, whole card
+     clickable, heading still the accessible name. */
+  .card__hit {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  .card__plate {
+    --plate-ratio: 16 / 10;
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  .card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .card__years {
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+
+  .card__role {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-accent);
+  }
+
+  .card__summary {
+    margin: 0;
+    color: var(--bone-2);
+    font-size: var(--step--1);
+    line-height: 1.7;
+  }
+
+  .card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    color: var(--bone-3);
+  }
+
+  .card__list li {
+    display: grid;
+    grid-template-columns: 1.1em 1fr;
+    align-items: baseline;
+  }
+
+  .card__list li::before {
+    content: '▚';
+    color: color-mix(in srgb, var(--brand-accent) 70%, transparent);
+  }
+
+  .card__cta {
+    margin-top: auto;
+    align-self: flex-start;
+    border-bottom-color: transparent;
+  }
+
+  .card:hover .card__cta,
+  .card:focus-within .card__cta {
+    color: var(--brand-accent);
+    border-bottom-color: var(--brand-accent);
+  }
+
+  .card:hover .card__cta::after,
+  .card:focus-within .card__cta::after {
+    transform: translateX(5px);
+  }
+</style>

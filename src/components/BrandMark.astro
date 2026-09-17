@@ -1,0 +1,91 @@
+---
+/**
+ * Brand lockup: a mark plus the name.
+ *
+ * The built-in marks are generic 1-bit geometry, not the brands' real logos —
+ * they are stand-ins drawn in the same dither vocabulary as the rest of the
+ * site. Pass `logo` (see `src/data/brands.ts`) to swap in a real asset.
+ */
+interface Props {
+  id: string;
+  name: string;
+  logo?: string | undefined;
+  size?: number;
+}
+
+const { id, name, logo, size = 26 } = Astro.props;
+---
+
+<span class="lockup" style={`--mark-size:${size}px`}>
+  {
+    logo ? (
+      <img class="lockup__logo" src={logo} alt={name} height={size} loading="lazy" decoding="async" />
+    ) : (
+      <>
+        <svg class="lockup__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          {/* Dotted ring with a gap — a "C" built out of dither cells. */}
+          {id === 'commerce' && (
+            <g fill="currentColor">
+              <rect x="8" y="1" width="3" height="3" /><rect x="13" y="1" width="3" height="3" />
+              <rect x="4" y="4" width="3" height="3" /><rect x="17" y="4" width="3" height="3" opacity="0.4" />
+              <rect x="1" y="8" width="3" height="3" /><rect x="1" y="13" width="3" height="3" />
+              <rect x="4" y="17" width="3" height="3" /><rect x="17" y="17" width="3" height="3" opacity="0.4" />
+              <rect x="8" y="20" width="3" height="3" /><rect x="13" y="20" width="3" height="3" />
+              <rect x="9" y="9" width="6" height="6" opacity="0.55" />
+            </g>
+          )}
+          {/* Density ramp: blocks growing left to right. */}
+          {id === 'bigcommerce' && (
+            <g fill="currentColor">
+              <rect x="1" y="1" width="9" height="9" />
+              <rect x="12" y="1" width="9" height="9" opacity="0.45" />
+              <rect x="1" y="12" width="9" height="9" opacity="0.45" />
+              <rect x="14" y="14" width="5" height="5" />
+            </g>
+          )}
+          {/* Three chevrons: a feed moving right, thinning as it goes. */}
+          {id === 'feedonomics' && (
+            <g fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M2 4l7 8-7 8" />
+              <path d="M9 4l7 8-7 8" opacity="0.6" />
+              <path d="M16 4l7 8-7 8" opacity="0.28" />
+            </g>
+          )}
+        </svg>
+        <span class="lockup__name">{name}</span>
+      </>
+    )
+  }
+</span>
+
+<style>
+  .lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    color: var(--brand-accent, var(--bone));
+  }
+
+  .lockup__mark {
+    width: var(--mark-size);
+    height: var(--mark-size);
+    flex: none;
+    /* Snap the geometry to whole pixels so it reads as 1-bit, not anti-aliased. */
+    shape-rendering: crispEdges;
+  }
+
+  .lockup__logo {
+    width: auto;
+    height: var(--mark-size);
+    display: block;
+  }
+
+  .lockup__name {
+    font-family: var(--font-sans);
+    font-size: calc(var(--mark-size) * 0.66);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    color: var(--bone);
+    white-space: nowrap;
+  }
+</style>

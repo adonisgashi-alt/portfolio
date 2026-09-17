@@ -1,14 +1,118 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import DitherFigure from '../components/DitherFigure.astro';
+
+const timeline = [
+  { year: '2025', note: 'Commerce — shared design language across three products.' },
+  { year: '2023', note: 'BigCommerce and Feedonomics — storefront and interface work.' },
+  { year: '2020', note: 'Front-end work across agency and product teams.' },
+];
 ---
 
-<Layout title="About — Your Name">
-  <h1>About</h1>
-  <p>
-    Write a longer bio here — background, what you're good at, and what
-    you're looking for. This page is <code>src/pages/about.astro</code>.
-  </p>
-  <p>
-    Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>.
-  </p>
+<Layout title="About — Adonis Gashi" description="Design engineer working on commerce platforms.">
+  <div class="about">
+    <div class="about__plate" data-dither-trigger data-reveal>
+      <DitherFigure
+        src="/work/portrait.svg"
+        alt="Abstract placeholder portrait."
+        ratio="4 / 5"
+        cell={4}
+        focus={160}
+        reveal={0.55}
+        loading="eager"
+      />
+      <p class="mono about__caption">Hover to resolve</p>
+    </div>
+
+    <div class="about__body" data-reveal style="--reveal-delay:1">
+      <p class="eyebrow">About</p>
+      <h1>I build front-end for commerce products.</h1>
+
+      <div class="prose">
+        <p>
+          I work at the seam between design and engineering: turning systems into
+          components, components into pages, and pages into something that stays fast
+          and legible once real content lands on it.
+        </p>
+        <p>
+          Right now that means commerce platforms — Commerce, BigCommerce and
+          Feedonomics — where the front-end has to survive thousands of merchants
+          bending it in directions nobody planned for.
+        </p>
+        <p>
+          Away from that I like interfaces with texture. This site is one of them: the
+          imagery is rendered through an ordered-dither engine on canvas, so every plate
+          develops as it scrolls into view and resolves under your cursor.
+        </p>
+      </div>
+
+      <ul class="timeline">
+        {
+          timeline.map((entry) => (
+            <li>
+              <span class="mono">{entry.year}</span>
+              <span>{entry.note}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p>
+        <a class="link-arrow" href="mailto:adonis.gashi@gmail.com">Email me</a>
+      </p>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .about__plate {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .about__caption {
+    margin: var(--space-1) 0 0;
+    font-size: var(--step--2);
+  }
+
+  .about__body h1 {
+    margin-bottom: var(--space-3);
+    max-width: 16ch;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: var(--space-4) 0;
+    padding: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .timeline li {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: var(--space-2);
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--step--1);
+    color: var(--bone-2);
+  }
+
+  @media (max-width: 52rem) {
+    .about {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .about__plate {
+      position: static;
+      max-width: 22rem;
+    }
+  }
+</style>

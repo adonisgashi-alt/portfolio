@@ -1,88 +1,399 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HeroField from '../components/HeroField.astro';
+import Marquee from '../components/Marquee.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { brands } from '../data/brands';
 import { getCollection } from 'astro:content';
-
-const projects = [
-  {
-    name: 'Project One',
-    description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
-  },
-  {
-    name: 'Project Two',
-    description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
-  },
-];
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
   .slice(0, 3);
+
+const capabilities = [
+  'Design systems',
+  'Front-end architecture',
+  'Astro',
+  'TypeScript',
+  'Storefront templates',
+  'Motion',
+  'Performance',
+  'Accessibility',
+  'Prototyping',
+];
+
+const facts = [
+  { label: 'Based', value: 'Remote' },
+  { label: 'Focus', value: 'Commerce platforms' },
+  { label: 'Stack', value: 'TypeScript, Astro, CSS' },
+  { label: 'Status', value: 'Open to conversations' },
+];
 ---
 
-<Layout title="Your Name — Portfolio">
-  <section>
-    <h1>Hi, I'm Your Name.</h1>
-    <p>
-      A short intro goes here — what you do, who you do it for, and what you're
-      currently working on. Keep it to two or three sentences.
-    </p>
+<Layout title="Adonis Gashi — Design Engineer" bleed>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__field">
+      <HeroField cell={5} levels={5} />
+    </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+
+    <div class="wrapper hero__inner">
+      <p class="hero__eyebrow mono">Design engineer · Commerce platforms</p>
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__line">Adonis</span>
+        <span class="hero__line hero__line--accent">Gashi</span>
+      </h1>
+      <p class="hero__lede">
+        I build the front end of commerce products — design systems, storefronts and
+        the marketing surfaces around them. Currently working across <strong>Commerce</strong>,
+        <strong>BigCommerce</strong> and <strong>Feedonomics</strong>.
+      </p>
+      <div class="hero__actions">
+        <a class="link-arrow" href="#work">See the work</a>
+        <a class="link-arrow" href="mailto:adonis.gashi@gmail.com">Get in touch</a>
+      </div>
+    </div>
+
+    <p class="hero__cue mono" aria-hidden="true">Scroll ▚</p>
   </section>
 
-  <section>
-    <h2>Projects</h2>
-    <ul class="project-list">
-      {
-        projects.map((project) => (
-          <li>
-            <a href={project.url}>{project.name}</a>
-            <p>{project.description}</p>
-          </li>
-        ))
-      }
-    </ul>
-    <p><a href="/projects">See all projects &rarr;</a></p>
+  <Marquee items={capabilities} />
+
+  <section class="section" aria-labelledby="intro-title">
+    <div class="wrapper intro">
+      <div class="intro__main" data-reveal>
+        <p class="eyebrow" id="intro-title">Currently</p>
+        <p class="intro__statement">
+          Most of my work sits where design systems meet real production constraints:
+          components that survive contact with thousands of merchants, pages that stay
+          fast under marketing's ambitions, and interfaces dense with data that still
+          read clearly.
+        </p>
+      </div>
+
+      <dl class="facts" data-reveal style="--reveal-delay:1">
+        {
+          facts.map((fact) => (
+            <div class="facts__row">
+              <dt class="mono">{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="work" aria-labelledby="work-title">
+    <div class="halftone" aria-hidden="true"></div>
+    <div class="wrapper">
+      <p class="eyebrow" id="work-title">Selected work</p>
+      <div class="work-grid">
+        {brands.map((brand, index) => <WorkCard brand={brand} index={index} />)}
+      </div>
+      <p class="work-foot">
+        <a class="link-arrow" href="/projects">All work</a>
+      </p>
+    </div>
   </section>
 
   {
     articles.length > 0 && (
-      <section>
-        <h2>Writing</h2>
-        <ul class="article-list">
-          {articles.map((article) => (
-            <li>
-              <a href={`/articles/${article.id}`}>{article.data.title}</a>
-            </li>
-          ))}
-        </ul>
-        <p><a href="/articles">Read more &rarr;</a></p>
+      <section class="section" aria-labelledby="writing-title">
+        <div class="wrapper">
+          <p class="eyebrow" id="writing-title">Writing</p>
+          <ul class="writing">
+            {articles.map((article, index) => (
+              <li data-reveal data-dither-trigger style={`--reveal-delay:${index}`}>
+                <a href={`/articles/${article.id}`}>
+                  <span class="writing__title" data-scramble>
+                    {article.data.title}
+                  </span>
+                  <time class="mono" datetime={article.data.publishDate.toISOString()}>
+                    {article.data.publishDate.toLocaleDateString('en-GB', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: '2-digit',
+                    })}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="work-foot">
+            <a class="link-arrow" href="/articles">All writing</a>
+          </p>
+        </div>
       </section>
     )
   }
+
+  <section class="section contact" aria-labelledby="contact-title">
+    <div class="wrapper contact__inner" data-reveal>
+      <p class="eyebrow" id="contact-title">Next</p>
+      <p class="contact__line">
+        Got something that needs building properly?
+      </p>
+      <a class="contact__mail" href="mailto:adonis.gashi@gmail.com" data-dither-trigger>
+        <span data-scramble>adonis.gashi@gmail.com</span>
+      </a>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  section {
-    margin-bottom: var(--space-4);
+  /* ---------- Hero ---------- */
+
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: min(90vh, 860px);
+    padding: var(--space-6) 0 var(--space-5);
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .project-list,
-  .article-list {
-    list-style: none;
-    padding: 0;
+  .hero__field {
+    position: absolute;
+    inset: 0;
+    opacity: 0.85;
+    /* Fade the field out behind the text so the type stays readable. */
+    -webkit-mask-image: radial-gradient(120% 100% at 70% 30%, #000 20%, transparent 78%);
+    mask-image: radial-gradient(120% 100% at 70% 30%, #000 20%, transparent 78%);
   }
 
-  .project-list li {
-    margin-bottom: var(--space-2);
+  /* Keeps the field from competing with the copy. Wide screens get a
+     left-hand wash; narrow ones, where the text spans the full width, get an
+     overall knock-down instead. */
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        90deg,
+        var(--ink-900) 0%,
+        color-mix(in srgb, var(--ink-900) 90%, transparent) 26%,
+        color-mix(in srgb, var(--ink-900) 45%, transparent) 48%,
+        transparent 68%
+      ),
+      linear-gradient(0deg, var(--ink-900) 0%, transparent 30%);
   }
 
-  .project-list a {
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__eyebrow {
+    margin: 0 0 var(--space-3);
+    letter-spacing: 0.22em;
+    font-size: var(--step--2);
+  }
+
+  .hero__title {
+    font-size: var(--step-4);
+    line-height: 0.88;
+    letter-spacing: -0.05em;
+    margin: 0 0 var(--space-3);
+  }
+
+  .hero__line {
+    display: block;
+  }
+
+  .hero__line--accent {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--bone-2);
+    /* A dither wash pushed through the outlined word. */
+    background-image: linear-gradient(45deg, var(--accent) 25%, transparent 25% 75%, var(--accent) 75%),
+      linear-gradient(45deg, var(--accent) 25%, transparent 25% 75%, var(--accent) 75%);
+    background-size: 6px 6px;
+    background-position: 0 0, 3px 3px;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero__lede {
+    max-width: 34rem;
+    margin: 0 0 var(--space-4);
+    color: var(--bone-2);
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  .hero__lede strong {
+    color: var(--bone);
     font-weight: 600;
-    text-decoration: none;
   }
 
-  .project-list p {
-    margin: 0.2rem 0 0;
-    color: var(--color-text-muted);
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .hero__cue {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    margin: 0;
+    font-size: var(--step--2);
+    letter-spacing: 0.2em;
+    animation: drift 3.2s var(--ease) infinite;
+  }
+
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.45;
+    }
+    50% {
+      transform: translateY(5px);
+      opacity: 1;
+    }
+  }
+
+  /* ---------- Intro ---------- */
+
+  .intro {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .intro__statement {
+    margin: 0;
+    font-size: var(--step-2);
+    line-height: 1.32;
+    letter-spacing: -0.025em;
+    max-width: 30ch;
+    color: var(--bone);
+  }
+
+  .facts {
+    margin: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .facts__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .facts dt {
+    font-size: var(--step--2);
+  }
+
+  .facts dd {
+    margin: 0;
+    font-size: var(--step--1);
+    text-align: right;
+    color: var(--bone-2);
+  }
+
+  /* ---------- Work ---------- */
+
+  .work-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  }
+
+  .work-foot {
+    margin: var(--space-4) 0 0;
+  }
+
+  /* ---------- Writing ---------- */
+
+  .writing {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .writing li {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .writing a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    text-decoration: none;
+    transition: padding-inline-start 320ms var(--ease), color 320ms var(--ease);
+  }
+
+  .writing a:hover,
+  .writing a:focus-visible {
+    padding-inline-start: var(--space-2);
+    color: var(--accent);
+  }
+
+  .writing__title {
+    font-size: var(--step-1);
+    letter-spacing: -0.02em;
+  }
+
+  .writing time {
+    flex: none;
+    font-size: var(--step--2);
+  }
+
+  /* ---------- Contact ---------- */
+
+  .contact__line {
+    margin: 0 0 var(--space-2);
+    font-size: var(--step-2);
+    letter-spacing: -0.025em;
+    max-width: 22ch;
+  }
+
+  .contact__mail {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+    text-decoration: none;
+    color: var(--accent);
+    word-break: break-all;
+  }
+
+  @media (max-width: 52rem) {
+    .intro {
+      grid-template-columns: 1fr;
+    }
+
+    .hero {
+      min-height: auto;
+      padding-top: var(--space-5);
+    }
+
+    .hero__field {
+      opacity: 0.5;
+    }
+
+    .hero__scrim {
+      background:
+        linear-gradient(
+          0deg,
+          var(--ink-900) 2%,
+          color-mix(in srgb, var(--ink-900) 80%, transparent) 45%,
+          color-mix(in srgb, var(--ink-900) 62%, transparent) 100%
+        ),
+        color-mix(in srgb, var(--ink-900) 35%, transparent);
+    }
   }
 </style>
