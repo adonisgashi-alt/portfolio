@@ -84,41 +84,50 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
         I make things<br />look inevitable.
       </h1>
     </div>
-
-    <div class="container container--full about-cover" data-reveal style="--reveal-delay: 120ms">
-      <Placeholder label="Portrait or studio image" ratio="21 / 9" tone="mid" />
-    </div>
   </section>
 
   <!-- Bio -->
   <section class="section">
-    <div class="container container--text prose body-lg" data-reveal>
-      <p>
-        I'm {site.name}, a {site.role.toLowerCase()} at {site.company} —
-        formerly {site.formerly} — in {site.location}. I lead visual design
-        across brand, digital, web, events, campaigns and product marketing,
-        for the parent brand and the portfolio underneath it.
-      </p>
-      <p>
-        Most of my work is the kind that has to hold up in several places at
-        once: a campaign that's also a landing page, an event that's also a
-        social cut, a product story that's also a sales deck. I partner
-        closely with Brand, UX, Marketing, Web, Product and Engineering to
-        take ideas from early exploration through to what actually ships.
-      </p>
-      <p>
-        I build and maintain digital experiences in Figma, Webflow, Makeswift
-        and other web platforms, which keeps me close to the line between
-        brand and UX — a useful place to stand when the two disagree.
-      </p>
-      <p>
-        Lately that's meant the evolution of the Commerce brand itself, and
-        the work of carrying a well-known name into a broader one.
-      </p>
-      <p>
-        You can see the full career history on{' '}
-        <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
-      </p>
+    <div class="container container--wide bio">
+      <div class="bio__media" data-reveal>
+        <img
+          class="bio__portrait"
+          src="/images/adonis-portrait.jpg"
+          width="1200"
+          height="1500"
+          alt={`Portrait of ${site.name}`}
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+      <div class="bio__copy prose body-lg measure--wide" data-reveal style="--reveal-delay: 80ms">
+        <p>
+          I'm {site.name}, a {site.role.toLowerCase()} at {site.company} —
+          formerly {site.formerly} — in {site.location}. I lead visual design
+          across brand, digital, web, events, campaigns and product marketing,
+          for the parent brand and the portfolio underneath it.
+        </p>
+        <p>
+          Most of my work is the kind that has to hold up in several places at
+          once: a campaign that's also a landing page, an event that's also a
+          social cut, a product story that's also a sales deck. I partner
+          closely with Brand, UX, Marketing, Web, Product and Engineering to
+          take ideas from early exploration through to what actually ships.
+        </p>
+        <p>
+          I build and maintain digital experiences in Figma, Webflow, Makeswift
+          and other web platforms, which keeps me close to the line between
+          brand and UX — a useful place to stand when the two disagree.
+        </p>
+        <p>
+          Lately that's meant the evolution of the Commerce brand itself, and
+          the work of carrying a well-known name into a broader one.
+        </p>
+        <p>
+          You can see the full career history on{' '}
+          <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -210,8 +219,19 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
     text-wrap: balance;
   }
 
-  .about-cover {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
+  .bio {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .bio__portrait {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
   }
 
   .timeline {
@@ -306,6 +326,10 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   @media (min-width: 768px) {
     .timeline__item {
       grid-template-columns: 10rem 1fr;
+    }
+
+    .bio {
+      grid-template-columns: 22rem 1fr;
     }
   }
 
