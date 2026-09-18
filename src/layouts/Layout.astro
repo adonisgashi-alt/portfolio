@@ -19,6 +19,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- The display face paints above the fold on every page, so fetch it
+         alongside the CSS rather than after it. -->
+    <link
+      rel="preload"
+      href="/fonts/newsreader-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="canonical" href={canonical.href} />
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
@@ -28,8 +37,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)" />
     <title>{title}</title>
     <script is:inline>
       // Only hide content for the reveal animation once we know JS ran, so a

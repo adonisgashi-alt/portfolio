@@ -12,6 +12,16 @@ const projects = (await getCollection('work', ({ data }) => !data.draft)).sort(
 const featured = projects.filter((p) => p.data.featured).slice(0, 3);
 const [lead, ...rest] = featured;
 
+/* Every figure here is derived, not claimed: 2014 is the first role on the
+   CV, 2021 the start at BigCommerce, and the case study count is the
+   collection itself. Nothing to keep in sync by hand. */
+const year = new Date().getFullYear();
+const stats = [
+  { label: 'Years designing', value: year - 2014 },
+  { label: 'Years at Commerce & BigCommerce', value: year - 2021 },
+  { label: 'Selected case studies', value: projects.length },
+];
+
 const principles = [
   {
     title: 'Hierarchy first',
@@ -32,7 +42,10 @@ const principles = [
   <!-- Hero -->
   <section class="section section--flush-bottom hero">
     <div class="container center">
-      <p class="eyebrow" data-reveal>{site.role} at {site.company}</p>
+      <a class="pill hero__pill" href="/contact" data-reveal>
+        <span class="pill__dot" aria-hidden="true"></span>
+        Open to freelance and collaboration
+      </a>
       <h1 class="display hero__headline" data-reveal style="--reveal-delay: 60ms">
         Design that gets<br />out of the way.
       </h1>
@@ -41,8 +54,8 @@ const principles = [
         across brand, web, campaigns and events. I build systems that make the
         right choice the easy one.
       </p>
-      <div class="link-row hero__links" data-reveal style="--reveal-delay: 180ms">
-        <a class="link-chevron" href="/work">See the work</a>
+      <div class="hero__actions" data-reveal style="--reveal-delay: 180ms">
+        <a class="button button--primary" href="/work">See the work</a>
         <a class="link-chevron" href="/about">About me</a>
       </div>
     </div>
@@ -62,7 +75,7 @@ const principles = [
       <header class="section-head" data-reveal>
         <h2 class="headline">Selected work.</h2>
         <p class="subhead measure--wide">
-          Brand, campaign, event and product marketing work for {site.company}
+          Brand, campaign, event and product marketing work for {site.company}{' '}
           and the brands under it.
         </p>
       </header>
@@ -89,6 +102,26 @@ const principles = [
     </div>
   </section>
 
+  <!-- Stats -->
+  <section class="section section--tight">
+    <div class="container container--wide">
+      <div class="stat-list">
+        {
+          stats.map((stat, i) => (
+            <div class="stat-row" data-reveal style={`--reveal-delay: ${i * 70}ms`}>
+              <span class="stat-row__label">{stat.label}</span>
+              <span class="stat-row__value">{stat.value}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <div class="confetti" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
   <!-- Approach, on black -->
   <section class="section section--dark">
     <div class="container container--wide">
@@ -97,13 +130,12 @@ const principles = [
         <h2 class="headline">Three things I hold to.</h2>
       </header>
 
-      <div class="grid grid--3" style="--grid-gap: clamp(2rem, 4vw, 3rem)">
+      <div class="grid grid--3" style="--grid-gap: clamp(1rem, 2vw, 1.5rem)">
         {
           principles.map((item, i) => (
-            <div class="principle" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
-              <span class="principle__index">{String(i + 1).padStart(2, '0')}</span>
-              <h3 class="title principle__title">{item.title}</h3>
-              <p class="muted">{item.body}</p>
+            <div class="quote-card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+              <p class="quote-card__text">{item.title}</p>
+              <p class="muted principle__body">{item.body}</p>
             </div>
           ))
         }
@@ -164,6 +196,10 @@ const principles = [
     padding-bottom: clamp(3rem, 6vw, 5rem);
   }
 
+  .hero__pill {
+    margin-bottom: 1.5rem;
+  }
+
   .hero__headline {
     margin-top: 0.75rem;
     text-wrap: balance;
@@ -173,8 +209,13 @@ const principles = [
     margin-top: 1.25rem;
   }
 
-  .hero__links {
-    margin-top: 1.75rem;
+  .hero__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.875rem 1.75rem;
   }
 
   .hero__media {
@@ -201,19 +242,8 @@ const principles = [
     margin-top: clamp(2.5rem, 5vw, 3.5rem);
   }
 
-  .principle {
-    border-top: 1px solid var(--color-line);
-    padding-top: 1.25rem;
-  }
-
-  .principle__index {
-    font-size: var(--text-fine);
-    letter-spacing: 0.14em;
-    color: var(--color-muted-2);
-  }
-
-  .principle__title {
-    margin: 0.5rem 0 0.75rem;
+  .principle__body {
+    font-size: var(--text-body);
   }
 
   .approach-media {

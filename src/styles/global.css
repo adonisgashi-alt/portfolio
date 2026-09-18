@@ -1,38 +1,77 @@
 /* ==========================================================================
+   Fonts — self-hosted variable faces, no third-party requests.
+   Newsreader carries the display voice; Inter covers the UI on non-Apple
+   platforms, where the system stack would otherwise fall back to Arial.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/newsreader-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
    Design tokens
-   A monochromatic system modelled on Apple's marketing pages: neutral greys,
-   tight display type, generous vertical rhythm. Change these and the whole
-   site follows.
+   Apple's structural discipline — systematic scale, generous vertical rhythm,
+   restraint — on a warm paper palette with an editorial serif for display
+   type. Change these and the whole site follows.
    ========================================================================== */
 
 :root {
-  /* Neutrals ------------------------------------------------------------ */
-  --color-bg: #ffffff;
-  --color-surface: #f5f5f7;
-  --color-surface-2: #ebebed;
-  --color-ink: #1d1d1f;
+  /* Neutrals — warm paper, not cool grey ------------------------------- */
+  --color-bg: #faf9f6;
+  --color-surface: #f1efe9;
+  --color-surface-2: #e7e4db;
+  --color-card: #ffffff;
+  --color-ink: #1a1917;
   --color-ink-strong: #000000;
-  --color-muted: #6e6e73;
-  --color-muted-2: #86868b;
-  --color-line: #d2d2d7;
-  --color-line-soft: rgba(0, 0, 0, 0.08);
-  --color-invert-bg: #000000;
-  --color-invert-ink: #f5f5f7;
+  --color-muted: #6b6862;
+  --color-muted-2: #8a867e;
+  --color-line: #dfdbd1;
+  --color-line-soft: rgba(26, 25, 23, 0.09);
+  --color-invert-bg: #1a1917;
+  --color-invert-ink: #faf9f6;
+
+  /* Accents — used only as small punctuation, never as fills ----------- */
+  --accent-red: #e5484d;
+  --accent-amber: #ffb224;
+  --accent-green: #30a46c;
+  --accent-blue: #3e63dd;
+  --accent-orange: #f76b15;
 
   /* Chrome -------------------------------------------------------------- */
-  --nav-height: 48px;
-  --nav-bg: rgba(255, 255, 255, 0.72);
-  --nav-border: rgba(0, 0, 0, 0.12);
+  --nav-height: 56px;
+  --nav-bg: rgba(250, 249, 246, 0.78);
+  --nav-border: rgba(26, 25, 23, 0.1);
 
   /* Type ---------------------------------------------------------------- */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
-    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter',
+    'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Palatino,
+    Georgia, serif;
 
-  --text-display: clamp(2.75rem, 7.2vw, 5.5rem);   /* 44 → 88 */
-  --text-headline: clamp(2rem, 4.6vw, 3.5rem);     /* 32 → 56 */
-  --text-title: clamp(1.5rem, 2.6vw, 2.25rem);     /* 24 → 36 */
-  --text-subhead: clamp(1.1875rem, 1.9vw, 1.75rem);/* 19 → 28 */
-  --text-body-lg: 1.3125rem;                       /* 21 */
+  --text-display: clamp(2.5rem, 6.2vw, 4.75rem);   /* 40 → 76 */
+  --text-headline: clamp(1.875rem, 4vw, 3.125rem); /* 30 → 50 */
+  --text-title: clamp(1.375rem, 2.2vw, 1.75rem);   /* 22 → 28 */
+  --text-subhead: clamp(1.125rem, 1.8vw, 1.5rem);  /* 18 → 24 */
+  --text-stat: clamp(2.5rem, 5.2vw, 4rem);         /* 40 → 64 */
+  --text-body-lg: 1.25rem;                         /* 20 */
   --text-body: 1.0625rem;                          /* 17 */
   --text-small: 0.875rem;                          /* 14 */
   --text-fine: 0.75rem;                            /* 12 */
@@ -53,27 +92,28 @@
   --width-wide: 87.5rem;    /* 1400 */
   --width-full: 105rem;     /* 1680 */
 
-  --radius: 18px;
-  --radius-lg: 28px;
+  --radius: 14px;
+  --radius-lg: 22px;
   --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #000000;
-    --color-surface: #101012;
-    --color-surface-2: #1d1d1f;
-    --color-ink: #f5f5f7;
+    --color-bg: #12110f;
+    --color-surface: #1a1917;
+    --color-surface-2: #24221e;
+    --color-card: #1a1917;
+    --color-ink: #f2f0ea;
     --color-ink-strong: #ffffff;
-    --color-muted: #a1a1a6;
-    --color-muted-2: #86868b;
-    --color-line: #424245;
-    --color-line-soft: rgba(255, 255, 255, 0.12);
-    --color-invert-bg: #f5f5f7;
-    --color-invert-ink: #1d1d1f;
+    --color-muted: #a39e94;
+    --color-muted-2: #8a857b;
+    --color-line: #38352f;
+    --color-line-soft: rgba(242, 240, 234, 0.12);
+    --color-invert-bg: #f2f0ea;
+    --color-invert-ink: #1a1917;
 
-    --nav-bg: rgba(0, 0, 0, 0.72);
-    --nav-border: rgba(255, 255, 255, 0.14);
+    --nav-bg: rgba(18, 17, 15, 0.78);
+    --nav-border: rgba(242, 240, 234, 0.14);
   }
 }
 
@@ -212,19 +252,31 @@ a {
 
 /* Always-dark band — re-maps tokens so children need no special casing. */
 .section--dark {
-  --color-bg: #000000;
-  --color-surface: #1d1d1f;
-  --color-surface-2: #29292b;
-  --color-ink: #f5f5f7;
+  --color-bg: #12110f;
+  --color-surface: #1a1917;
+  --color-surface-2: #24221e;
+  --color-card: #1a1917;
+  --color-ink: #f2f0ea;
   --color-ink-strong: #ffffff;
-  --color-muted: #a1a1a6;
-  --color-muted-2: #86868b;
-  --color-line: #424245;
-  --color-line-soft: rgba(255, 255, 255, 0.12);
-  --color-invert-bg: #f5f5f7;
-  --color-invert-ink: #1d1d1f;
-  background: #000000;
-  color: #f5f5f7;
+  --color-muted: #a39e94;
+  --color-muted-2: #8a857b;
+  --color-line: #38352f;
+  --color-line-soft: rgba(242, 240, 234, 0.12);
+  --color-invert-bg: #f2f0ea;
+  --color-invert-ink: #1a1917;
+  background: #12110f;
+  color: #f2f0ea;
+}
+
+/* In dark mode the page is already near-black, so lift the band a step or it
+   stops reading as a band at all. */
+@media (prefers-color-scheme: dark) {
+  .section--dark {
+    --color-card: #24221e;
+    --color-line: #423e37;
+    --color-line-soft: rgba(242, 240, 234, 0.14);
+    background: #1a1917;
+  }
 }
 
 .stack > * + * {
@@ -259,33 +311,50 @@ a {
   color: var(--color-muted);
 }
 
+/* Section label. Sentence case rather than tracked-out caps — quieter, and it
+   lets the serif headlines do the shouting. */
 .eyebrow--caps {
-  font-size: var(--text-fine);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-muted-2);
+  font-size: var(--text-body);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  text-transform: none;
+  color: var(--color-ink);
 }
 
+/* Display voice — serif, near-neutral tracking. Serifs read larger than a
+   grotesque at the same size, so the scale above is deliberately smaller
+   than the sans-only one it replaces. */
 .display {
+  font-family: var(--font-serif);
   font-size: var(--text-display);
-  line-height: 1.04;
-  letter-spacing: -0.025em;
-  font-weight: 600;
-}
-
-.headline {
-  font-size: var(--text-headline);
-  line-height: 1.08;
-  letter-spacing: -0.022em;
-  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+  font-weight: 400;
   text-wrap: balance;
 }
 
+.headline {
+  font-family: var(--font-serif);
+  font-size: var(--text-headline);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+/* Section labels and card titles stay sans — the serif is for moments. */
 .title {
   font-size: var(--text-title);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
   font-weight: 600;
+}
+
+.section-label {
+  font-size: var(--text-body);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
 }
 
 .subhead {
@@ -408,7 +477,7 @@ a {
   border: 1px solid transparent;
   border-radius: 999px;
   font-size: var(--text-body);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.018em;
   text-decoration: none;
   transition: opacity 0.25s var(--ease), background 0.25s var(--ease),
@@ -438,7 +507,8 @@ a {
    ========================================================================== */
 
 .card {
-  background: var(--color-surface);
+  background: var(--color-card);
+  border: 1px solid var(--color-line-soft);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
@@ -448,6 +518,173 @@ a {
   border-top: 1px solid var(--color-line);
   margin: 0;
 }
+
+/* ==========================================================================
+   Pill — small bordered badge for announcements and status.
+   ========================================================================== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-card);
+  font-size: var(--text-small);
+  letter-spacing: -0.012em;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+a.pill:hover {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+.pill__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  flex: none;
+}
+
+/* ==========================================================================
+   Label row — small label on the left, content on the right, divided by a
+   hairline. The workhorse layout of the whole site.
+   ========================================================================== */
+
+.label-row {
+  display: grid;
+  gap: 0.75rem;
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid var(--color-line);
+}
+
+.label-row__label {
+  font-size: var(--text-small);
+  letter-spacing: -0.006em;
+  color: var(--color-muted);
+}
+
+.label-row__body {
+  max-width: 60ch;
+}
+
+.label-list {
+  display: grid;
+}
+
+.label-list > :last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+@media (min-width: 768px) {
+  .label-row {
+    grid-template-columns: minmax(10rem, 18rem) 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+/* ==========================================================================
+   Stat row — quiet label, oversized serif figure.
+   ========================================================================== */
+
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: clamp(1.125rem, 2.4vw, 1.75rem);
+  border-top: 1px solid var(--color-line);
+}
+
+.stat-list > :last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.stat-row__label {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+}
+
+.stat-row__value {
+  font-family: var(--font-serif);
+  font-size: var(--text-stat);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ==========================================================================
+   Quote — serif pull quote on a card.
+   ========================================================================== */
+
+.quote-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--color-card);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius);
+}
+
+.quote-card__text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+.quote-card__cite {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-style: normal;
+}
+
+.quote-card__avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  background: var(--color-surface-2);
+}
+
+/* ==========================================================================
+   Confetti — the accent colors appear only here, as punctuation between
+   sections. Decorative, so hidden from assistive tech.
+   ========================================================================== */
+
+.confetti {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1.5rem, 6vw, 4.5rem);
+  padding-block: 0.5rem;
+}
+
+.confetti span {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  opacity: 0.9;
+}
+
+.confetti span:nth-child(1) { background: var(--accent-red); }
+.confetti span:nth-child(2) { background: var(--accent-amber); }
+.confetti span:nth-child(3) { background: var(--accent-green); }
+.confetti span:nth-child(4) { background: var(--accent-blue); }
+.confetti span:nth-child(5) { background: var(--accent-orange); }
 
 .meta-grid {
   display: grid;

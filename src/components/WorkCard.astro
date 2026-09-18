@@ -28,7 +28,7 @@ const href = `/work/${entry.id}`;
   </div>
 
   <div class="work-card__body">
-    <p class="eyebrow--caps">{client} &middot; {year}</p>
+    <p class="caption">{client} &middot; {year}</p>
     <h3 class="work-card__title">{title}</h3>
     <p class="work-card__summary">{summary}</p>
     <p class="link-chevron link-chevron--small work-card__cta" aria-hidden="true">
@@ -98,8 +98,13 @@ const href = `/work/${entry.id}`;
       align-items: center;
     }
 
+    /* The lead card is a feature moment, so it gets the display voice. */
     .work-card--large .work-card__title {
+      font-family: var(--font-serif);
       font-size: var(--text-headline);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.12;
     }
 
     .work-card--large .work-card__summary {

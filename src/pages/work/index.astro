@@ -30,24 +30,20 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
         {projects.length} projects{span && ` from ${span}`}.
       </p>
 
-      <dl class="meta-grid work-meta" data-reveal style="--reveal-delay: 180ms">
-        <div>
-          <dt>Projects</dt>
-          <dd>{projects.length}</dd>
+      <div class="stat-list work-meta" data-reveal style="--reveal-delay: 180ms">
+        <div class="stat-row">
+          <span class="stat-row__label">Projects</span>
+          <span class="stat-row__value">{projects.length}</span>
         </div>
-        <div>
-          <dt>Disciplines</dt>
-          <dd>{disciplines.length}</dd>
+        <div class="stat-row">
+          <span class="stat-row__label">Disciplines</span>
+          <span class="stat-row__value">{disciplines.length}</span>
         </div>
-        <div>
-          <dt>Years</dt>
-          <dd>{span || '—'}</dd>
+        <div class="stat-row">
+          <span class="stat-row__label">Years</span>
+          <span class="stat-row__value">{span || '—'}</span>
         </div>
-        <div>
-          <dt>Based in</dt>
-          <dd>{site.location}</dd>
-        </div>
-      </dl>
+      </div>
     </div>
   </section>
 
