@@ -1,14 +1,350 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../data/site';
+
+/* Full career history, newest first — from LinkedIn. */
+const experience = [
+  {
+    role: 'Senior Designer',
+    org: 'Commerce',
+    period: '2025 — Present',
+    body: 'Lead visual design across brand, digital, web, events, campaigns and product marketing for Commerce and its portfolio of brands. Create high-impact creative for company-wide initiatives including BigSummit, NRF, B2B, CPQ and Catalyst, partnering with Brand, UX, Marketing, Web, Product and Engineering from early exploration through final production — and help carry the brand through its transition from BigCommerce to Commerce.',
+  },
+  {
+    role: 'Senior Visual Designer',
+    org: 'BigCommerce',
+    period: '2023 — 2025',
+    body: 'Owned visual design for major campaigns and digital experiences across Figma, Webflow and Makeswift, helping bridge brand and UX/UI as the company began its transition toward the Commerce brand.',
+  },
+  {
+    role: 'Visual Designer',
+    org: 'BigCommerce',
+    period: '2021 — 2023',
+    body: 'Built campaign assets, landing pages, presentations and social content across the brand’s digital properties, working remotely with cross-functional marketing and product teams.',
+  },
+  {
+    role: 'Production Designer',
+    org: 'Charles Schwab (Contract)',
+    period: '2019 — 2020',
+    body: 'Produced hundreds of retirement-plan print materials for clients including United Airlines, PayPal, EA and REI. Tightened turnaround by streamlining templates and handled print QA in-house to protect Schwab’s brand standards.',
+  },
+  {
+    role: 'Visual Manager',
+    org: 'PECB',
+    period: '2016 — 2017',
+    body: 'Directed all print and digital collateral — brochures, catalogues, training materials and the company website — and cut training-development time by more than 60% with new templates and interactive charts.',
+  },
+  {
+    role: 'Graphic Designer',
+    org: 'Zhaki Advertising',
+    period: '2016',
+    body: 'Designed print campaigns for banking, telecom and retail clients while managing the team through production, and grew social reach through a regular content cadence.',
+  },
+  {
+    role: 'Web and Graphic Designer',
+    org: 'Center for Energy and Natural Resources (Internship)',
+    period: '2014 — 2015',
+    body: 'Rebuilt the CENR website on Drupal, redesigned the organization’s logo and produced its print identity — letterheads, business cards and icon sets.',
+  },
+  {
+    role: 'Web Designer',
+    org: 'PRECEDE Kosovo (Seasonal)',
+    period: '2014 — 2015',
+    body: 'Built the official Precede website from scratch on Drupal, then maintained it and trained the client’s team to manage content independently.',
+  },
+];
+
+/* TODO: confirm — found via web search, not from your LinkedIn profile. */
+const education = 'Rochester Institute of Technology';
+
+const capabilities = [
+  'Brand identity & systems',
+  'Campaign & art direction',
+  'Web design and build',
+  'Event & environmental design',
+  'Product marketing design',
+  'Editorial & information design',
+  'Presentation design',
+  'Print production',
+];
+
+const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InDesign', 'After Effects'];
 ---
 
-<Layout title="About — Your Name">
-  <h1>About</h1>
-  <p>
-    Write a longer bio here — background, what you're good at, and what
-    you're looking for. This page is <code>src/pages/about.astro</code>.
-  </p>
-  <p>
-    Find me elsewhere: <a href="https://github.com/adonisgashi-alt">GitHub</a>.
-  </p>
+<Layout
+  title={`About — ${site.name}`}
+  description={`${site.role} at ${site.company}, based in ${site.location}.`}
+>
+  <!-- Hero -->
+  <section class="section section--flush-bottom">
+    <div class="container container--wide">
+      <p class="eyebrow" data-reveal>About</p>
+      <h1 class="display about-title" data-reveal style="--reveal-delay: 60ms">
+        I make things<br />look inevitable.
+      </h1>
+    </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="section">
+    <div class="container container--wide bio">
+      <div class="bio__media" data-reveal>
+        <img
+          class="bio__portrait"
+          src="/images/adonis-portrait.jpg"
+          width="1200"
+          height="1500"
+          alt={`Portrait of ${site.name}`}
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+      <div class="bio__copy prose body-lg measure--wide" data-reveal style="--reveal-delay: 80ms">
+        <p>
+          I'm {site.name}, a {site.role.toLowerCase()} at {site.company} —
+          formerly {site.formerly} — in {site.location}. I lead visual design
+          across brand, digital, web, events, campaigns and product marketing,
+          for the parent brand and the portfolio underneath it.
+        </p>
+        <p>
+          Most of my work is the kind that has to hold up in several places at
+          once: a campaign that's also a landing page, an event that's also a
+          social cut, a product story that's also a sales deck. I partner
+          closely with Brand, UX, Marketing, Web, Product and Engineering to
+          take ideas from early exploration through to what actually ships.
+        </p>
+        <p>
+          I build and maintain digital experiences in Figma, Webflow, Makeswift
+          and other web platforms, which keeps me close to the line between
+          brand and UX — a useful place to stand when the two disagree.
+        </p>
+        <p>
+          Lately that's meant the evolution of the Commerce brand itself, and
+          the work of carrying a well-known name into a broader one.
+        </p>
+        <p>
+          You can see the full career history on{' '}
+          <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section section--surface">
+    <div class="container container--wide">
+      <p class="eyebrow--caps" data-reveal>Experience</p>
+      <ul class="timeline">
+        {
+          experience.map((item, i) => (
+            <li class="timeline__item" data-reveal style={`--reveal-delay: ${i * 60}ms`}>
+              <p class="caption timeline__period">{item.period}</p>
+              <div>
+                <h2 class="title timeline__role">
+                  {item.role}, {item.org}
+                </h2>
+                <p class="muted timeline__body">{item.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="caption timeline__education" data-reveal>Education &mdash; {education}</p>
+
+      <p class="timeline__cta" data-reveal>
+        <a class="link-chevron" href={site.linkedin} rel="me noopener" target="_blank">
+          Full history on LinkedIn
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <div class="confetti" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Capabilities -->
+  <section class="section section--dark">
+    <div class="container container--wide capabilities">
+      <div data-reveal>
+        <p class="eyebrow--caps">Capabilities</p>
+        <h2 class="headline capabilities__title">What I'm usually hired for.</h2>
+      </div>
+      <div data-reveal style="--reveal-delay: 80ms">
+        <ul class="capability-list">
+          {capabilities.map((item) => <li class="capability-list__item">{item}</li>)}
+        </ul>
+        <p class="caption capabilities__tools">Tools: {tools.join(' · ')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Off the clock -->
+  <section class="section">
+    <div class="container container--wide off-clock">
+      <div class="off-clock__media" data-reveal>
+        <Placeholder label="Personal work or sketchbook image" ratio="4 / 5" tone="light" />
+      </div>
+      <div class="off-clock__copy" data-reveal style="--reveal-delay: 80ms">
+        <p class="eyebrow--caps">Off the clock</p>
+        <h2 class="headline off-clock__title">Still drawing.</h2>
+        <p class="body-lg muted off-clock__body">
+          Type experiments, photography and a sketchbook nobody reviews. It's
+          where most of the ideas that do get reviewed start.
+        </p>
+        <p class="off-clock__link">
+          <a class="link-chevron" href="/work">See the client work</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--surface center">
+    <div class="container">
+      <h2 class="headline" data-reveal>Let's talk.</h2>
+      <p class="subhead measure--wide about-cta__sub" data-reveal style="--reveal-delay: 60ms">
+        Freelance, collaboration, or a question about something above.
+      </p>
+      <div class="about-cta__actions" data-reveal style="--reveal-delay: 120ms">
+        <a class="button button--primary" href="/contact">Contact me</a>
+        <a class="button button--secondary" href={site.linkedin} rel="me noopener" target="_blank">
+          Connect on LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .about-title {
+    margin-top: 0.75rem;
+    text-wrap: balance;
+  }
+
+  .bio {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .bio__portrait {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+
+  .timeline__item {
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .timeline__period {
+    margin-top: 0.35rem;
+  }
+
+  .timeline__body {
+    margin-top: 0.5rem;
+    max-width: 52ch;
+  }
+
+  .timeline__education {
+    margin-top: 1.75rem;
+  }
+
+  .timeline__cta {
+    margin-top: 1.5rem;
+  }
+
+  .capabilities {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .capabilities__title {
+    margin-top: 0.875rem;
+  }
+
+  .capability-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .capability-list__item {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-body-lg);
+    letter-spacing: -0.018em;
+  }
+
+  .capabilities__tools {
+    margin-top: 1.5rem;
+  }
+
+  .off-clock {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .off-clock__title {
+    margin-top: 0.875rem;
+  }
+
+  .off-clock__body {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+  }
+
+  .off-clock__link {
+    margin-top: 1.5rem;
+  }
+
+  .about-cta__sub {
+    margin-top: 1rem;
+  }
+
+  .about-cta__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .timeline__item {
+      grid-template-columns: 10rem 1fr;
+    }
+
+    .bio {
+      grid-template-columns: 22rem 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .capabilities,
+    .off-clock {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .off-clock__media {
+      max-width: 26rem;
+    }
+  }
+</style>

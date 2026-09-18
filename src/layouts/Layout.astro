@@ -1,12 +1,16 @@
 ---
 import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Portfolio and writing.' } = Astro.props;
+const { title, description = site.tagline } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
 ---
 
 <!doctype html>
@@ -15,68 +19,99 @@ const { title, description = 'Portfolio and writing.' } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- The display face paints above the fold on every page, so fetch it
+         alongside the CSS rather than after it. -->
+    <link
+      rel="preload"
+      href="/fonts/newsreader-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="canonical" href={canonical.href} />
     <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- The page always starts light, so theme-color starts light too; the
+         toggle script below updates it if the visitor switches to dark. -->
+    <meta name="theme-color" content="#faf9f6" />
     <title>{title}</title>
+    <script is:inline>
+      // Only hide content for the reveal animation once we know JS ran, so a
+      // failed script can never leave the page blank.
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('reveal-ready');
+      }
+    </script>
   </head>
   <body>
-    <header class="wrapper site-header">
-      <a class="site-title" href="/">Your Name</a>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/projects">Projects</a>
-        <a href="/articles">Writing</a>
-        <a href="/about">About</a>
-      </nav>
-    </header>
-    <main class="wrapper">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main">
       <slot />
     </main>
-    <footer class="wrapper site-footer">
-      <p>&copy; {new Date().getFullYear()} Your Name. Built with Astro, hosted on Vercel.</p>
-    </footer>
+    <Footer />
+
+    <script>
+      const targets = document.querySelectorAll('[data-reveal]');
+
+      if (!('IntersectionObserver' in window)) {
+        targets.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0 }
+        );
+
+        targets.forEach((el) => observer.observe(el));
+      }
+
+      // Close the mobile menu after navigating to an in-page anchor.
+      const navToggle = document.getElementById('nav-toggle');
+      document.querySelectorAll('.nav__panel-link').forEach((link) => {
+        link.addEventListener('click', () => {
+          if (navToggle instanceof HTMLInputElement) navToggle.checked = false;
+        });
+      });
+
+      // Light/dark toggle. No stored preference and no reading of
+      // prefers-color-scheme — every fresh page load starts light, by
+      // design, and this only ever flips the current view.
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+      const THEME_COLOR: Record<'light' | 'dark', string> = {
+        light: '#faf9f6',
+        dark: '#12110f',
+      };
+
+      function setTheme(theme: 'light' | 'dark') {
+        document.documentElement.dataset.theme = theme;
+        if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
+        document.querySelectorAll('.theme-toggle').forEach((btn) => {
+          btn.setAttribute('aria-pressed', String(theme === 'dark'));
+          btn.setAttribute(
+            'aria-label',
+            theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+          );
+        });
+      }
+
+      document.querySelectorAll('.theme-toggle').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      });
+    </script>
   </body>
 </html>
-
-<style>
-  .site-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: var(--space-3);
-    padding-bottom: var(--space-3);
-  }
-
-  .site-title {
-    font-weight: 700;
-    text-decoration: none;
-    color: var(--color-text);
-  }
-
-  nav {
-    display: flex;
-    gap: var(--space-2);
-  }
-
-  nav a {
-    text-decoration: none;
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-  }
-
-  nav a:hover {
-    color: var(--color-accent);
-  }
-
-  main {
-    padding-bottom: var(--space-5);
-    min-height: 60vh;
-  }
-
-  .site-footer {
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-2);
-    padding-bottom: var(--space-4);
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-  }
-</style>

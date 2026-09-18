@@ -1,0 +1,318 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { site } from '../../data/site';
+
+export const getStaticPaths = (async () => {
+  const projects = (await getCollection('work', ({ data }) => !data.draft)).sort(
+    (a, b) => a.data.order - b.data.order
+  );
+
+  return projects.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      // Wrap around, so the last project leads back to the first.
+      next: projects[(i + 1) % projects.length],
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry, next } = Astro.props;
+const { title, client, year, role, summary, disciplines, cover, scope, sections, quote, gallery } =
+  entry.data;
+const { Content } = await render(entry);
+---
+
+<Layout title={`${title} — ${site.name}`} description={summary}>
+  <article>
+    <!-- Hero -->
+    <header class="section section--flush-bottom center">
+      <div class="container">
+        <p class="eyebrow--caps" data-reveal>{client} &middot; {year}</p>
+        <h1 class="display project-title" data-reveal style="--reveal-delay: 60ms">{title}</h1>
+        <p class="subhead measure--wide project-summary" data-reveal style="--reveal-delay: 120ms">
+          {summary}
+        </p>
+      </div>
+
+      <div class="container container--full project-cover" data-reveal style="--reveal-delay: 180ms">
+        <Placeholder label={cover.label} ratio={cover.ratio} tone={cover.tone} />
+      </div>
+    </header>
+
+    <!-- Credits -->
+    <section class="section section--tight">
+      <div class="container container--wide">
+        <dl class="meta-grid project-meta" data-reveal>
+          <div>
+            <dt>Client</dt>
+            <dd>{client}</dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>{role}</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>{year}</dd>
+          </div>
+          <div>
+            <dt>Disciplines</dt>
+            <dd>{disciplines.join(', ')}</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="section section--flush-top">
+      <div class="container container--text">
+        <div class="prose body-lg project-overview" data-reveal>
+          <Content />
+        </div>
+      </div>
+    </section>
+
+    <!-- Numbers -->
+    {
+      scope.length > 0 && (
+        <section class="section section--dark section--tight">
+          <div class="container container--wide">
+            <p class="eyebrow--caps scope__heading" data-reveal>Scope</p>
+            <ul class="scope">
+              {scope.map((item, i) => (
+                <li class="scope__item" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+                  <span class="scope__value">{item.value}</span>
+                  <span class="scope__label">{item.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Narrative sections -->
+    {
+      sections.map((section) => (
+        <section class:list={['section', 'project-section', `project-section--${section.layout}`]}>
+          <div class="container container--wide">
+            <div class="project-section__inner">
+              <div class="project-section__copy" data-reveal>
+                {section.eyebrow && <p class="eyebrow--caps">{section.eyebrow}</p>}
+                <h2 class="headline project-section__title">{section.title}</h2>
+                <p class="body-lg muted project-section__body">{section.body}</p>
+              </div>
+
+              {section.image && (
+                <div class="project-section__media" data-reveal style="--reveal-delay: 80ms">
+                  <Placeholder
+                    label={section.image.label}
+                    ratio={section.image.ratio}
+                    tone={section.image.tone}
+                    caption={section.image.caption}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      ))
+    }
+
+    <!-- Quote -->
+    {
+      quote && (
+        <section class="section section--surface center">
+          <div class="container">
+            <blockquote class="project-quote" data-reveal>
+              <p class="headline project-quote__text">&ldquo;{quote.text}&rdquo;</p>
+              <footer class="caption project-quote__by">{quote.attribution}</footer>
+            </blockquote>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Gallery -->
+    {
+      gallery.length > 0 && (
+        <section class="section">
+          <div class="container container--wide">
+            <p class="eyebrow--caps gallery__label" data-reveal>Gallery</p>
+            <div class="grid grid--3" style="--grid-gap: clamp(1rem, 2vw, 1.5rem)">
+              {gallery.map((item, i) => (
+                <div data-reveal style={`--reveal-delay: ${(i % 3) * 80}ms`}>
+                  <Placeholder
+                    label={item.label}
+                    ratio={item.ratio}
+                    tone={item.tone}
+                    caption={item.caption}
+                    radius="md"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Next -->
+    <section class="section section--surface">
+      <div class="container container--wide next">
+        <div class="next__copy" data-reveal>
+          <p class="eyebrow--caps">Next project</p>
+          <h2 class="headline next__title">
+            <a href={`/work/${next.id}`}>{next.data.title}</a>
+          </h2>
+          <p class="subhead next__summary">{next.data.summary}</p>
+          <p class="next__links link-row">
+            <a class="link-chevron" href={`/work/${next.id}`}>View case study</a>
+            <a class="link-chevron" href="/work">All work</a>
+          </p>
+        </div>
+        <div class="next__media" data-reveal style="--reveal-delay: 80ms">
+          <Placeholder label={next.data.cover.label} ratio="4 / 3" tone={next.data.cover.tone} />
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .project-title {
+    margin-top: 0.875rem;
+  }
+
+  .project-summary {
+    margin-top: 1.25rem;
+  }
+
+  .project-cover {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .project-meta {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .project-overview {
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .project-section__inner {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .project-section__title {
+    margin-top: 0.875rem;
+  }
+
+  .project-section__body {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+  }
+
+  .project-section--full .project-section__media {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .project-section--full .project-section__body {
+    max-width: 58ch;
+  }
+
+  .scope__heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .scope {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+
+  .scope__value {
+    display: block;
+    font-size: var(--text-title);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  .scope__label {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: var(--text-body);
+    color: var(--color-muted);
+  }
+
+  .project-quote {
+    margin: 0;
+  }
+
+  .project-quote__text {
+    max-width: 22ch;
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+
+  .project-quote__by {
+    margin-top: 1.5rem;
+  }
+
+  .gallery__label {
+    margin-bottom: 1.5rem;
+  }
+
+  .next {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .next__title {
+    margin-top: 0.875rem;
+  }
+
+  .next__title a {
+    text-decoration: none;
+  }
+
+  .next__title a:hover {
+    opacity: 0.65;
+  }
+
+  .next__summary {
+    margin-top: 1rem;
+    max-width: 40ch;
+  }
+
+  .next__links {
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .project-section--split .project-section__inner,
+    .project-section--split-reverse .project-section__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .project-section--split-reverse .project-section__copy {
+      order: 2;
+    }
+
+    .next {
+      grid-template-columns: 1fr 0.9fr;
+    }
+  }
+</style>

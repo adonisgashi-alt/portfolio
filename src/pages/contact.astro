@@ -1,0 +1,206 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../data/site';
+
+const channels = [
+  {
+    label: 'Email',
+    value: site.email,
+    href: `mailto:${site.email}`,
+    note: 'Best for project enquiries. I reply within a couple of days.',
+    cta: 'Send an email',
+    external: false,
+  },
+  {
+    label: 'LinkedIn',
+    value: site.linkedinHandle,
+    href: site.linkedin,
+    note: 'Full career history, and the fastest way to reach me day to day.',
+    cta: 'Connect on LinkedIn',
+    external: true,
+  },
+];
+
+const asks = [
+  'Brand identity and design systems',
+  'Campaign and art direction',
+  'Web design, from concept through build',
+  'Event and environmental design',
+  'Product marketing and launch design',
+];
+---
+
+<Layout
+  title={`Contact — ${site.name}`}
+  description={`Get in touch with ${site.name}, ${site.role} at ${site.company}.`}
+>
+  <!-- Hero -->
+  <section class="section section--flush-bottom center">
+    <div class="container">
+      <p class="eyebrow" data-reveal>Contact</p>
+      <h1 class="display contact-title" data-reveal style="--reveal-delay: 60ms">
+        Say hello.
+      </h1>
+      <p class="subhead measure--wide contact-sub" data-reveal style="--reveal-delay: 120ms">
+        Open to freelance, collaboration and the occasional long conversation
+        about typography. Based in {site.location}, working with teams
+        anywhere.
+      </p>
+    </div>
+  </section>
+
+  <!-- Channels -->
+  <section class="section">
+    <div class="container container--wide">
+      <div class="grid grid--2" style="--grid-gap: clamp(1.25rem, 3vw, 2rem)">
+        {
+          channels.map((channel, i) => (
+            <a
+              class="channel"
+              href={channel.href}
+              rel={channel.external ? 'me noopener' : undefined}
+              target={channel.external ? '_blank' : undefined}
+              data-reveal
+              style={`--reveal-delay: ${i * 80}ms`}
+            >
+              <p class="caption">{channel.label}</p>
+              <p class="title channel__value">{channel.value}</p>
+              <p class="muted channel__note">{channel.note}</p>
+              <span class="link-chevron link-chevron--small channel__cta">{channel.cta}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- What to send -->
+  <section class="section section--surface">
+    <div class="container container--wide asks">
+      <div class="asks__copy" data-reveal>
+        <p class="eyebrow--caps">Good fits</p>
+        <h2 class="headline asks__title">What I'd love to hear about.</h2>
+        <ul class="asks__list">
+          {asks.map((item) => <li class="asks__item">{item}</li>)}
+        </ul>
+        <p class="caption asks__note">
+          Not sure if it fits? Send it anyway — a short note about the problem
+          is plenty to start.
+        </p>
+      </div>
+      <div class="asks__media" data-reveal style="--reveal-delay: 80ms">
+        <Placeholder label="Studio or detail image" ratio="4 / 5" tone="light" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--dark center">
+    <div class="container">
+      <h2 class="headline" data-reveal>Ready when you are.</h2>
+      <p class="subhead measure--wide contact-cta__sub" data-reveal style="--reveal-delay: 60ms">
+        Start with an email, or connect on LinkedIn and message me there.
+      </p>
+      <div class="contact-cta__actions" data-reveal style="--reveal-delay: 120ms">
+        <a class="button button--primary" href={`mailto:${site.email}`}>Email me</a>
+        <a class="button button--secondary" href={site.linkedin} rel="me noopener" target="_blank">
+          LinkedIn
+        </a>
+      </div>
+      <p class="fine contact-cta__fine" data-reveal style="--reveal-delay: 180ms">
+        {site.location} &nbsp;|&nbsp; {site.role} at {site.company}
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact-title {
+    margin-top: 0.875rem;
+  }
+
+  .contact-sub {
+    margin-top: 1.25rem;
+  }
+
+  .channel {
+    display: block;
+    background: var(--color-card);
+    border: 1px solid var(--color-line-soft);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.4s var(--ease), border-color 0.3s var(--ease);
+  }
+
+  .channel:hover {
+    border-color: var(--color-line);
+    transform: translateY(-2px);
+  }
+
+  .channel__value {
+    margin-top: 0.75rem;
+    overflow-wrap: anywhere;
+  }
+
+  .channel__note {
+    margin-top: 0.75rem;
+    max-width: 34ch;
+  }
+
+  .channel__cta {
+    margin-top: 1.25rem;
+  }
+
+  .asks {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .asks__title {
+    margin-top: 0.875rem;
+  }
+
+  .asks__list {
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 0;
+  }
+
+  .asks__item {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-body-lg);
+    letter-spacing: -0.018em;
+  }
+
+  .asks__note {
+    margin-top: 1.5rem;
+    max-width: 44ch;
+  }
+
+  .contact-cta__sub {
+    margin-top: 1rem;
+  }
+
+  .contact-cta__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .contact-cta__fine {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 900px) {
+    .asks {
+      grid-template-columns: 1fr 0.8fr;
+    }
+  }
+</style>
