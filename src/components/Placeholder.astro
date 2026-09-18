@@ -121,15 +121,13 @@ const {
     margin-top: 0.875rem;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .ph--light {
-      background: linear-gradient(150deg, #24221e 0%, #1a1917 48%, #0e0d0c 100%);
-      color: #6f6a62;
-    }
+  :global(:root[data-theme='dark']) .ph--light {
+    background: linear-gradient(150deg, #24221e 0%, #1a1917 48%, #0e0d0c 100%);
+    color: #6f6a62;
+  }
 
-    .ph--mid {
-      background: linear-gradient(150deg, #2f2c27 0%, #242220 50%, #161514 100%);
-      color: #8a857b;
-    }
+  :global(:root[data-theme='dark']) .ph--mid {
+    background: linear-gradient(150deg, #2f2c27 0%, #242220 50%, #161514 100%);
+    color: #8a857b;
   }
 </style>

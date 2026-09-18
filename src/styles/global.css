@@ -97,24 +97,24 @@
   --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #12110f;
-    --color-surface: #1a1917;
-    --color-surface-2: #24221e;
-    --color-card: #1a1917;
-    --color-ink: #f2f0ea;
-    --color-ink-strong: #ffffff;
-    --color-muted: #a39e94;
-    --color-muted-2: #8a857b;
-    --color-line: #38352f;
-    --color-line-soft: rgba(242, 240, 234, 0.12);
-    --color-invert-bg: #f2f0ea;
-    --color-invert-ink: #1a1917;
+/* Dark theme is opt-in via the toggle (adds data-theme="dark" to <html>),
+   not the OS preference — the site always starts light. */
+:root[data-theme='dark'] {
+  --color-bg: #12110f;
+  --color-surface: #1a1917;
+  --color-surface-2: #24221e;
+  --color-card: #1a1917;
+  --color-ink: #f2f0ea;
+  --color-ink-strong: #ffffff;
+  --color-muted: #a39e94;
+  --color-muted-2: #8a857b;
+  --color-line: #38352f;
+  --color-line-soft: rgba(242, 240, 234, 0.12);
+  --color-invert-bg: #f2f0ea;
+  --color-invert-ink: #1a1917;
 
-    --nav-bg: rgba(18, 17, 15, 0.78);
-    --nav-border: rgba(242, 240, 234, 0.14);
-  }
+  --nav-bg: rgba(18, 17, 15, 0.78);
+  --nav-border: rgba(242, 240, 234, 0.14);
 }
 
 /* ==========================================================================
@@ -143,6 +143,13 @@ body {
   letter-spacing: -0.022em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 
 h1,
@@ -270,13 +277,11 @@ a {
 
 /* In dark mode the page is already near-black, so lift the band a step or it
    stops reading as a band at all. */
-@media (prefers-color-scheme: dark) {
-  .section--dark {
-    --color-card: #24221e;
-    --color-line: #423e37;
-    --color-line-soft: rgba(242, 240, 234, 0.14);
-    background: #1a1917;
-  }
+:root[data-theme='dark'] .section--dark {
+  --color-card: #24221e;
+  --color-line: #423e37;
+  --color-line-soft: rgba(242, 240, 234, 0.14);
+  background: #1a1917;
 }
 
 .stack > * + * {

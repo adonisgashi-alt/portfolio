@@ -37,8 +37,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)" />
+    <!-- The page always starts light, so theme-color starts light too; the
+         toggle script below updates it if the visitor switches to dark. -->
+    <meta name="theme-color" content="#faf9f6" />
     <title>{title}</title>
     <script is:inline>
       // Only hide content for the reveal animation once we know JS ran, so a
@@ -78,10 +79,37 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
       }
 
       // Close the mobile menu after navigating to an in-page anchor.
-      const toggle = document.getElementById('nav-toggle');
+      const navToggle = document.getElementById('nav-toggle');
       document.querySelectorAll('.nav__panel-link').forEach((link) => {
         link.addEventListener('click', () => {
-          if (toggle instanceof HTMLInputElement) toggle.checked = false;
+          if (navToggle instanceof HTMLInputElement) navToggle.checked = false;
+        });
+      });
+
+      // Light/dark toggle. No stored preference and no reading of
+      // prefers-color-scheme — every fresh page load starts light, by
+      // design, and this only ever flips the current view.
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+      const THEME_COLOR: Record<'light' | 'dark', string> = {
+        light: '#faf9f6',
+        dark: '#12110f',
+      };
+
+      function setTheme(theme: 'light' | 'dark') {
+        document.documentElement.dataset.theme = theme;
+        if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
+        document.querySelectorAll('.theme-toggle').forEach((btn) => {
+          btn.setAttribute('aria-pressed', String(theme === 'dark'));
+          btn.setAttribute(
+            'aria-label',
+            theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+          );
+        });
+      }
+
+      document.querySelectorAll('.theme-toggle').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
         });
       });
     </script>

@@ -25,11 +25,46 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
         }
       </nav>
 
-      <label class="nav__burger" for="nav-toggle">
-        <span class="visually-hidden">Menu</span>
-        <span class="nav__burger-line" aria-hidden="true"></span>
-        <span class="nav__burger-line" aria-hidden="true"></span>
-      </label>
+      <div class="nav__actions">
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-pressed="false"
+          aria-label="Switch to dark theme"
+        >
+          <svg
+            class="theme-toggle__icon theme-toggle__icon--sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 3v2M12 19v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M3 12h2M19 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          <svg
+            class="theme-toggle__icon theme-toggle__icon--moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" />
+          </svg>
+        </button>
+
+        <label class="nav__burger" for="nav-toggle">
+          <span class="visually-hidden">Menu</span>
+          <span class="nav__burger-line" aria-hidden="true"></span>
+          <span class="nav__burger-line" aria-hidden="true"></span>
+        </label>
+      </div>
     </div>
   </div>
 
@@ -109,6 +144,49 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
   .nav__link[aria-current='page'] {
     opacity: 1;
     font-weight: 600;
+  }
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    background: var(--color-card);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--color-ink);
+  }
+
+  .theme-toggle__icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .theme-toggle__icon--moon {
+    display: none;
+  }
+
+  /* data-theme lives on <html>, outside this component's scope. */
+  :global(:root[data-theme='dark']) .theme-toggle__icon--sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle__icon--moon {
+    display: block;
   }
 
   .nav__burger {
