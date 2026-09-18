@@ -20,17 +20,6 @@
   --radius: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #16181a;
-    --color-bg-muted: #1e2124;
-    --color-text: #f2f1ee;
-    --color-text-muted: #a8a8a8;
-    --color-accent: #6fcf9b;
-    --color-border: #2c2f33;
-  }
-}
-
 * {
   box-sizing: border-box;
 }
