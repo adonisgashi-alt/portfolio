@@ -172,6 +172,28 @@ surrounding layout won't move.
 - **Motion** is a single fade-and-rise on scroll, and it's turned off when the
   visitor has reduced motion set (`prefers-reduced-motion`).
 
+## Password protection
+
+The whole site sits behind a password, enforced by Vercel Routing Middleware
+(`middleware.ts`) before any page, image or file is served. Visitors get a
+password form. Once they enter the right password, a signed cookie keeps them
+signed in for 30 days.
+
+The password is **not** in the code, because this repo is public. It's read
+from the `SITE_PASSWORD` environment variable:
+
+1. In Vercel, open the project → **Settings** → **Environment Variables**.
+2. Add `SITE_PASSWORD`, tick **Production** and **Preview**, and save.
+3. Redeploy (**Deployments** → latest → **Redeploy**) so it takes effect.
+
+- **Missing password:** if `SITE_PASSWORD` isn't set, the site stays locked
+  and says no password has been configured. It never falls open.
+- **Changing it:** change the variable and redeploy. This also signs out
+  everyone who was signed in.
+- **Removing it:** delete `middleware.ts` to take the password off.
+- **Local development:** `npm run dev` doesn't run the middleware, so local
+  development is unaffected.
+
 ## Deploying
 
 This repo is meant to be connected directly to Vercel:
