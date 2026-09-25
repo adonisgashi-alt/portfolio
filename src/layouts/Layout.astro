@@ -37,11 +37,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />
     <meta name="twitter:card" content="summary_large_image" />
-    <!-- The page always starts light, so theme-color starts light too; the
-         toggle script below updates it if the visitor switches to dark. -->
+    <!-- Light by default; the inline script below switches it if the
+         visitor has chosen dark. -->
     <meta name="theme-color" content="#ffffff" />
     <title>{title}</title>
     <script is:inline>
+      // Apply the visitor's saved theme before first paint, so a dark choice
+      // never flashes white while the page loads. Default stays light.
+      (function () {
+        try {
+          if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#0b0b0c');
+          }
+        } catch (e) {}
+      })();
+
       // Only hide content for the reveal animation once we know JS ran, so a
       // failed script can never leave the page blank.
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -106,17 +118,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
         });
       });
 
-      // Light/dark toggle. No stored preference and no reading of
-      // prefers-color-scheme — every fresh page load starts light, by
-      // design, and this only ever flips the current view.
+      // Light/dark toggle. The choice is saved, so it carries across pages,
+      // reloads and later visits until the visitor switches back. The saved
+      // theme is applied before paint by the inline script in <head>.
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
       const THEME_COLOR: Record<'light' | 'dark', string> = {
         light: '#ffffff',
         dark: '#0b0b0c',
       };
 
-      function setTheme(theme: 'light' | 'dark') {
+      function setTheme(theme: 'light' | 'dark', save = true) {
         document.documentElement.dataset.theme = theme;
+        if (save) {
+          try {
+            localStorage.setItem('theme', theme);
+          } catch {
+            // Storage blocked: the switch still applies to this page.
+          }
+        }
         if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLOR[theme]);
         document.querySelectorAll('.theme-toggle').forEach((btn) => {
           btn.setAttribute('aria-pressed', String(theme === 'dark'));
@@ -126,6 +145,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
           );
         });
       }
+
+      // Sync the toggle's pressed state with the theme already applied.
+      setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light', false);
 
       document.querySelectorAll('.theme-toggle').forEach((btn) => {
         btn.addEventListener('click', () => {

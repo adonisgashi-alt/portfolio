@@ -90,8 +90,10 @@ function page(opts: { next: string; error?: string; status: number; configured?:
   @font-face { font-family: Inter; font-weight: 100 900; font-display: swap; src: url('/fonts/inter-latin.woff2') format('woff2'); }
   @font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-display: swap; src: url('/fonts/ibm-plex-mono-latin-400.woff2') format('woff2'); }
   :root { --ink: #0a0a0a; --muted: #6b6b6b; --line: #e8e8e8; --bg: #fff; --primary: #a9c8e6; --primary-hover: #95badf; --error: #b42318; }
+  /* Follows the device setting unless the visitor picked a theme on the site. */
+  :root[data-theme="dark"] { --ink: #f2f2f3; --muted: #a1a1a6; --line: #26262a; --bg: #0b0b0c; --error: #f97066; }
   @media (prefers-color-scheme: dark) {
-    :root { --ink: #f2f2f3; --muted: #a1a1a6; --line: #26262a; --bg: #0b0b0c; --error: #f97066; }
+    :root:not([data-theme="light"]) { --ink: #f2f2f3; --muted: #a1a1a6; --line: #26262a; --bg: #0b0b0c; --error: #f97066; }
   }
   * { box-sizing: border-box; }
   body { margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem;
@@ -127,6 +129,11 @@ function page(opts: { next: string; error?: string; status: number; configured?:
   .note { margin-top: 2rem; }
 </style>
 <script>
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+  } catch (e) {}
+
   // Same rule and storage key as the site's Layout.astro: play on the first
   // page of a visit or a reload. Playing here marks it as played, so the site
   // is static after sign-in; a wrong-password redraw is static too.
