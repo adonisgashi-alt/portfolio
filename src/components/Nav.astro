@@ -13,7 +13,6 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
       <div class="nav__left">
         <a class="nav__wordmark" href="/" aria-label={`${site.name} — home`}>
           <Logo class="nav__logo" animate />
-          <span>{site.name}</span>
         </a>
 
         <nav class="nav__links" aria-label="Primary">
@@ -112,7 +111,11 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     border-bottom: 1px solid var(--nav-border);
   }
 
+  /* Same width and gutters as .container, so the logo and the right-hand
+     actions line up with the page content below. */
   .nav__inner {
+    max-width: calc(var(--width-content) + var(--gutter) * 2);
+    margin-inline: auto;
     padding-inline: var(--gutter);
     height: var(--nav-height);
     display: flex;
@@ -139,7 +142,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
   }
 
   .nav__wordmark :global(.nav__logo) {
-    width: 1.75rem;
+    width: 2rem;
     flex: none;
   }
 
@@ -243,6 +246,8 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
   }
 
   .nav__panel-inner {
+    max-width: calc(var(--width-content) + var(--gutter) * 2);
+    margin-inline: auto;
     padding: 0.5rem var(--gutter) 1.5rem;
     display: flex;
     flex-direction: column;
