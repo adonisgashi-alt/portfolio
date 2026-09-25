@@ -96,10 +96,13 @@ function page(opts: { next: string; error?: string; status: number; configured?:
     :root:not([data-theme="light"]) { --ink: #f2f2f3; --muted: #a1a1a6; --line: #26262a; --bg: #0b0b0c; --error: #f97066; }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem;
+  body { margin: 0; padding: 0 1.5rem;
     background: var(--bg); color: var(--ink); font: 400 1rem/1.5 Inter, system-ui, sans-serif;
     letter-spacing: -0.019em; font-optical-sizing: auto; -webkit-font-smoothing: antialiased; }
-  main { width: 100%; max-width: 22rem; text-align: center; }
+  /* main centres itself in the full window height, so elements that browser
+     extensions (e.g. password managers) inject into <body> can't shift it. */
+  main { min-height: 100dvh; width: 100%; max-width: 22rem; margin: 0 auto; padding: 1.5rem 0;
+    display: flex; flex-direction: column; justify-content: center; text-align: center; }
   .mark { display: block; width: 4.5rem; height: auto; margin: 0 auto; color: var(--ink); }
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   p { margin: 0; color: var(--muted); }
