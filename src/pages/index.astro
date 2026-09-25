@@ -4,6 +4,11 @@ import Placeholder from '../components/Placeholder.astro';
 import WorkCard from '../components/WorkCard.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../data/site';
+import commerceLogo from '../assets/logos/commerce.svg?raw';
+import bigcommerceLogo from '../assets/logos/bigcommerce.svg?raw';
+import feedonomicsLogo from '../assets/logos/feedonomics.svg?raw';
+import schwabLogo from '../assets/logos/charles-schwab.svg?raw';
+import pecbLogo from '../assets/logos/pecb.svg?raw';
 
 const projects = (await getCollection('work', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order
@@ -37,9 +42,31 @@ const principles = [
   },
 ];
 
-/* Employers from the CV — shown as a quiet wordmark grid, the way the
-   reference shows the teams that use it. */
-const workplaces = ['Commerce', 'BigCommerce', 'Charles Schwab', 'PECB'];
+/* Where I've worked, newest first. Originals (brand colours) live in
+   src/assets/logos; here every fill becomes currentColor so the row reads as
+   one quiet, monochrome set that works in light and dark themes. */
+const logoSources = [
+  { name: 'Commerce', svg: commerceLogo },
+  { name: 'BigCommerce', svg: bigcommerceLogo },
+  { name: 'Feedonomics', svg: feedonomicsLogo },
+  { name: 'Charles Schwab', svg: schwabLogo },
+  // Solid, heavy letterforms read larger than their area, so trim it.
+  { name: 'PECB', svg: pecbLogo, scale: 0.85 },
+];
+
+/* Optical sizing: give every logo roughly the same visual area rather than
+   the same height, so a long wordmark (Schwab, ~7:1) doesn't dwarf a compact
+   one (PECB, ~3.5:1). Height = sqrt(area / aspect ratio), in em. */
+const LOGO_AREA = 11; // em² — PECB lands at ~28px tall, Schwab ~20px
+const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; svg: string; scale?: number }) => {
+  const [, , w, h] = svg.match(/viewBox="([^"]+)"/)![1].split(/\s+/).map(Number);
+  const height = Math.sqrt(LOGO_AREA / (w / h)) * scale;
+  const markup = svg
+    .replace(/\s(width|height)="[^"]*"/g, '')
+    .replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"')
+    .replace('<svg', `<svg role="img" aria-label="${name}" focusable="false" style="height:${height.toFixed(3)}em"`);
+  return { name, markup };
+});
 ---
 
 <Layout title={`${site.name} — ${site.role}`}>
@@ -69,7 +96,7 @@ const workplaces = ['Commerce', 'BigCommerce', 'Charles Schwab', 'PECB'];
       <div class="hero__worked" data-reveal style="--reveal-delay: 180ms">
         <p class="eyebrow--caps">Where I've worked</p>
         <ul class="wordmarks">
-          {workplaces.map((name) => <li class="wordmarks__item">{name}</li>)}
+          {workplaces.map((w) => <li class="wordmarks__item" set:html={w.markup} />)}
         </ul>
       </div>
 
@@ -252,6 +279,7 @@ const workplaces = ['Commerce', 'BigCommerce', 'Charles Schwab', 'PECB'];
     border-left: 1px solid var(--color-line);
   }
 
+  /* font-size is the scale the logo heights (in em) are measured against. */
   .wordmarks__item {
     display: grid;
     place-items: center;
@@ -259,11 +287,24 @@ const workplaces = ['Commerce', 'BigCommerce', 'Charles Schwab', 'PECB'];
     padding: 1rem;
     border-right: 1px solid var(--color-line);
     border-bottom: 1px solid var(--color-line);
-    font-size: var(--text-subhead);
-    font-weight: 600;
-    letter-spacing: var(--tracking-headline);
+    font-size: clamp(0.8125rem, 0.7rem + 0.35vw, 1rem);
     color: var(--color-muted);
-    text-align: center;
+    transition: color 0.2s var(--ease);
+  }
+
+  .wordmarks__item:hover {
+    color: var(--color-ink);
+  }
+
+  .wordmarks__item :global(svg) {
+    display: block;
+    width: auto;
+    max-width: 100%;
+  }
+
+  /* Odd one out on the two-column phone grid spans the full row. */
+  .wordmarks__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 
   .hero__media {
@@ -365,7 +406,11 @@ const workplaces = ['Commerce', 'BigCommerce', 'Charles Schwab', 'PECB'];
     }
 
     .wordmarks {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .wordmarks__item:last-child:nth-child(odd) {
+      grid-column: auto;
     }
   }
 
