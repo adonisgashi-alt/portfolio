@@ -1,77 +1,766 @@
-/* Design tokens — change these and the whole site updates. */
+/* ==========================================================================
+   Fonts — self-hosted, no third-party requests.
+   Type matches designsystems.surf, identified from its embedded glyphs:
+   Inter for everything (its optical-size axis switches large headings to the
+   tighter "Display" cut), and IBM Plex Mono for small uppercase labels.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
+   Design tokens
+   Structure after designsystems.surf: a white page, one centred column,
+   medium-weight headlines with tightened tracking, pale image tiles,
+   hairline rules and almost no shadow. The one colour is a light,
+   softly desaturated blue. Change these and the whole site follows.
+   ========================================================================== */
+
 :root {
+  /* Neutrals ------------------------------------------------------------ */
   --color-bg: #ffffff;
-  --color-bg-muted: #f6f5f3;
-  --color-text: #1a1a1a;
-  --color-text-muted: #5f5f5f;
-  --color-accent: #2f6f4f;
-  --color-border: #e6e3de;
+  --color-surface: #f7f7f7;
+  --color-surface-2: #efefef;
+  --color-card: #ffffff;
+  --color-ink: #0a0a0a;
+  --color-ink-strong: #000000;
+  --color-muted: #6b6b6b;
+  --color-muted-2: #8f8f8f;
+  --color-line: #e8e8e8;
+  --color-line-soft: rgba(0, 0, 0, 0.07);
+  --color-invert-bg: #0a0a0a;
+  --color-invert-ink: #ffffff;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  /* Primary — light, low-saturation blue -------------------------------- */
+  --color-primary: #a9c8e6;
+  --color-primary-hover: #95badf;
+  --color-primary-soft: #edf4fb;
+  --color-primary-ink: #2d5a84; /* text on white — passes WCAG AA */
+  --color-on-primary: #0a0a0a;
 
+  /* Chrome -------------------------------------------------------------- */
+  --nav-height: 56px;
+  --nav-bg: rgba(255, 255, 255, 0.86);
+  --nav-border: rgba(0, 0, 0, 0.07);
+
+  /* Type ---------------------------------------------------------------- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Sizes measured from the reference: 56 / 40 / 32 / 20 / 18 / 16 / 14 / 12. */
+  --text-display: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);   /* 36 → 56 */
+  --text-headline: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem); /* 28 → 40 */
+  --text-title: clamp(1.375rem, 1.15rem + 0.9vw, 2rem);     /* 22 → 32 */
+  --text-subhead: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);/* 18 → 20 */
+  --text-stat: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);      /* 36 → 56 */
+  --text-body-lg: 1.125rem;                                 /* 18 */
+  --text-body: 1rem;                                        /* 16 */
+  --text-small: 0.875rem;                                   /* 14 */
+  --text-fine: 0.75rem;                                     /* 12 */
+
+  /* Tracking measured per size from the reference's glyph positions. */
+  --tracking-display: -0.029em;
+  --tracking-headline: -0.02em;
+  --tracking-title: -0.01em;
+  --tracking-subhead: -0.029em;
+  --tracking-body-lg: -0.009em;
+  --tracking-body: -0.019em;
+  --tracking-small: 0em;
+
+  /* Space --------------------------------------------------------------- */
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
   --space-4: 2.5rem;
   --space-5: 4rem;
+  --space-6: 6rem;
+  --section-y: clamp(4rem, 8vw, 7.5rem);
+  --gutter: clamp(1rem, 3vw, 1.5rem);
 
-  --content-width: 42rem;
+  /* Measure — one centred column, like the reference -------------------- */
+  --width-text: 44rem;   /* 704 — reading measure */
+  --width-content: 71rem;/* 1136 */
+  --width-wide: 71rem;
+  --width-full: 71rem;
+
   --radius: 8px;
+  --radius-lg: 12px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #16181a;
-    --color-bg-muted: #1e2124;
-    --color-text: #f2f1ee;
-    --color-text-muted: #a8a8a8;
-    --color-accent: #6fcf9b;
-    --color-border: #2c2f33;
-  }
+/* Dark theme is opt-in via the toggle (adds data-theme="dark" to <html>),
+   not the OS preference — the site always starts light. */
+:root[data-theme='dark'] {
+  --color-bg: #0b0b0c;
+  --color-surface: #141416;
+  --color-surface-2: #1c1c1f;
+  --color-card: #141416;
+  --color-ink: #f2f2f3;
+  --color-ink-strong: #ffffff;
+  --color-muted: #a1a1a6;
+  --color-muted-2: #77777c;
+  --color-line: #26262a;
+  --color-line-soft: rgba(255, 255, 255, 0.08);
+  --color-invert-bg: #f2f2f3;
+  --color-invert-ink: #0b0b0c;
+
+  --color-primary-hover: #bfd6ee;
+  --color-primary-soft: #15202b;
+  --color-primary-ink: #a9c8e6;
+
+  --nav-bg: rgba(11, 11, 12, 0.82);
+  --nav-border: rgba(255, 255, 255, 0.08);
 }
 
-* {
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 1rem);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
-  padding: 0;
-}
-
-body {
   background: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  font-size: var(--text-body);
+  font-optical-sizing: auto;
+  line-height: 1.5;
+  letter-spacing: var(--tracking-body);
   -webkit-font-smoothing: antialiased;
-}
-
-a {
-  color: var(--color-accent);
-}
-
-.wrapper {
-  max-width: var(--content-width);
-  margin: 0 auto;
-  padding: 0 var(--space-2);
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 
 h1,
 h2,
-h3 {
-  line-height: 1.2;
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
 }
 
-.tag {
-  display: inline-block;
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  background: var(--color-bg-muted);
-  border: 1px solid var(--color-border);
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 500;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  padding: 0.625rem 1.25rem;
+  border-radius: 0 0 12px 12px;
+  font-size: var(--text-small);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Layout primitives
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--width-content) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--text {
+  max-width: calc(var(--width-text) + var(--gutter) * 2);
+}
+
+.container--wide {
+  max-width: calc(var(--width-wide) + var(--gutter) * 2);
+}
+
+.container--full {
+  max-width: calc(var(--width-full) + var(--gutter) * 2);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--tight {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+
+.section--flush-top {
+  padding-top: 0;
+}
+
+.section--flush-bottom {
+  padding-bottom: 0;
+}
+
+.section--surface {
+  background: var(--color-surface);
+}
+
+/* Always-dark band — re-maps tokens so children need no special casing. */
+.section--dark {
+  --color-bg: #0a0a0a;
+  --color-surface: #141416;
+  --color-surface-2: #1c1c1f;
+  --color-card: #141416;
+  --color-ink: #f2f2f3;
+  --color-ink-strong: #ffffff;
+  --color-muted: #a1a1a6;
+  --color-muted-2: #77777c;
+  --color-line: #26262a;
+  --color-line-soft: rgba(255, 255, 255, 0.08);
+  --color-invert-bg: #f2f2f3;
+  --color-invert-ink: #0a0a0a;
+  --color-primary-ink: #a9c8e6;
+  background: #0a0a0a;
+  color: #f2f2f3;
+}
+
+/* In dark mode the page is already near-black, so lift the band a step or it
+   stops reading as a band at all. */
+:root[data-theme='dark'] .section--dark {
+  --color-card: #1c1c1f;
+  --color-line: #303035;
+  background: #141416;
+}
+
+.stack > * + * {
+  margin-top: var(--flow, 1rem);
+}
+
+.grid {
+  display: grid;
+  gap: var(--grid-gap, 1rem);
+}
+
+@media (min-width: 640px) {
+  .grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   Type
+   Headlines are Inter Medium; with optical sizing on, anything from ~32px up
+   renders in the Display cut. Tracking tightens as size grows.
+   ========================================================================== */
+
+/* Small uppercase monospace label — "LATEST UPDATES" in the reference. */
+.eyebrow,
+.eyebrow--caps,
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-fine);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.display {
+  font-size: var(--text-display);
+  line-height: 1.08;
+  letter-spacing: var(--tracking-display);
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.headline {
+  font-size: var(--text-headline);
+  line-height: 1.15;
+  letter-spacing: var(--tracking-headline);
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.title {
+  font-size: var(--text-title);
+  line-height: 1.22;
+  letter-spacing: var(--tracking-title);
+  font-weight: 500;
+}
+
+.section-label {
+  font-size: var(--text-body);
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.subhead {
+  font-size: var(--text-subhead);
+  line-height: 1.4;
+  letter-spacing: var(--tracking-subhead);
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.body-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.5;
+  letter-spacing: var(--tracking-body-lg);
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+.caption {
+  font-size: var(--text-small);
+  line-height: 1.45;
+  letter-spacing: var(--tracking-small);
+  color: var(--color-muted);
+}
+
+.fine {
+  font-size: var(--text-fine);
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--color-muted-2);
+}
+
+.center {
+  text-align: center;
+}
+
+.measure {
+  max-width: 38ch;
+}
+
+.measure--wide {
+  max-width: 60ch;
+}
+
+.center .measure,
+.center .measure--wide {
+  margin-inline: auto;
+}
+
+.prose p {
+  margin-bottom: 1.1em;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.prose a {
+  color: var(--color-primary-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.prose a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ==========================================================================
+   Links & buttons
+   ========================================================================== */
+
+/* "Explore Pro →" — medium weight, small arrow that nudges on hover. */
+.link-chevron {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375em;
+  font-size: var(--text-body);
+  font-weight: 500;
+  letter-spacing: var(--tracking-body);
+  text-decoration: none;
+  color: var(--color-ink);
+  transition: color 0.2s var(--ease);
+}
+
+.link-chevron::after {
+  content: '\2192';
+  font-size: 0.9em;
+  line-height: 1;
+  transition: transform 0.2s var(--ease);
+}
+
+.link-chevron:hover {
+  color: var(--color-primary-ink);
+}
+
+.link-chevron:hover::after {
+  transform: translateX(3px);
+}
+
+.link-chevron--small {
+  font-size: var(--text-small);
+  letter-spacing: 0;
+}
+
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+}
+
+.center .link-row {
+  justify-content: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border: 1px solid transparent;
   border-radius: 999px;
-  padding: 0.15rem 0.6rem;
-  margin: 0 0.4rem 0.4rem 0;
+  font-family: inherit;
+  font-size: var(--text-body);
+  font-weight: 500;
+  letter-spacing: var(--tracking-body);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease),
+    border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+/* The one colour on the page. */
+.button--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.button--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+/* Solid black pill — the reference's second button. */
+.button--secondary {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.button--secondary:hover {
+  background: var(--color-muted);
+}
+
+.button--ghost {
+  border-color: var(--color-line);
+  color: var(--color-ink);
+}
+
+.button--ghost:hover {
+  background: var(--color-surface);
+}
+
+/* ==========================================================================
+   Cards & rules
+   ========================================================================== */
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: 0;
+}
+
+/* ==========================================================================
+   Pill — small bordered badge for announcements and status.
+   ========================================================================== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-card);
+  font-size: var(--text-small);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+a.pill:hover {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+.pill__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+  flex: none;
+}
+
+/* ==========================================================================
+   Label row — small label on the left, content on the right, divided by a
+   hairline.
+   ========================================================================== */
+
+.label-row {
+  display: grid;
+  gap: 0.75rem;
+  padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
+  border-top: 1px solid var(--color-line);
+}
+
+.label-row__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-fine);
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--color-muted);
+}
+
+.label-row__body {
+  max-width: 60ch;
+}
+
+.label-list {
+  display: grid;
+}
+
+.label-list > :last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+@media (min-width: 768px) {
+  .label-row {
+    grid-template-columns: minmax(10rem, 16rem) 1fr;
+    gap: 2.5rem;
+    align-items: baseline;
+  }
+}
+
+/* ==========================================================================
+   Stat row — quiet label, large figure in the display cut.
+   ========================================================================== */
+
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: clamp(1rem, 2vw, 1.5rem);
+  border-top: 1px solid var(--color-line);
+}
+
+.stat-list > :last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.stat-row__label {
+  font-size: var(--text-body);
+  color: var(--color-muted);
+}
+
+.stat-row__value {
+  font-size: var(--text-stat);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Quote — testimonial-style block: hairline above, medium text, quiet cite.
+   ========================================================================== */
+
+.quote-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.quote-card__text {
+  font-size: var(--text-subhead);
+  line-height: 1.35;
+  letter-spacing: var(--tracking-subhead);
+  font-weight: 500;
+  text-wrap: pretty;
+}
+
+.quote-card__cite {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-style: normal;
+}
+
+.quote-card__avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  background: var(--color-surface-2);
+}
+
+/* Small square marker — stands in for the reference's rating stars. */
+.marker {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+.meta-grid {
+  display: grid;
+  gap: 1.5rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+
+.meta-grid dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-fine);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 0.375rem;
+}
+
+.meta-grid dd {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Scroll reveal — opt-in, and only once JS confirms support.
+   ========================================================================== */
+
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

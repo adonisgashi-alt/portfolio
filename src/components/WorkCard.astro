@@ -1,0 +1,114 @@
+---
+import Placeholder from './Placeholder.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  /** Large cards run full width with the copy beside the image. */
+  size?: 'default' | 'large';
+  ratio?: string;
+}
+
+const { entry, size = 'default', ratio } = Astro.props;
+const { title, client, year, summary, cover, disciplines } = entry.data;
+const href = `/work/${entry.id}`;
+---
+
+<article class:list={['work-card', `work-card--${size}`]}>
+  <a class="work-card__link" href={href}>
+    <span class="visually-hidden">View case study: {title}</span>
+  </a>
+
+  <div class="work-card__media">
+    <Placeholder
+      label={cover.label}
+      ratio={ratio ?? (size === 'large' ? '16 / 9' : '4 / 3')}
+      tone={cover.tone}
+    />
+  </div>
+
+  <div class="work-card__body">
+    <p class="caption">{client} &middot; {year}</p>
+    <h3 class="work-card__title">{title}</h3>
+    <p class="work-card__summary">{summary}</p>
+    <p class="link-chevron link-chevron--small work-card__cta" aria-hidden="true">
+      View case study
+    </p>
+    {
+      disciplines.length > 0 && (
+        <p class="caption work-card__tags">{disciplines.join(' · ')}</p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .work-card {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .work-card__link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: var(--radius-lg);
+  }
+
+  .work-card__media {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+
+  .work-card__media :global(.ph) {
+    transition: transform 0.6s var(--ease);
+  }
+
+  .work-card:hover .work-card__media :global(.ph) {
+    transform: scale(1.02);
+  }
+
+  /* Card copy mirrors the reference's product cards: 16px medium title,
+     muted description, then a small arrow link. */
+  .work-card__title {
+    font-size: var(--text-body);
+    line-height: 1.35;
+    letter-spacing: var(--tracking-body);
+    font-weight: 500;
+    margin-top: 0.25rem;
+  }
+
+  .work-card__summary {
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+    max-width: 52ch;
+  }
+
+  .work-card__cta {
+    margin-top: 0.75rem;
+  }
+
+  .work-card:hover .work-card__cta {
+    color: var(--color-primary-ink);
+  }
+
+  .work-card__tags {
+    margin-top: 0.5rem;
+  }
+
+  /* The lead card is the feature moment — full-width image, then a larger
+     display-cut title underneath, like the reference's featured article. */
+  .work-card--large .work-card__title {
+    font-size: var(--text-title);
+    line-height: 1.22;
+    letter-spacing: var(--tracking-title);
+    max-width: 24ch;
+  }
+
+  .work-card--large .work-card__summary {
+    margin-top: 0.625rem;
+    font-size: var(--text-body-lg);
+    letter-spacing: var(--tracking-body-lg);
+  }
+</style>

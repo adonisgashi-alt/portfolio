@@ -1,0 +1,127 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../data/site';
+
+const projects = (await getCollection('work', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const [lead, ...rest] = projects;
+
+const disciplines = [...new Set(projects.flatMap((p) => p.data.disciplines))].sort();
+const years = projects.map((p) => Number(p.data.year)).filter(Number.isFinite);
+const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '';
+---
+
+<Layout
+  title={`Work — ${site.name}`}
+  description="Selected brand, product, campaign and editorial design work."
+>
+  <section class="section section--flush-bottom">
+    <div class="container container--wide">
+      <p class="eyebrow" data-reveal>Work</p>
+      <h1 class="display work-title" data-reveal style="--reveal-delay: 60ms">
+        Everything, in&nbsp;order.
+      </h1>
+      <p class="subhead measure--wide work-sub" data-reveal style="--reveal-delay: 120ms">
+        Brand, campaign, web, event and product marketing work —{' '}
+        {projects.length} projects{span && ` from ${span}`}.
+      </p>
+
+      <div class="stat-list work-meta" data-reveal style="--reveal-delay: 180ms">
+        <div class="stat-row">
+          <span class="stat-row__label">Projects</span>
+          <span class="stat-row__value">{projects.length}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row__label">Disciplines</span>
+          <span class="stat-row__value">{disciplines.length}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row__label">Years</span>
+          <span class="stat-row__value">{span || '—'}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--wide">
+      {lead && (
+        <div class="work-lead" data-reveal>
+          <WorkCard entry={lead} size="large" ratio="16 / 9" />
+        </div>
+      )}
+
+      <div class="grid grid--2 work-grid" style="--grid-gap: clamp(2.5rem, 5vw, 4rem)">
+        {
+          rest.map((entry, i) => (
+            <div data-reveal style={`--reveal-delay: ${(i % 2) * 80}ms`}>
+              <WorkCard entry={entry} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container container--wide">
+      <p class="eyebrow--caps" data-reveal>Disciplines</p>
+      <ul class="discipline-list" data-reveal style="--reveal-delay: 60ms">
+        {disciplines.map((d) => <li class="title discipline-list__item">{d}</li>)}
+      </ul>
+      <p class="discipline-cta" data-reveal>
+        <a class="link-chevron" href="/contact">Ask about anything here</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .work-title {
+    margin-top: 0.75rem;
+  }
+
+  .work-sub {
+    margin-top: 1.25rem;
+  }
+
+  .work-meta {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .work-lead {
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .discipline-list {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .discipline-list__item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-line);
+    font-weight: 400;
+    color: var(--color-ink);
+  }
+
+  .discipline-cta {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .discipline-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(2rem, 5vw, 4rem);
+    }
+  }
+</style>

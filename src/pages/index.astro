@@ -1,88 +1,377 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import WorkCard from '../components/WorkCard.astro';
 import { getCollection } from 'astro:content';
+import { site } from '../data/site';
 
-const projects = [
+const projects = (await getCollection('work', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const featured = projects.filter((p) => p.data.featured).slice(0, 3);
+const [lead, ...rest] = featured;
+
+/* Every figure here is derived, not claimed: 2014 is the first role on the
+   CV, 2021 the start at BigCommerce, and the case study count is the
+   collection itself. Nothing to keep in sync by hand. */
+const year = new Date().getFullYear();
+const stats = [
+  { label: 'Years designing', value: year - 2014 },
+  { label: 'Years at Commerce & BigCommerce', value: year - 2021 },
+  { label: 'Selected case studies', value: projects.length },
+];
+
+const principles = [
   {
-    name: 'Project One',
-    description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
+    title: 'Hierarchy first',
+    body: 'Decide what matters most before deciding what it looks like. Everything else gets quieter.',
   },
   {
-    name: 'Project Two',
-    description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
+    title: 'One system, not five',
+    body: 'Type, color and layout settled once, then applied across web, campaign and event work — so a brand holds together in rooms nobody was designing for.',
+  },
+  {
+    title: 'Built with the people building it',
+    body: 'Brand, UX, Web, Product and Engineering all touch the same surfaces. Design that survives handoff is designed with them, not sent to them.',
   },
 ];
 
-const articles = (await getCollection('articles', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-  .slice(0, 3);
+/* Employers from the CV — shown as a quiet wordmark grid, the way the
+   reference shows the teams that use it. */
+const workplaces = ['Commerce', 'BigCommerce', 'Charles Schwab', 'PECB'];
 ---
 
-<Layout title="Your Name — Portfolio">
-  <section>
-    <h1>Hi, I'm Your Name.</h1>
-    <p>
-      A short intro goes here — what you do, who you do it for, and what you're
-      currently working on. Keep it to two or three sentences.
-    </p>
-  </section>
+<Layout title={`${site.name} — ${site.role}`}>
+  <!-- Hero -->
+  <section class="section section--flush-bottom hero">
+    <div class="container">
+      <a class="pill hero__pill" href="/contact" data-reveal>
+        <span class="pill__dot" aria-hidden="true"></span>
+        Open to freelance and collaboration
+      </a>
+      <h1 class="display hero__headline" data-reveal style="--reveal-delay: 60ms">
+        Design that gets<br />out of the way.
+      </h1>
 
-  <section>
-    <h2>Projects</h2>
-    <ul class="project-list">
-      {
-        projects.map((project) => (
-          <li>
-            <a href={project.url}>{project.name}</a>
-            <p>{project.description}</p>
-          </li>
-        ))
-      }
-    </ul>
-    <p><a href="/projects">See all projects &rarr;</a></p>
-  </section>
+      <div class="hero__row" data-reveal style="--reveal-delay: 120ms">
+        <div class="hero__actions">
+          <a class="button button--primary" href="/work">See the work</a>
+          <a class="button button--secondary" href="/contact">Get in touch</a>
+        </div>
+        <p class="hero__sub muted">
+          I'm {site.name.split(' ')[0]} — a visual designer in Austin working
+          across brand, web, campaigns and events. I build systems that make the
+          right choice the easy one.
+        </p>
+      </div>
 
-  {
-    articles.length > 0 && (
-      <section>
-        <h2>Writing</h2>
-        <ul class="article-list">
-          {articles.map((article) => (
-            <li>
-              <a href={`/articles/${article.id}`}>{article.data.title}</a>
-            </li>
-          ))}
+      <div class="hero__worked" data-reveal style="--reveal-delay: 180ms">
+        <p class="eyebrow--caps">Where I've worked</p>
+        <ul class="wordmarks">
+          {workplaces.map((name) => <li class="wordmarks__item">{name}</li>)}
         </ul>
-        <p><a href="/articles">Read more &rarr;</a></p>
-      </section>
-    )
-  }
+      </div>
+
+      <div class="hero__media" data-reveal style="--reveal-delay: 240ms">
+        <Placeholder
+          label="Hero image — signature piece of recent work"
+          ratio="2 / 1"
+          tone="mid"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured work -->
+  <section class="section">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <h2 class="headline">Selected work for {site.company} and the brands under it</h2>
+        <p class="muted section-head__sub">
+          Brand, campaign, event and product marketing work — from early
+          exploration to what shipped.
+        </p>
+      </header>
+
+      {lead && (
+        <div class="featured-lead" data-reveal>
+          <WorkCard entry={lead} size="large" ratio="2 / 1" />
+        </div>
+      )}
+
+      {rest.length > 0 && (
+        <div class="grid grid--2 featured-grid" style="--grid-gap: clamp(2.5rem, 4vw, 3rem) 1rem">
+          {rest.map((entry, i) => (
+            <div data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+              <WorkCard entry={entry} />
+            </div>
+          ))}
+        </div>
+      )}
+
+      <p class="featured-more" data-reveal>
+        <a class="button button--ghost featured-more__button" href="/work">See all work</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section section--flush-top">
+    <div class="container">
+      <p class="eyebrow--caps stats__label" data-reveal>By the numbers</p>
+      <div class="stat-list">
+        {
+          stats.map((stat, i) => (
+            <div class="stat-row" data-reveal style={`--reveal-delay: ${i * 70}ms`}>
+              <span class="stat-row__label">{stat.label}</span>
+              <span class="stat-row__value">{stat.value}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section section--flush-top">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <h2 class="headline">Three things I hold to when the brief gets complicated</h2>
+      </header>
+
+      <div class="grid grid--3" style="--grid-gap: 2rem 1rem">
+        {
+          principles.map((item, i) => (
+            <div class="quote-card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+              <div>
+                <p class="principle__markers" aria-hidden="true">
+                  <span class="marker" />
+                </p>
+                <p class="quote-card__text">{item.title}</p>
+                <p class="muted principle__body">{item.body}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="approach-media" data-reveal>
+        <Placeholder
+          label="Process image — sketches, boards and specimen sheets"
+          ratio="2 / 1"
+          tone="light"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Now -->
+  <section class="section section--flush-top">
+    <div class="container now">
+      <div class="now__copy" data-reveal>
+        <p class="eyebrow--caps">Currently</p>
+        <h2 class="headline now__title">Senior Designer at Commerce</h2>
+        <p class="body-lg muted now__body">
+          I lead visual design across brand, digital, web, events, campaigns
+          and product marketing for Commerce and its portfolio of brands —
+          including the move from BigCommerce to the broader Commerce
+          organization.
+        </p>
+        <p class="now__link">
+          <a class="link-chevron" href="/about">More about me</a>
+        </p>
+      </div>
+      <div class="now__media" data-reveal style="--reveal-delay: 80ms">
+        <Placeholder label="Workspace or portrait image" ratio="4 / 3" tone="light" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--surface cta">
+    <div class="container">
+      <p class="cta__badge" data-reveal>
+        <span class="pill__dot" aria-hidden="true"></span>
+        <span class="eyebrow--caps">Available for freelance</span>
+      </p>
+      <h2 class="headline cta__title" data-reveal style="--reveal-delay: 60ms">
+        Got something to make? I'm always happy to talk shop.
+      </h2>
+      <div class="cta__actions" data-reveal style="--reveal-delay: 120ms">
+        <a class="button button--primary" href="/contact">Get in touch</a>
+        <a class="button button--secondary" href={site.linkedin} rel="me noopener" target="_blank">
+          Connect on LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  section {
-    margin-bottom: var(--space-4);
+  .hero {
+    padding-top: clamp(3rem, 7vw, 5.5rem);
   }
 
-  .project-list,
-  .article-list {
+  .hero__headline {
+    margin-top: 1.5rem;
+    max-width: 14ch;
+  }
+
+  .hero__row {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hero__sub {
+    max-width: 34ch;
+    font-size: var(--text-small);
+    letter-spacing: 0;
+  }
+
+  .hero__worked {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .wordmarks {
     list-style: none;
+    margin: 1rem 0 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--color-line);
+    border-left: 1px solid var(--color-line);
   }
 
-  .project-list li {
-    margin-bottom: var(--space-2);
-  }
-
-  .project-list a {
+  .wordmarks__item {
+    display: grid;
+    place-items: center;
+    min-height: 5.5rem;
+    padding: 1rem;
+    border-right: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-subhead);
     font-weight: 600;
-    text-decoration: none;
+    letter-spacing: var(--tracking-headline);
+    color: var(--color-muted);
+    text-align: center;
   }
 
-  .project-list p {
-    margin: 0.2rem 0 0;
-    color: var(--color-text-muted);
+  .hero__media {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .section-head {
+    max-width: 44rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .section-head__sub {
+    margin-top: 0.75rem;
+    max-width: 52ch;
+  }
+
+  .featured-lead {
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .featured-more {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .featured-more__button {
+    width: 100%;
+    min-height: 3.5rem;
+    background: var(--color-surface);
+    border-color: transparent;
+  }
+
+  .featured-more__button:hover {
+    background: var(--color-surface-2);
+  }
+
+  .stats__label {
+    margin-bottom: 1rem;
+  }
+
+  .principle__markers {
+    margin-bottom: 1rem;
+  }
+
+  .principle__body {
+    margin-top: 0.5rem;
+  }
+
+  .approach-media {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .now {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .now__title {
+    margin-top: 1rem;
+  }
+
+  .now__body {
+    margin-top: 1rem;
+    max-width: 46ch;
+  }
+
+  .now__link {
+    margin-top: 1.5rem;
+  }
+
+  .cta__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-bg);
+  }
+
+  .cta__title {
+    margin-top: 1.5rem;
+    max-width: 20ch;
+  }
+
+  .cta__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 720px) {
+    .hero__row {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .wordmarks {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 900px) {
+    .now {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>

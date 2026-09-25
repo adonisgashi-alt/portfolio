@@ -1,0 +1,300 @@
+---
+import { site, nav } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="nav">
+  <input type="checkbox" id="nav-toggle" class="nav__checkbox" />
+  <div class="nav__bar">
+    <div class="nav__inner">
+      <div class="nav__left">
+        <a class="nav__wordmark" href="/" aria-label={`${site.name} — home`}>
+          <span class="nav__mark" aria-hidden="true">AG</span>
+          <span>{site.name}</span>
+        </a>
+
+        <nav class="nav__links" aria-label="Primary">
+        {
+          nav.map((item) => (
+            <a
+              href={item.href}
+              class="nav__link"
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+        </nav>
+      </div>
+
+      <div class="nav__actions">
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-pressed="false"
+          aria-label="Switch to dark theme"
+        >
+          <svg
+            class="theme-toggle__icon theme-toggle__icon--sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 3v2M12 19v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M3 12h2M19 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          <svg
+            class="theme-toggle__icon theme-toggle__icon--moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" />
+          </svg>
+        </button>
+
+        <a class="button button--secondary nav__cta" href="/contact">Get in touch</a>
+
+        <label class="nav__burger" for="nav-toggle">
+          <span class="visually-hidden">Menu</span>
+          <span class="nav__burger-line" aria-hidden="true"></span>
+          <span class="nav__burger-line" aria-hidden="true"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav__panel">
+    <nav class="nav__panel-inner" aria-label="Primary, mobile">
+      {
+        nav.map((item) => (
+          <a href={item.href} class="nav__panel-link">
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={site.linkedin} class="nav__panel-link" rel="me noopener" target="_blank">
+        LinkedIn
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .nav__checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav__bar {
+    background: var(--nav-bg);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--nav-border);
+  }
+
+  .nav__inner {
+    padding-inline: var(--gutter);
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav__left {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .nav__wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: var(--text-small);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .nav__mark {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 7px;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .nav__links {
+    display: none;
+    gap: 1.25rem;
+  }
+
+  .nav__link {
+    font-size: var(--text-small);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-decoration: none;
+    color: var(--color-muted);
+    transition: color 0.2s var(--ease);
+  }
+
+  .nav__link:hover,
+  .nav__link[aria-current='page'] {
+    color: var(--color-ink);
+  }
+
+  .nav__cta {
+    display: none;
+    min-height: 2rem;
+    padding: 0 0.875rem;
+    font-size: var(--text-small);
+    letter-spacing: 0;
+  }
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    background: var(--color-card);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--color-ink);
+  }
+
+  .theme-toggle__icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .theme-toggle__icon--moon {
+    display: none;
+  }
+
+  /* data-theme lives on <html>, outside this component's scope. */
+  :global(:root[data-theme='dark']) .theme-toggle__icon--sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle__icon--moon {
+    display: block;
+  }
+
+  .nav__burger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .nav__burger-line {
+    display: block;
+    width: 17px;
+    height: 1px;
+    background: var(--color-ink);
+    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+
+  .nav__panel {
+    background: var(--nav-bg);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height 0.4s var(--ease), visibility 0s linear 0.4s;
+  }
+
+  .nav__panel-inner {
+    padding: 0.5rem var(--gutter) 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav__panel-link {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line-soft);
+    font-size: var(--text-subhead);
+    font-weight: 500;
+    letter-spacing: var(--tracking-subhead);
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .nav__checkbox:checked ~ .nav__panel {
+    max-height: 22rem;
+    visibility: visible;
+    transition: max-height 0.4s var(--ease), visibility 0s;
+    border-bottom: 1px solid var(--nav-border);
+  }
+
+  .nav__checkbox:checked ~ .nav__bar .nav__burger-line:nth-child(2) {
+    transform: translateY(3px) rotate(45deg);
+  }
+
+  .nav__checkbox:checked ~ .nav__bar .nav__burger-line:nth-child(3) {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+
+  .nav__checkbox:focus-visible ~ .nav__bar .nav__burger {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (min-width: 768px) {
+    .nav__links,
+    .nav__cta {
+      display: flex;
+    }
+
+    .nav__burger,
+    .nav__panel {
+      display: none;
+    }
+  }
+</style>

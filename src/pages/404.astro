@@ -1,0 +1,40 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+---
+
+<Layout title={`Page not found — ${site.name}`} description="That page doesn't exist.">
+  <section class="section not-found">
+    <div class="container">
+      <p class="eyebrow--caps">Error 404</p>
+      <h1 class="display not-found__title">This page moved on.</h1>
+      <p class="subhead measure--wide not-found__sub">
+        The link is broken or the page no longer exists.
+      </p>
+      <div class="link-row not-found__links">
+        <a class="link-chevron" href="/">Go home</a>
+        <a class="link-chevron" href="/work">See the work</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: grid;
+    align-items: center;
+  }
+
+  .not-found__title {
+    margin-top: 0.875rem;
+  }
+
+  .not-found__sub {
+    margin-top: 1.25rem;
+  }
+
+  .not-found__links {
+    margin-top: 1.75rem;
+  }
+</style>
