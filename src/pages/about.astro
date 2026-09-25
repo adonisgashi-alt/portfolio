@@ -160,10 +160,6 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
     </div>
   </section>
 
-  <div class="confetti" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
-
   <!-- Capabilities -->
   <section class="section section--dark">
     <div class="container container--wide capabilities">
@@ -201,7 +197,7 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   </section>
 
   <!-- CTA -->
-  <section class="section section--surface center">
+  <section class="section section--surface">
     <div class="container">
       <h2 class="headline" data-reveal>Let's talk.</h2>
       <p class="subhead measure--wide about-cta__sub" data-reveal style="--reveal-delay: 60ms">
@@ -289,7 +285,7 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
     padding: 0.875rem 0;
     border-bottom: 1px solid var(--color-line);
     font-size: var(--text-body-lg);
-    letter-spacing: -0.018em;
+    letter-spacing: var(--tracking-body-lg);
   }
 
   .capabilities__tools {
@@ -323,8 +319,7 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
     margin-top: 2rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
+    gap: 0.5rem;
   }
 
   @media (min-width: 768px) {

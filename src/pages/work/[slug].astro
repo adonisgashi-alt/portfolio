@@ -29,7 +29,7 @@ const { Content } = await render(entry);
 <Layout title={`${title} — ${site.name}`} description={summary}>
   <article>
     <!-- Hero -->
-    <header class="section section--flush-bottom center">
+    <header class="section section--flush-bottom">
       <div class="container">
         <p class="eyebrow--caps" data-reveal>{client} &middot; {year}</p>
         <h1 class="display project-title" data-reveal style="--reveal-delay: 60ms">{title}</h1>
@@ -245,8 +245,8 @@ const { Content } = await render(entry);
     display: block;
     font-size: var(--text-title);
     line-height: 1.15;
-    letter-spacing: -0.02em;
-    font-weight: 600;
+    letter-spacing: var(--tracking-title);
+    font-weight: 500;
   }
 
   .scope__label {

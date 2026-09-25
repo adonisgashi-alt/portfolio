@@ -36,7 +36,7 @@ const asks = [
   description={`Get in touch with ${site.name}, ${site.role} at ${site.company}.`}
 >
   <!-- Hero -->
-  <section class="section section--flush-bottom center">
+  <section class="section section--flush-bottom">
     <div class="container">
       <p class="eyebrow" data-reveal>Contact</p>
       <h1 class="display contact-title" data-reveal style="--reveal-delay: 60ms">
@@ -96,7 +96,7 @@ const asks = [
   </section>
 
   <!-- CTA -->
-  <section class="section section--dark center">
+  <section class="section section--dark">
     <div class="container">
       <h2 class="headline" data-reveal>Ready when you are.</h2>
       <p class="subhead measure--wide contact-cta__sub" data-reveal style="--reveal-delay: 60ms">
@@ -174,7 +174,7 @@ const asks = [
     padding: 0.875rem 0;
     border-bottom: 1px solid var(--color-line);
     font-size: var(--text-body-lg);
-    letter-spacing: -0.018em;
+    letter-spacing: var(--tracking-body-lg);
   }
 
   .asks__note {
@@ -190,8 +190,7 @@ const asks = [
     margin-top: 2rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
+    gap: 0.5rem;
   }
 
   .contact-cta__fine {

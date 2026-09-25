@@ -69,19 +69,23 @@ const {
     border-radius: 0;
   }
 
+  /* Pale grey tile — the reference's default image surface. */
   .ph--light {
-    background: linear-gradient(150deg, #fbfaf7 0%, #f2f0ea 48%, #e7e4db 100%);
-    color: #a8a29a;
+    background: #f5f5f5;
+    color: #a3a3a3;
   }
 
+  /* Soft sky gradient in the primary blue — echoes the reference's
+     atmospheric hero imagery. */
   .ph--mid {
-    background: linear-gradient(150deg, #edebe4 0%, #e2dfd6 50%, #d2cec3 100%);
-    color: #7d786f;
+    background: radial-gradient(120% 90% at 20% 10%, #f4f8fc 0%, transparent 60%),
+      linear-gradient(160deg, #e6eff8 0%, #cfe0f1 55%, #b7d0ea 100%);
+    color: #5d7f9f;
   }
 
   .ph--dark {
-    background: linear-gradient(150deg, #2b2924 0%, #1c1a17 50%, #100f0d 100%);
-    color: #6f6a62;
+    background: linear-gradient(160deg, #1f1f22 0%, #141416 50%, #0a0a0a 100%);
+    color: #6e6e73;
   }
 
   /* Faint construction grid — reads as "artwork goes here", not as decoration. */
@@ -91,7 +95,7 @@ const {
     background-image: linear-gradient(currentColor 1px, transparent 1px),
       linear-gradient(90deg, currentColor 1px, transparent 1px);
     background-size: 12.5% 12.5%;
-    opacity: 0.11;
+    opacity: 0.08;
   }
 
   .ph__mark {
@@ -111,10 +115,11 @@ const {
   }
 
   .ph__label {
+    font-family: var(--font-mono);
     font-size: var(--text-fine);
-    letter-spacing: 0.14em;
+    letter-spacing: 0;
     text-transform: uppercase;
-    max-width: 22ch;
+    max-width: 26ch;
   }
 
   .ph__caption {
@@ -122,12 +127,12 @@ const {
   }
 
   :global(:root[data-theme='dark']) .ph--light {
-    background: linear-gradient(150deg, #24221e 0%, #1a1917 48%, #0e0d0c 100%);
-    color: #6f6a62;
+    background: #141416;
+    color: #6e6e73;
   }
 
   :global(:root[data-theme='dark']) .ph--mid {
-    background: linear-gradient(150deg, #2f2c27 0%, #242220 50%, #161514 100%);
-    color: #8a857b;
+    background: linear-gradient(160deg, #1b2530 0%, #16202a 55%, #121a22 100%);
+    color: #7f9bb6;
   }
 </style>

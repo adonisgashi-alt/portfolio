@@ -46,7 +46,7 @@ const href = `/work/${entry.id}`;
   .work-card {
     position: relative;
     display: grid;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
   .work-card__link {
@@ -57,26 +57,32 @@ const href = `/work/${entry.id}`;
   }
 
   .work-card__media {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+
+  .work-card__media :global(.ph) {
     transition: transform 0.6s var(--ease);
-    will-change: transform;
   }
 
-  .work-card:hover .work-card__media {
-    transform: scale(1.012);
+  .work-card:hover .work-card__media :global(.ph) {
+    transform: scale(1.02);
   }
 
+  /* Card copy mirrors the reference's product cards: 16px medium title,
+     muted description, then a small arrow link. */
   .work-card__title {
-    font-size: var(--text-title);
-    line-height: 1.16;
-    letter-spacing: -0.02em;
-    font-weight: 600;
-    margin-top: 0.35rem;
+    font-size: var(--text-body);
+    line-height: 1.35;
+    letter-spacing: var(--tracking-body);
+    font-weight: 500;
+    margin-top: 0.25rem;
   }
 
   .work-card__summary {
     color: var(--color-muted);
-    margin-top: 0.5rem;
-    max-width: 46ch;
+    margin-top: 0.25rem;
+    max-width: 52ch;
   }
 
   .work-card__cta {
@@ -84,32 +90,25 @@ const href = `/work/${entry.id}`;
   }
 
   .work-card:hover .work-card__cta {
-    opacity: 0.65;
+    color: var(--color-primary-ink);
   }
 
   .work-card__tags {
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
   }
 
-  @media (min-width: 900px) {
-    .work-card--large {
-      grid-template-columns: 1.35fr 1fr;
-      gap: clamp(2rem, 4vw, 4rem);
-      align-items: center;
-    }
+  /* The lead card is the feature moment — full-width image, then a larger
+     display-cut title underneath, like the reference's featured article. */
+  .work-card--large .work-card__title {
+    font-size: var(--text-title);
+    line-height: 1.22;
+    letter-spacing: var(--tracking-title);
+    max-width: 24ch;
+  }
 
-    /* The lead card is a feature moment, so it gets the display voice. */
-    .work-card--large .work-card__title {
-      font-family: var(--font-serif);
-      font-size: var(--text-headline);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.12;
-    }
-
-    .work-card--large .work-card__summary {
-      font-size: var(--text-body-lg);
-      line-height: 1.42;
-    }
+  .work-card--large .work-card__summary {
+    margin-top: 0.625rem;
+    font-size: var(--text-body-lg);
+    letter-spacing: var(--tracking-body-lg);
   }
 </style>

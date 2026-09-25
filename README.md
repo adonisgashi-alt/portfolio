@@ -2,8 +2,9 @@
 
 Personal portfolio site for Adonis Gashi, Senior Visual Designer at Commerce
 (formerly BigCommerce) in Austin, Texas. The design is modelled on
-Apple's marketing pages: a monochromatic palette, tight display typography,
-large imagery and generous vertical rhythm.
+[designsystems.surf](https://designsystems.surf/): a white page, one centred
+column, medium-weight headlines with tightened tracking, pale image tiles and
+hairline rules, with a single light-blue accent.
 
 - **Framework:** [Astro](https://astro.build) — a static-site framework for
   content-heavy sites. Pages are mostly plain HTML/CSS with minimal JS, so
@@ -139,15 +140,37 @@ surrounding layout won't move.
 
 ## Design notes
 
-- **Color** is monochromatic — white, `#f5f5f7`, `#1d1d1f` and black, with
-  grey text at `#6e6e73` / `#86868b`. Dark mode is supported automatically
-  via `prefers-color-scheme`.
-- **Type** uses the system stack (SF Pro on Apple devices), with a fluid
-  display scale and tight negative tracking.
-- **Sections** alternate white, `#f5f5f7` and full-black bands. Black bands
-  re-map the color tokens, so anything placed inside them inverts on its own.
-- **Motion** is a single fade-and-rise on scroll, disabled entirely under
-  `prefers-reduced-motion`.
+- **Type** matches designsystems.surf. Its fonts were identified from the
+  glyphs embedded in a saved copy of the page:
+  - Inter for all text, self-hosted with its optical-size axis, so headlines
+    at 32px and up render in the tighter Inter Display cut. Headlines and
+    buttons are weight 500 and body text is 400.
+  - IBM Plex Mono, 12px uppercase, for small labels such as "WHERE I'VE
+    WORKED".
+- **Tracking** was measured per size from the reference and lives in
+  `global.css` as `--tracking-*` tokens:
+
+  | Size | Letter-spacing |
+  | --- | --- |
+  | 56px display | -0.029em |
+  | 40px headline | -0.02em |
+  | 32px title | -0.01em |
+  | 20px subhead | -0.029em |
+  | 18px large body | -0.009em |
+  | 16px body | -0.019em |
+  | 14px small text | 0 |
+
+- **Color** is white and near-black neutrals plus one primary, a light
+  desaturated blue (`--color-primary: #a9c8e6`). Text links on that blue use
+  a darker ink (`--color-primary-ink: #2d5a84`) so they pass WCAG AA
+  contrast. The dark theme comes from the toggle in the nav.
+- **Buttons** are pills: light blue for the main action, solid black for the
+  second, as in the reference.
+- **Layout** is one column 1136px wide under a slim full-width top bar.
+  Content is left-aligned, and sections are separated by space and hairlines
+  rather than shadows.
+- **Motion** is a single fade-and-rise on scroll, and it's turned off when the
+  visitor has reduced motion set (`prefers-reduced-motion`).
 
 ## Deploying
 

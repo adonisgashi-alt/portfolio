@@ -1,24 +1,14 @@
 /* ==========================================================================
-   Fonts — self-hosted variable faces, no third-party requests.
-   Newsreader carries the display voice; Inter covers the UI on non-Apple
-   platforms, where the system stack would otherwise fall back to Arial.
+   Fonts — self-hosted, no third-party requests.
+   Type matches designsystems.surf, identified from its embedded glyphs:
+   Inter for everything (its optical-size axis switches large headings to the
+   tighter "Display" cut), and IBM Plex Mono for small uppercase labels.
    ========================================================================== */
-
-@font-face {
-  font-family: 'Newsreader';
-  font-style: normal;
-  font-weight: 300 700;
-  font-display: swap;
-  src: url('/fonts/newsreader-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
-}
 
 @font-face {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 300 700;
+  font-weight: 100 900;
   font-display: swap;
   src: url('/fonts/inter-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
@@ -26,55 +16,76 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-latin-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* ==========================================================================
    Design tokens
-   Apple's structural discipline — systematic scale, generous vertical rhythm,
-   restraint — on a warm paper palette with an editorial serif for display
-   type. Change these and the whole site follows.
+   Structure after designsystems.surf: a white page, one centred column,
+   medium-weight headlines with tightened tracking, pale image tiles,
+   hairline rules and almost no shadow. The one colour is a light,
+   softly desaturated blue. Change these and the whole site follows.
    ========================================================================== */
 
 :root {
-  /* Neutrals — warm paper, not cool grey ------------------------------- */
-  --color-bg: #faf9f6;
-  --color-surface: #f1efe9;
-  --color-surface-2: #e7e4db;
+  /* Neutrals ------------------------------------------------------------ */
+  --color-bg: #ffffff;
+  --color-surface: #f7f7f7;
+  --color-surface-2: #efefef;
   --color-card: #ffffff;
-  --color-ink: #1a1917;
+  --color-ink: #0a0a0a;
   --color-ink-strong: #000000;
-  --color-muted: #6b6862;
-  --color-muted-2: #8a867e;
-  --color-line: #dfdbd1;
-  --color-line-soft: rgba(26, 25, 23, 0.09);
-  --color-invert-bg: #1a1917;
-  --color-invert-ink: #faf9f6;
+  --color-muted: #6b6b6b;
+  --color-muted-2: #8f8f8f;
+  --color-line: #e8e8e8;
+  --color-line-soft: rgba(0, 0, 0, 0.07);
+  --color-invert-bg: #0a0a0a;
+  --color-invert-ink: #ffffff;
 
-  /* Accents — used only as small punctuation, never as fills ----------- */
-  --accent-red: #e5484d;
-  --accent-amber: #ffb224;
-  --accent-green: #30a46c;
-  --accent-blue: #3e63dd;
-  --accent-orange: #f76b15;
+  /* Primary — light, low-saturation blue -------------------------------- */
+  --color-primary: #a9c8e6;
+  --color-primary-hover: #95badf;
+  --color-primary-soft: #edf4fb;
+  --color-primary-ink: #2d5a84; /* text on white — passes WCAG AA */
+  --color-on-primary: #0a0a0a;
 
   /* Chrome -------------------------------------------------------------- */
   --nav-height: 56px;
-  --nav-bg: rgba(250, 249, 246, 0.78);
-  --nav-border: rgba(26, 25, 23, 0.1);
+  --nav-bg: rgba(255, 255, 255, 0.86);
+  --nav-border: rgba(0, 0, 0, 0.07);
 
   /* Type ---------------------------------------------------------------- */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter',
-    'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-serif: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Palatino,
-    Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  --text-display: clamp(2.5rem, 6.2vw, 4.75rem);   /* 40 → 76 */
-  --text-headline: clamp(1.875rem, 4vw, 3.125rem); /* 30 → 50 */
-  --text-title: clamp(1.375rem, 2.2vw, 1.75rem);   /* 22 → 28 */
-  --text-subhead: clamp(1.125rem, 1.8vw, 1.5rem);  /* 18 → 24 */
-  --text-stat: clamp(2.5rem, 5.2vw, 4rem);         /* 40 → 64 */
-  --text-body-lg: 1.25rem;                         /* 20 */
-  --text-body: 1.0625rem;                          /* 17 */
-  --text-small: 0.875rem;                          /* 14 */
-  --text-fine: 0.75rem;                            /* 12 */
+  /* Sizes measured from the reference: 56 / 40 / 32 / 20 / 18 / 16 / 14 / 12. */
+  --text-display: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);   /* 36 → 56 */
+  --text-headline: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem); /* 28 → 40 */
+  --text-title: clamp(1.375rem, 1.15rem + 0.9vw, 2rem);     /* 22 → 32 */
+  --text-subhead: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);/* 18 → 20 */
+  --text-stat: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);      /* 36 → 56 */
+  --text-body-lg: 1.125rem;                                 /* 18 */
+  --text-body: 1rem;                                        /* 16 */
+  --text-small: 0.875rem;                                   /* 14 */
+  --text-fine: 0.75rem;                                     /* 12 */
+
+  /* Tracking measured per size from the reference's glyph positions. */
+  --tracking-display: -0.029em;
+  --tracking-headline: -0.02em;
+  --tracking-title: -0.01em;
+  --tracking-subhead: -0.029em;
+  --tracking-body-lg: -0.009em;
+  --tracking-body: -0.019em;
+  --tracking-small: 0em;
 
   /* Space --------------------------------------------------------------- */
   --space-1: 0.5rem;
@@ -83,38 +94,42 @@
   --space-4: 2.5rem;
   --space-5: 4rem;
   --space-6: 6rem;
-  --section-y: clamp(4.5rem, 9vw, 8.125rem);
-  --gutter: clamp(1.375rem, 4vw, 2.5rem);
+  --section-y: clamp(4rem, 8vw, 7.5rem);
+  --gutter: clamp(1rem, 3vw, 1.5rem);
 
-  /* Measure ------------------------------------------------------------- */
-  --width-text: 44rem;      /* 704 — reading measure */
-  --width-content: 61.25rem;/* 980 — Apple's classic column */
-  --width-wide: 87.5rem;    /* 1400 */
-  --width-full: 105rem;     /* 1680 */
+  /* Measure — one centred column, like the reference -------------------- */
+  --width-text: 44rem;   /* 704 — reading measure */
+  --width-content: 71rem;/* 1136 */
+  --width-wide: 71rem;
+  --width-full: 71rem;
 
-  --radius: 14px;
-  --radius-lg: 22px;
-  --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 /* Dark theme is opt-in via the toggle (adds data-theme="dark" to <html>),
    not the OS preference — the site always starts light. */
 :root[data-theme='dark'] {
-  --color-bg: #12110f;
-  --color-surface: #1a1917;
-  --color-surface-2: #24221e;
-  --color-card: #1a1917;
-  --color-ink: #f2f0ea;
+  --color-bg: #0b0b0c;
+  --color-surface: #141416;
+  --color-surface-2: #1c1c1f;
+  --color-card: #141416;
+  --color-ink: #f2f2f3;
   --color-ink-strong: #ffffff;
-  --color-muted: #a39e94;
-  --color-muted-2: #8a857b;
-  --color-line: #38352f;
-  --color-line-soft: rgba(242, 240, 234, 0.12);
-  --color-invert-bg: #f2f0ea;
-  --color-invert-ink: #1a1917;
+  --color-muted: #a1a1a6;
+  --color-muted-2: #77777c;
+  --color-line: #26262a;
+  --color-line-soft: rgba(255, 255, 255, 0.08);
+  --color-invert-bg: #f2f2f3;
+  --color-invert-ink: #0b0b0c;
 
-  --nav-bg: rgba(18, 17, 15, 0.78);
-  --nav-border: rgba(242, 240, 234, 0.14);
+  --color-primary-hover: #bfd6ee;
+  --color-primary-soft: #15202b;
+  --color-primary-ink: #a9c8e6;
+
+  --nav-bg: rgba(11, 11, 12, 0.82);
+  --nav-border: rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
@@ -131,6 +146,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-height) + 1rem);
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -139,17 +155,13 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: var(--text-body);
-  line-height: 1.47059;
-  letter-spacing: -0.022em;
+  font-optical-sizing: auto;
+  line-height: 1.5;
+  letter-spacing: var(--tracking-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   transition: background 0.3s var(--ease), color 0.3s var(--ease);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body {
-    transition: none;
-  }
 }
 
 h1,
@@ -160,6 +172,13 @@ p,
 figure,
 blockquote {
   margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 500;
 }
 
 img,
@@ -174,13 +193,13 @@ a {
 }
 
 ::selection {
-  background: var(--color-ink);
-  color: var(--color-bg);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 :focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 4px;
+  outline: 2px solid var(--color-primary-ink);
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
@@ -194,7 +213,7 @@ a {
   color: var(--color-bg);
   padding: 0.625rem 1.25rem;
   border-radius: 0 0 12px 12px;
-  font-size: var(--text-fine);
+  font-size: var(--text-small);
   text-decoration: none;
 }
 
@@ -220,7 +239,7 @@ a {
 
 .container {
   width: 100%;
-  max-width: var(--width-content);
+  max-width: calc(var(--width-content) + var(--gutter) * 2);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
@@ -230,11 +249,11 @@ a {
 }
 
 .container--wide {
-  max-width: var(--width-wide);
+  max-width: calc(var(--width-wide) + var(--gutter) * 2);
 }
 
 .container--full {
-  max-width: var(--width-full);
+  max-width: calc(var(--width-full) + var(--gutter) * 2);
 }
 
 .section {
@@ -242,7 +261,7 @@ a {
 }
 
 .section--tight {
-  padding-block: clamp(3rem, 6vw, 5rem);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
 }
 
 .section--flush-top {
@@ -259,29 +278,29 @@ a {
 
 /* Always-dark band — re-maps tokens so children need no special casing. */
 .section--dark {
-  --color-bg: #12110f;
-  --color-surface: #1a1917;
-  --color-surface-2: #24221e;
-  --color-card: #1a1917;
-  --color-ink: #f2f0ea;
+  --color-bg: #0a0a0a;
+  --color-surface: #141416;
+  --color-surface-2: #1c1c1f;
+  --color-card: #141416;
+  --color-ink: #f2f2f3;
   --color-ink-strong: #ffffff;
-  --color-muted: #a39e94;
-  --color-muted-2: #8a857b;
-  --color-line: #38352f;
-  --color-line-soft: rgba(242, 240, 234, 0.12);
-  --color-invert-bg: #f2f0ea;
-  --color-invert-ink: #1a1917;
-  background: #12110f;
-  color: #f2f0ea;
+  --color-muted: #a1a1a6;
+  --color-muted-2: #77777c;
+  --color-line: #26262a;
+  --color-line-soft: rgba(255, 255, 255, 0.08);
+  --color-invert-bg: #f2f2f3;
+  --color-invert-ink: #0a0a0a;
+  --color-primary-ink: #a9c8e6;
+  background: #0a0a0a;
+  color: #f2f2f3;
 }
 
 /* In dark mode the page is already near-black, so lift the band a step or it
    stops reading as a band at all. */
 :root[data-theme='dark'] .section--dark {
-  --color-card: #24221e;
-  --color-line: #423e37;
-  --color-line-soft: rgba(242, 240, 234, 0.14);
-  background: #1a1917;
+  --color-card: #1c1c1f;
+  --color-line: #303035;
+  background: #141416;
 }
 
 .stack > * + * {
@@ -290,7 +309,7 @@ a {
 
 .grid {
   display: grid;
-  gap: var(--grid-gap, 1.25rem);
+  gap: var(--grid-gap, 1rem);
 }
 
 @media (min-width: 640px) {
@@ -307,73 +326,64 @@ a {
 
 /* ==========================================================================
    Type
+   Headlines are Inter Medium; with optical sizing on, anything from ~32px up
+   renders in the Display cut. Tracking tightens as size grows.
    ========================================================================== */
 
-.eyebrow {
-  font-size: var(--text-body);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+/* Small uppercase monospace label — "LATEST UPDATES" in the reference. */
+.eyebrow,
+.eyebrow--caps,
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-fine);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: uppercase;
   color: var(--color-muted);
 }
 
-/* Section label. Sentence case rather than tracked-out caps — quieter, and it
-   lets the serif headlines do the shouting. */
-.eyebrow--caps {
-  font-size: var(--text-body);
-  font-weight: 500;
-  letter-spacing: -0.012em;
-  text-transform: none;
-  color: var(--color-ink);
-}
-
-/* Display voice — serif, near-neutral tracking. Serifs read larger than a
-   grotesque at the same size, so the scale above is deliberately smaller
-   than the sans-only one it replaces. */
 .display {
-  font-family: var(--font-serif);
   font-size: var(--text-display);
-  line-height: 1.06;
-  letter-spacing: -0.012em;
-  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: var(--tracking-display);
+  font-weight: 500;
   text-wrap: balance;
 }
 
 .headline {
-  font-family: var(--font-serif);
   font-size: var(--text-headline);
-  line-height: 1.12;
-  letter-spacing: -0.01em;
-  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: var(--tracking-headline);
+  font-weight: 500;
   text-wrap: balance;
 }
 
-/* Section labels and card titles stay sans — the serif is for moments. */
 .title {
   font-size: var(--text-title);
-  line-height: 1.2;
-  letter-spacing: -0.018em;
-  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: var(--tracking-title);
+  font-weight: 500;
 }
 
 .section-label {
   font-size: var(--text-body);
   font-weight: 500;
-  letter-spacing: -0.012em;
   color: var(--color-ink);
 }
 
 .subhead {
   font-size: var(--text-subhead);
-  line-height: 1.32;
-  letter-spacing: -0.016em;
+  line-height: 1.4;
+  letter-spacing: var(--tracking-subhead);
   font-weight: 400;
   color: var(--color-muted);
 }
 
 .body-lg {
   font-size: var(--text-body-lg);
-  line-height: 1.42;
-  letter-spacing: -0.018em;
+  line-height: 1.5;
+  letter-spacing: var(--tracking-body-lg);
 }
 
 .muted {
@@ -382,13 +392,15 @@ a {
 
 .caption {
   font-size: var(--text-small);
-  line-height: 1.4;
-  color: var(--color-muted-2);
+  line-height: 1.45;
+  letter-spacing: var(--tracking-small);
+  color: var(--color-muted);
 }
 
 .fine {
   font-size: var(--text-fine);
   line-height: 1.5;
+  letter-spacing: 0;
   color: var(--color-muted-2);
 }
 
@@ -401,7 +413,7 @@ a {
 }
 
 .measure--wide {
-  max-width: 62ch;
+  max-width: 60ch;
 }
 
 .center .measure,
@@ -418,8 +430,9 @@ a {
 }
 
 .prose a {
-  color: inherit;
-  text-decoration-color: var(--color-line);
+  color: var(--color-primary-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
@@ -431,41 +444,43 @@ a {
    Links & buttons
    ========================================================================== */
 
+/* "Explore Pro →" — medium weight, small arrow that nudges on hover. */
 .link-chevron {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.25em;
-  font-size: var(--text-body-lg);
-  letter-spacing: -0.018em;
+  align-items: center;
+  gap: 0.375em;
+  font-size: var(--text-body);
+  font-weight: 500;
+  letter-spacing: var(--tracking-body);
   text-decoration: none;
   color: var(--color-ink);
-  transition: opacity 0.25s var(--ease);
+  transition: color 0.2s var(--ease);
 }
 
 .link-chevron::after {
-  content: '\203A';
-  font-size: 1.1em;
+  content: '\2192';
+  font-size: 0.9em;
   line-height: 1;
-  transform: translateY(0.02em);
-  transition: transform 0.25s var(--ease);
+  transition: transform 0.2s var(--ease);
 }
 
 .link-chevron:hover {
-  opacity: 0.65;
+  color: var(--color-primary-ink);
 }
 
 .link-chevron:hover::after {
-  transform: translate(0.18em, 0.02em);
+  transform: translateX(3px);
 }
 
 .link-chevron--small {
-  font-size: var(--text-body);
+  font-size: var(--text-small);
+  letter-spacing: 0;
 }
 
 .link-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 2rem;
+  gap: 0.75rem 1.75rem;
 }
 
 .center .link-row {
@@ -478,33 +493,51 @@ a {
   justify-content: center;
   gap: 0.5rem;
   min-height: 2.75rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0 1.25rem;
   border: 1px solid transparent;
   border-radius: 999px;
+  font-family: inherit;
   font-size: var(--text-body);
   font-weight: 500;
-  letter-spacing: -0.018em;
+  letter-spacing: var(--tracking-body);
   text-decoration: none;
-  transition: opacity 0.25s var(--ease), background 0.25s var(--ease),
-    color 0.25s var(--ease), border-color 0.25s var(--ease);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease),
+    border-color 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
+.button:active {
+  transform: translateY(1px);
+}
+
+/* The one colour on the page. */
 .button--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.button--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+/* Solid black pill — the reference's second button. */
+.button--secondary {
   background: var(--color-ink);
   color: var(--color-bg);
 }
 
-.button--primary:hover {
-  opacity: 0.82;
+.button--secondary:hover {
+  background: var(--color-muted);
 }
 
-.button--secondary {
+.button--ghost {
   border-color: var(--color-line);
   color: var(--color-ink);
 }
 
-.button--secondary:hover {
-  border-color: var(--color-ink);
+.button--ghost:hover {
+  background: var(--color-surface);
 }
 
 /* ==========================================================================
@@ -513,7 +546,7 @@ a {
 
 .card {
   background: var(--color-card);
-  border: 1px solid var(--color-line-soft);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
@@ -532,15 +565,17 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.375rem 0.875rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.75rem;
   border: 1px solid var(--color-line);
   border-radius: 999px;
   background: var(--color-card);
   font-size: var(--text-small);
-  letter-spacing: -0.012em;
+  font-weight: 500;
+  letter-spacing: 0;
   color: var(--color-muted);
   text-decoration: none;
-  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
 }
 
 a.pill:hover {
@@ -552,25 +587,28 @@ a.pill:hover {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--accent-green);
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
   flex: none;
 }
 
 /* ==========================================================================
    Label row — small label on the left, content on the right, divided by a
-   hairline. The workhorse layout of the whole site.
+   hairline.
    ========================================================================== */
 
 .label-row {
   display: grid;
   gap: 0.75rem;
-  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
   border-top: 1px solid var(--color-line);
 }
 
 .label-row__label {
-  font-size: var(--text-small);
-  letter-spacing: -0.006em;
+  font-family: var(--font-mono);
+  font-size: var(--text-fine);
+  text-transform: uppercase;
+  letter-spacing: 0;
   color: var(--color-muted);
 }
 
@@ -588,14 +626,14 @@ a.pill:hover {
 
 @media (min-width: 768px) {
   .label-row {
-    grid-template-columns: minmax(10rem, 18rem) 1fr;
+    grid-template-columns: minmax(10rem, 16rem) 1fr;
     gap: 2.5rem;
-    align-items: start;
+    align-items: baseline;
   }
 }
 
 /* ==========================================================================
-   Stat row — quiet label, oversized serif figure.
+   Stat row — quiet label, large figure in the display cut.
    ========================================================================== */
 
 .stat-row {
@@ -604,7 +642,7 @@ a.pill:hover {
   align-items: baseline;
   justify-content: space-between;
   gap: 0.5rem 2rem;
-  padding-block: clamp(1.125rem, 2.4vw, 1.75rem);
+  padding-block: clamp(1rem, 2vw, 1.5rem);
   border-top: 1px solid var(--color-line);
 }
 
@@ -613,40 +651,36 @@ a.pill:hover {
 }
 
 .stat-row__label {
-  font-size: var(--text-small);
+  font-size: var(--text-body);
   color: var(--color-muted);
 }
 
 .stat-row__value {
-  font-family: var(--font-serif);
   font-size: var(--text-stat);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: -0.015em;
-  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ==========================================================================
-   Quote — serif pull quote on a card.
+   Quote — testimonial-style block: hairline above, medium text, quiet cite.
    ========================================================================== */
 
 .quote-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 2rem;
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-  background: var(--color-card);
-  border: 1px solid var(--color-line-soft);
-  border-radius: var(--radius);
+  gap: 1.5rem;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--color-line);
 }
 
 .quote-card__text {
-  font-family: var(--font-serif);
-  font-size: clamp(1.25rem, 2vw, 1.625rem);
-  line-height: 1.28;
-  letter-spacing: -0.01em;
-  font-weight: 400;
+  font-size: var(--text-subhead);
+  line-height: 1.35;
+  letter-spacing: var(--tracking-subhead);
+  font-weight: 500;
   text-wrap: pretty;
 }
 
@@ -666,30 +700,14 @@ a.pill:hover {
   background: var(--color-surface-2);
 }
 
-/* ==========================================================================
-   Confetti — the accent colors appear only here, as punctuation between
-   sections. Decorative, so hidden from assistive tech.
-   ========================================================================== */
-
-.confetti {
-  display: flex;
-  justify-content: center;
-  gap: clamp(1.5rem, 6vw, 4.5rem);
-  padding-block: 0.5rem;
-}
-
-.confetti span {
-  width: 7px;
-  height: 7px;
+/* Small square marker — stands in for the reference's rating stars. */
+.marker {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
   border-radius: 2px;
-  opacity: 0.9;
+  background: var(--color-primary);
 }
-
-.confetti span:nth-child(1) { background: var(--accent-red); }
-.confetti span:nth-child(2) { background: var(--accent-amber); }
-.confetti span:nth-child(3) { background: var(--accent-green); }
-.confetti span:nth-child(4) { background: var(--accent-blue); }
-.confetti span:nth-child(5) { background: var(--accent-orange); }
 
 .meta-grid {
   display: grid;
@@ -698,17 +716,18 @@ a.pill:hover {
 }
 
 .meta-grid dt {
+  font-family: var(--font-mono);
   font-size: var(--text-fine);
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-transform: uppercase;
-  color: var(--color-muted-2);
-  margin-bottom: 0.35rem;
+  color: var(--color-muted);
+  margin-bottom: 0.375rem;
 }
 
 .meta-grid dd {
   margin: 0;
   font-size: var(--text-body);
-  letter-spacing: -0.018em;
+  font-weight: 500;
 }
 
 /* ==========================================================================
@@ -717,8 +736,8 @@ a.pill:hover {
 
 .reveal-ready [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+  transform: translateY(16px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   transition-delay: var(--reveal-delay, 0ms);
 }
 

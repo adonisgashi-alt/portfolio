@@ -19,11 +19,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- The display face paints above the fold on every page, so fetch it
-         alongside the CSS rather than after it. -->
+    <!-- Inter sets every headline above the fold, so fetch it alongside the
+         CSS rather than after it. -->
     <link
       rel="preload"
-      href="/fonts/newsreader-latin.woff2"
+      href="/fonts/inter-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -39,7 +39,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
     <meta name="twitter:card" content="summary_large_image" />
     <!-- The page always starts light, so theme-color starts light too; the
          toggle script below updates it if the visitor switches to dark. -->
-    <meta name="theme-color" content="#faf9f6" />
+    <meta name="theme-color" content="#ffffff" />
     <title>{title}</title>
     <script is:inline>
       // Only hide content for the reveal animation once we know JS ran, so a
@@ -91,8 +91,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
       // design, and this only ever flips the current view.
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
       const THEME_COLOR: Record<'light' | 'dark', string> = {
-        light: '#faf9f6',
-        dark: '#12110f',
+        light: '#ffffff',
+        dark: '#0b0b0c',
       };
 
       function setTheme(theme: 'light' | 'dark') {
