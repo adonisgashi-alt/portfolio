@@ -98,8 +98,7 @@ function page(opts: { next: string; error?: string; status: number; configured?:
     background: var(--bg); color: var(--ink); font: 400 1rem/1.5 Inter, system-ui, sans-serif;
     letter-spacing: -0.019em; font-optical-sizing: auto; -webkit-font-smoothing: antialiased; }
   main { width: 100%; max-width: 24rem; }
-  .mark { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 8px;
-    background: var(--primary); color: #0a0a0a; font-size: .75rem; font-weight: 600; letter-spacing: -.01em; }
+  .mark { display: block; width: 3rem; height: auto; color: var(--ink); }
   h1 { margin: 1.5rem 0 .5rem; font-size: 2.5rem; font-weight: 500; line-height: 1.15; letter-spacing: -0.02em; }
   p { margin: 0; color: var(--muted); }
   form { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
@@ -119,7 +118,10 @@ function page(opts: { next: string; error?: string; status: number; configured?:
 </head>
 <body>
 <main>
-  <span class="mark" aria-hidden="true">AG</span>
+  <svg class="mark" viewBox="0 0 512 362" fill="none" stroke="currentColor" stroke-width="55" aria-hidden="true">
+    <circle cx="120" cy="120" r="92.5"/><path d="M212.5 119V240"/>
+    <circle cx="392" cy="120" r="92.5"/><path d="M484.5 119V334.5H185"/>
+  </svg>
   <h1>This portfolio is private</h1>
   <p>Enter the password you were given to view the work.</p>
   ${body}

@@ -1,12 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>
-    rect { fill: #1d1d1f; }
-    text { fill: #ffffff; }
-    @media (prefers-color-scheme: dark) {
-      rect { fill: #f5f5f7; }
-      text { fill: #000000; }
-    }
-  </style>
-  <rect width="64" height="64" rx="14" />
-  <text x="32" y="43" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="30" font-weight="600" letter-spacing="-1.5">AG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 -83 528 528">
+  <style>path{fill:#0a0a0a}@media (prefers-color-scheme:dark){path{fill:#f2f2f3}}</style>
+  <path fill-rule="evenodd" d="M392 0C457.941 0 511.457 53.1862 511.994 119H512V362H185V307H457V220.886C438.269 232.979 415.955 240 392 240C325.726 240 272 186.274 272 120C272 53.7258 325.726 0 392 0ZM392 55C356.102 55 327 84.1015 327 120C327 155.899 356.102 185 392 185C427.898 185 457 155.899 457 120C457 84.1015 427.898 55 392 55Z"/>
+  <path fill-rule="evenodd" d="M120 0C185.941 0 239.457 53.1862 239.994 119H240V240H185V220.886C166.269 232.979 143.955 240 120 240C53.7258 240 0 186.274 0 120C0 53.7258 53.7258 0 120 0ZM120 55C84.1015 55 55 84.1015 55 120C55 155.899 84.1015 185 120 185C155.899 185 185 155.899 185 120C185 84.1015 155.899 55 120 55Z"/>
 </svg>

@@ -47,6 +47,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('reveal-ready');
       }
+
+      // Logo intro: play on the first page of a visit and on every reload,
+      // but not when moving between pages. Runs before first paint so the
+      // logo never flashes in its finished state first.
+      (function () {
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var entry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        var reload = !!entry && entry.type === 'reload';
+        var played;
+        try {
+          played = sessionStorage.getItem('logo-intro-played') === '1';
+          sessionStorage.setItem('logo-intro-played', '1');
+        } catch (e) {
+          // Storage blocked: fall back to "arrived from another site".
+          played = document.referrer.indexOf(location.origin) === 0;
+        }
+        if (!reduced && (reload || !played)) {
+          document.documentElement.classList.add('logo-intro');
+        }
+      })();
     </script>
   </head>
   <body>

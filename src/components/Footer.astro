@@ -1,4 +1,5 @@
 ---
+import Logo from './Logo.astro';
 import { site, nav } from '../data/site';
 const year = new Date().getFullYear();
 ---
@@ -7,7 +8,7 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="footer__top">
       <div class="footer__intro">
-        <span class="footer__mark" aria-hidden="true">AG</span>
+        <Logo class="footer__logo" label={`${site.name} logo`} />
         <p class="footer__tagline">
           {site.role} at {site.company}, working across brand, digital, web, events and campaigns.
         </p>
@@ -74,17 +75,8 @@ const year = new Date().getFullYear();
     padding-bottom: 2.5rem;
   }
 
-  .footer__mark {
-    display: grid;
-    place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 7px;
-    background: var(--color-primary);
-    color: var(--color-on-primary);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+  .footer__intro :global(.footer__logo) {
+    width: 3rem;
   }
 
   .footer__tagline {

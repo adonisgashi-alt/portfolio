@@ -1,0 +1,76 @@
+---
+/**
+ * The "ag" monogram, rebuilt as four strokes so it can draw itself in.
+ * Geometry is identical to public/images/ag-logo.svg — two 55-unit rings
+ * with stems, the g's descender sweeping back under the a.
+ *
+ * It only animates when <html> has the `logo-intro` class, which the inline
+ * script in Layout.astro adds on a visitor's first page and on reloads —
+ * never when moving between pages. Otherwise it renders static.
+ */
+interface Props {
+  class?: string;
+  label?: string;
+  /** Opt in to the intro draw-on. Only the nav logo does. */
+  animate?: boolean;
+}
+
+const { class: className, label, animate = false } = Astro.props;
+---
+
+<svg
+  class:list={['logo', { 'logo--animated': animate }, className]}
+  viewBox="0 0 512 362"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="55"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  {/* Rings are flipped vertically so they draw anticlockwise from the stem,
+      the way you'd write them. pathLength=1 lets one dash value fit all. */}
+  <circle class="logo__a-ring" cx="120" cy="120" r="92.5" pathLength="1" transform="matrix(1 0 0 -1 0 240)" />
+  <path class="logo__a-stem" d="M212.5 119V240" pathLength="1" />
+  <circle class="logo__g-ring" cx="392" cy="120" r="92.5" pathLength="1" transform="matrix(1 0 0 -1 0 240)" />
+  <path class="logo__g-tail" d="M484.5 119V334.5H185" pathLength="1" stroke-linejoin="miter" />
+</svg>
+
+<style>
+  .logo {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Intro only — see the note above. `both` holds the undrawn state during
+     each stroke's delay and the drawn state after. */
+  :global(.logo-intro) .logo--animated circle,
+  :global(.logo-intro) .logo--animated path {
+    stroke-dasharray: 1 1;
+    animation: logo-draw var(--d, 0.55s) cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s) both;
+  }
+
+  :global(.logo-intro) .logo__a-ring { --d: 0.6s; --delay: 0.15s; }
+  :global(.logo-intro) .logo__a-stem { --d: 0.3s; --delay: 0.6s; }
+  :global(.logo-intro) .logo__g-ring { --d: 0.6s; --delay: 0.5s; }
+  :global(.logo-intro) .logo__g-tail { --d: 0.65s; --delay: 0.95s; }
+
+  @keyframes logo-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.logo-intro) .logo--animated circle,
+    :global(.logo-intro) .logo--animated path {
+      animation: none;
+      stroke-dasharray: none;
+    }
+  }
+</style>
