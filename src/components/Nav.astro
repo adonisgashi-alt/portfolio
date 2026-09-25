@@ -14,8 +14,9 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
         <a class="nav__wordmark" href="/" aria-label={`${site.name} — home`}>
           <Logo class="nav__logo" animate />
         </a>
+      </div>
 
-        <nav class="nav__links" aria-label="Primary">
+      <nav class="nav__links" aria-label="Primary">
         {
           nav.map((item) => (
             <a
@@ -27,8 +28,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
             </a>
           ))
         }
-        </nav>
-      </div>
+      </nav>
 
       <div class="nav__actions">
         <button
@@ -122,6 +122,19 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+  }
+
+  /* Desktop: three columns with equal outer tracks, so the page links sit
+     in the true centre of the bar whatever the widths either side. */
+  @media (min-width: 768px) {
+    .nav__inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+    }
+
+    .nav__actions {
+      justify-self: end;
+    }
   }
 
   .nav__left {

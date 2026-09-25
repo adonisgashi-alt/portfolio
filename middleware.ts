@@ -69,9 +69,9 @@ function page(opts: { next: string; error?: string; status: number; configured?:
   const body = configured
     ? `<form method="post" action="${UNLOCK_PATH}">
         <input type="hidden" name="next" value="${escapeHtml(to)}" />
-        <label for="pw" class="label">Password</label>
+        <label for="pw" class="visually-hidden">Password</label>
         <div class="row">
-          <input id="pw" name="password" type="password" autocomplete="current-password" required autofocus
+          <input id="pw" name="password" type="password" placeholder="Password" autocomplete="current-password" required autofocus
             ${error ? 'aria-invalid="true" aria-describedby="err"' : ''} />
           <button type="submit">Enter</button>
         </div>
@@ -97,13 +97,12 @@ function page(opts: { next: string; error?: string; status: number; configured?:
   body { margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem;
     background: var(--bg); color: var(--ink); font: 400 1rem/1.5 Inter, system-ui, sans-serif;
     letter-spacing: -0.019em; font-optical-sizing: auto; -webkit-font-smoothing: antialiased; }
-  main { width: 100%; max-width: 24rem; }
-  .mark { display: block; width: 3rem; height: auto; color: var(--ink); }
-  h1 { margin: 1.5rem 0 .5rem; font-size: 2.5rem; font-weight: 500; line-height: 1.15; letter-spacing: -0.02em; }
+  main { width: 100%; max-width: 22rem; text-align: center; }
+  .mark { display: block; width: 4.5rem; height: auto; margin: 0 auto; color: var(--ink); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   p { margin: 0; color: var(--muted); }
-  form { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
-  .label { display: block; margin-bottom: .5rem; font: 400 .75rem/1.4 'IBM Plex Mono', ui-monospace, monospace;
-    text-transform: uppercase; letter-spacing: 0; color: var(--muted); }
+  form { margin-top: 2.5rem; text-align: left; }
+  input::placeholder { color: var(--muted); opacity: 1; }
   .row { display: flex; gap: .5rem; }
   input { flex: 1; min-width: 0; height: 2.75rem; padding: 0 1rem; border: 1px solid var(--line); border-radius: 999px;
     background: transparent; color: inherit; font: inherit; }
@@ -122,8 +121,7 @@ function page(opts: { next: string; error?: string; status: number; configured?:
     <circle cx="120" cy="120" r="92.5"/><path d="M212.5 119V240"/>
     <circle cx="392" cy="120" r="92.5"/><path d="M484.5 119V334.5H185"/>
   </svg>
-  <h1>This portfolio is private</h1>
-  <p>Enter the password you were given to view the work.</p>
+  <h1 class="visually-hidden">Private portfolio</h1>
   ${body}
 </main>
 </body>
