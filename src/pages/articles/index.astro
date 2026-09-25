@@ -5,26 +5,30 @@ import { getCollection } from 'astro:content';
 const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
 );
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 ---
 
-<Layout title="Writing — Your Name">
-  <h1>Writing</h1>
-  {articles.length === 0 && <p>No articles yet — add one in <code>src/content/articles/</code>.</p>}
-  <ul class="article-list">
+<Layout title="Writing" description="Notes on visual design, design systems and working with product teams.">
+  <header class="page-head">
+    <p class="eyebrow">Writing · {articles.length} {articles.length === 1 ? 'article' : 'articles'}</p>
+    <h1>Notes on craft</h1>
+    <p class="lead">Thoughts on visual design, design systems and working with product teams.</p>
+  </header>
+
+  {articles.length === 0 && <p class="muted">No articles yet — add one in <code>src/content/articles/</code>.</p>}
+
+  <ul class="rows">
     {
-      articles.map((article) => (
+      articles.map((a) => (
         <li>
-          <h2>
-            <a href={`/articles/${article.id}`}>{article.data.title}</a>
-          </h2>
-          <p>{article.data.description}</p>
-          <time datetime={article.data.publishDate.toISOString()}>
-            {article.data.publishDate.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </time>
+          <a href={`/articles/${a.id}`}>
+            <time datetime={a.data.publishDate.toISOString()}>{fmt(a.data.publishDate)}</time>
+            <span class="body">
+              <span class="title">{a.data.title}</span>
+              <span class="desc">{a.data.description}</span>
+            </span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
         </li>
       ))
     }
@@ -32,32 +36,71 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft)).so
 </Layout>
 
 <style>
-  .article-list {
-    list-style: none;
+  .page-head {
+    padding-block: clamp(var(--space-7), 6vw, var(--space-8)) var(--space-6);
+  }
+
+  .page-head h1 {
+    margin-block: var(--space-3) var(--space-4);
+  }
+
+  .rows {
+    margin: 0;
     padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-border);
   }
 
-  .article-list li {
-    padding: var(--space-3) 0;
+  .rows a {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-2);
     border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.15s var(--ease);
   }
 
-  .article-list h2 {
-    margin: 0 0 0.3rem;
-    font-size: 1.15rem;
+  @media (min-width: 720px) {
+    .rows a {
+      grid-template-columns: 9rem minmax(0, 1fr) auto;
+      gap: var(--space-5);
+    }
   }
 
-  .article-list a {
-    text-decoration: none;
-  }
-
-  .article-list p {
-    color: var(--color-text-muted);
-    margin: 0 0 0.4rem;
+  .rows a:hover {
+    background: var(--color-surface);
   }
 
   time {
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.15em;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .title {
+    font-size: var(--text-md);
+    font-weight: 500;
+    letter-spacing: var(--tracking-snug);
+  }
+
+  .desc {
     color: var(--color-text-muted);
+  }
+
+  .arrow {
+    color: var(--color-text-subtle);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .rows a:hover .arrow {
+    transform: translateX(3px);
+    color: var(--color-text);
   }
 </style>

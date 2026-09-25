@@ -1,0 +1,81 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Cover from './Cover.astro';
+
+interface Props {
+  project: CollectionEntry<'work'>;
+  index?: number;
+  size?: 'default' | 'large';
+  eager?: boolean;
+}
+
+const { project, index = 0, size = 'default', eager = false } = Astro.props;
+const { title, client, summary, year, category, disciplines, cover, tint } = project.data;
+---
+
+<article class:list={['project', size]} data-category={category}>
+  <a href={`/work/${project.id}`} class="project-link">
+    <Cover title={title} src={cover} tint={tint} variant={index} eager={eager} />
+    <div class="meta">
+      <div class="title-row">
+        <h3>{client}</h3>
+        <span class="year">{year}</span>
+      </div>
+      <p class="summary">{size === 'large' ? summary : title}</p>
+      <ul class="chips" aria-label="Disciplines">
+        {disciplines.slice(0, 3).map((d) => <li class="chip">{d}</li>)}
+      </ul>
+    </div>
+  </a>
+</article>
+
+<style>
+  .project-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .project-link:hover :global(.cover img),
+  .project-link:hover :global(.cover svg) {
+    transform: scale(1.025);
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .large h3 {
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .year {
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-subtle);
+  }
+
+  .summary {
+    color: var(--color-text-muted);
+    max-width: 44rem;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-1) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

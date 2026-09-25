@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const work = (await getCollection('work', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const categories = [...new Set(work.map((p) => p.data.category))];
+---
+
+<Layout title="Work" description="Selected brand, product, design-system and art-direction work.">
+  <header class="page-head">
+    <p class="eyebrow">Work · {work.length} projects</p>
+    <h1>Selected work</h1>
+    <p class="lead">
+      Brand identities, product interfaces, design systems and art direction — each case study
+      covers the problem, the thinking and what changed.
+    </p>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filter by category">
+    <button type="button" class="filter" aria-pressed="true" data-filter="all">All</button>
+    {
+      categories.map((c) => (
+        <button type="button" class="filter" aria-pressed="false" data-filter={c}>
+          {c}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="grid">
+    {work.map((p, i) => <ProjectCard project={p} index={i} eager={i < 2} />)}
+  </div>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
+  const cards = document.querySelectorAll<HTMLElement>('.grid .project');
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      cards.forEach((c) => {
+        c.hidden = f !== 'all' && c.dataset.category !== f;
+      });
+    })
+  );
+</script>
+
+<style>
+  .page-head {
+    padding-block: clamp(var(--space-7), 6vw, var(--space-8)) var(--space-6);
+  }
+
+  .page-head h1 {
+    margin-block: var(--space-3) var(--space-4);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-6);
+  }
+
+  .filter {
+    height: 2.125rem;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 0.15s var(--ease),
+      color 0.15s var(--ease);
+  }
+
+  .filter:hover {
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
+
+  .filter[aria-pressed='true'] {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-7) var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,88 +1,352 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
+import { site, stats, capabilities, process } from '../data/site';
 
-const projects = [
-  {
-    name: 'Project One',
-    description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
-  },
-  {
-    name: 'Project Two',
-    description: 'A short description of what this project is and the problem it solves.',
-    url: '#',
-  },
-];
+const work = (await getCollection('work', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const featured = work.filter((p) => p.data.featured);
+const selected = featured.length ? featured : work.slice(0, 3);
+const [lead, ...rest] = selected;
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
   .slice(0, 3);
+
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 ---
 
-<Layout title="Your Name — Portfolio">
-  <section>
-    <h1>Hi, I'm Your Name.</h1>
-    <p>
-      A short intro goes here — what you do, who you do it for, and what you're
-      currently working on. Keep it to two or three sentences.
+<Layout>
+  <section class="hero">
+    <p class="pill">
+      <span class="pill-dot" aria-hidden="true"></span>
+      {site.role} · {site.location}
     </p>
+    <h1>
+      I design brands, interfaces and systems that feel <span class="accent">inevitable</span>.
+    </h1>
+    <p class="lead">
+      I'm {site.name.split(' ')[0]} — a senior visual designer helping product teams turn fuzzy
+      positioning into clear, crafted identities and interfaces that scale.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/work">View selected work</a>
+      <a class="btn btn-ghost" href="/about">About me</a>
+    </div>
+    <dl class="stats">
+      {
+        stats.map((s) => (
+          <div>
+            <dt>{s.label}</dt>
+            <dd>{s.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
   </section>
 
-  <section>
-    <h2>Projects</h2>
-    <ul class="project-list">
+  {
+    lead && (
+      <section class="section" aria-labelledby="work-title">
+        <div class="section-head">
+          <div>
+            <h2 id="work-title">Selected work</h2>
+            <p class="muted">A few projects I'm proud of, from identity to shipped product.</p>
+          </div>
+          <a class="link-arrow" href="/work">
+            All work
+          </a>
+        </div>
+        <div class="work-grid">
+          <div class="work-lead">
+            <ProjectCard project={lead} index={0} size="large" eager />
+          </div>
+          {rest.map((p, i) => (
+            <ProjectCard project={p} index={i + 1} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="cap-title">
+    <div class="section-head">
+      <div>
+        <h2 id="cap-title">What I do</h2>
+        <p class="muted">Four disciplines, one consistent point of view.</p>
+      </div>
+    </div>
+    <ul class="cap-grid">
       {
-        projects.map((project) => (
-          <li>
-            <a href={project.url}>{project.name}</a>
-            <p>{project.description}</p>
+        capabilities.map((c, i) => (
+          <li class="cap">
+            <span class="cap-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{c.title}</h3>
+            <p class="muted">{c.body}</p>
+            <ul class="cap-items">
+              {c.items.map((it) => (
+                <li class="chip">{it}</li>
+              ))}
+            </ul>
           </li>
         ))
       }
     </ul>
-    <p><a href="/projects">See all projects &rarr;</a></p>
+  </section>
+
+  <section class="section" aria-labelledby="process-title">
+    <div class="section-head">
+      <div>
+        <h2 id="process-title">How I work</h2>
+        <p class="muted">A simple process that keeps teams aligned and work moving.</p>
+      </div>
+    </div>
+    <ol class="process">
+      {
+        process.map((step, i) => (
+          <li>
+            <span class="step">Step {i + 1}</span>
+            <h3>{step.title}</h3>
+            <p class="muted">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
   </section>
 
   {
     articles.length > 0 && (
-      <section>
-        <h2>Writing</h2>
-        <ul class="article-list">
-          {articles.map((article) => (
+      <section class="section" aria-labelledby="writing-title">
+        <div class="section-head">
+          <div>
+            <h2 id="writing-title">Writing</h2>
+            <p class="muted">Notes on craft, systems and working with product teams.</p>
+          </div>
+          <a class="link-arrow" href="/articles">
+            All writing
+          </a>
+        </div>
+        <ul class="rows">
+          {articles.map((a) => (
             <li>
-              <a href={`/articles/${article.id}`}>{article.data.title}</a>
+              <a href={`/articles/${a.id}`}>
+                <span class="row-title">{a.data.title}</span>
+                <span class="row-desc">{a.data.description}</span>
+                <time datetime={a.data.publishDate.toISOString()}>{fmt(a.data.publishDate)}</time>
+              </a>
             </li>
           ))}
         </ul>
-        <p><a href="/articles">Read more &rarr;</a></p>
       </section>
     )
   }
 </Layout>
 
 <style>
-  section {
-    margin-bottom: var(--space-4);
+  .hero {
+    padding-block: clamp(var(--space-7), 8vw, var(--space-9)) var(--space-8);
   }
 
-  .project-list,
-  .article-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .project-list li {
-    margin-bottom: var(--space-2);
-  }
-
-  .project-list a {
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .project-list p {
-    margin: 0.2rem 0 0;
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2rem;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+    font-weight: 500;
     color: var(--color-text-muted);
+  }
+
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
+
+  .hero h1 {
+    margin-top: var(--space-5);
+    max-width: 17ch;
+    font-size: var(--text-display);
+    letter-spacing: var(--tracking-display);
+    line-height: 1;
+  }
+
+  .accent {
+    color: var(--color-primary-ink);
+  }
+
+  .hero .lead {
+    margin-top: var(--space-5);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    max-width: 36rem;
+    margin: var(--space-8) 0 0;
+  }
+
+  .stats div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-1);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .stats dt {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .stats dd {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Work */
+  .work-grid {
+    display: grid;
+    gap: var(--space-7) var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .work-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .work-lead {
+      grid-column: 1 / -1;
+    }
+    .work-lead :global(.cover) {
+      aspect-ratio: 2 / 1;
+    }
+  }
+
+  /* Capabilities */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .cap-num {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: var(--space-4);
+    border-radius: 50%;
+    background: var(--color-primary-soft);
+    color: var(--color-primary-ink);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cap-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cap-items .chip {
+    background: var(--color-bg);
+  }
+
+  /* Process */
+  .process {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .process li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--color-primary);
+  }
+
+  .step {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-text-subtle);
+  }
+
+  /* Writing rows */
+  .rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .rows a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-1) var(--space-5);
+    padding: var(--space-4) var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.15s var(--ease);
+  }
+
+  .rows a:hover {
+    background: var(--color-surface);
+  }
+
+  .row-title {
+    font-weight: 500;
+    letter-spacing: var(--tracking-snug);
+  }
+
+  .row-desc {
+    grid-column: 1;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .rows time {
+    grid-row: 1;
+    grid-column: 2;
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
   }
 </style>

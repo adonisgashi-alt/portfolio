@@ -1,12 +1,20 @@
 ---
+import '@fontsource-variable/inter/opsz.css';
 import '../styles/global.css';
+import Sidebar from '../components/Sidebar.astro';
+import CtaPanel from '../components/CtaPanel.astro';
+import { site } from '../data/site';
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  /** Hide the closing "let's work together" panel (e.g. on 404). */
+  hideCta?: boolean;
 }
 
-const { title, description = 'Portfolio and writing.' } = Astro.props;
+const { title, description = site.description, hideCta = false } = Astro.props;
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url);
 ---
 
 <!doctype html>
@@ -15,68 +23,106 @@ const { title, description = 'Portfolio and writing.' } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <title>{title}</title>
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0e12" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
-    <header class="wrapper site-header">
-      <a class="site-title" href="/">Your Name</a>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/projects">Projects</a>
-        <a href="/articles">Writing</a>
-        <a href="/about">About</a>
-      </nav>
-    </header>
-    <main class="wrapper">
-      <slot />
-    </main>
-    <footer class="wrapper site-footer">
-      <p>&copy; {new Date().getFullYear()} Your Name. Built with Astro, hosted on Vercel.</p>
-    </footer>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="shell">
+      <Sidebar />
+      <div class="main-col">
+        <main id="main">
+          <slot />
+        </main>
+        {!hideCta && <CtaPanel />}
+        <footer class="site-footer">
+          <p>&copy; {new Date().getFullYear()} {site.name}</p>
+          <p class="footer-links">
+            {
+              site.socials.map((s) => (
+                <a href={s.href} rel="me noopener" target="_blank">
+                  {s.label}
+                </a>
+              ))
+            }
+          </p>
+        </footer>
+      </div>
+    </div>
   </body>
 </html>
 
 <style>
-  .site-header {
+  .skip-link {
+    position: absolute;
+    left: var(--space-4);
+    top: -3rem;
+    z-index: 100;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-size: var(--text-sm);
+  }
+
+  .skip-link:focus {
+    top: var(--space-4);
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100dvh;
+  }
+
+  @media (min-width: 960px) {
+    .shell {
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    }
+  }
+
+  .main-col {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: var(--space-3);
-    padding-bottom: var(--space-3);
-  }
-
-  .site-title {
-    font-weight: 700;
-    text-decoration: none;
-    color: var(--color-text);
-  }
-
-  nav {
-    display: flex;
-    gap: var(--space-2);
-  }
-
-  nav a {
-    text-decoration: none;
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
-  }
-
-  nav a:hover {
-    color: var(--color-accent);
+    flex-direction: column;
+    min-width: 0;
+    padding-inline: var(--gutter);
   }
 
   main {
-    padding-bottom: var(--space-5);
-    min-height: 60vh;
+    flex: 1;
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
   }
 
   .site-footer {
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-2);
-    padding-bottom: var(--space-4);
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-block: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .footer-links a:hover {
+    color: var(--color-text);
   }
 </style>

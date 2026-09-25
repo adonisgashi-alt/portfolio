@@ -1,0 +1,88 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="cta" aria-labelledby="cta-title">
+  <div class="cta-copy">
+    <p class="cta-eyebrow">
+      {site.availability.open ? site.availability.label : 'Currently booked'}
+    </p>
+    <h2 id="cta-title">Have a brand, product or system that deserves better craft?</h2>
+    <p class="cta-body">
+      I partner with founders and design teams on identity, interface and design-system work.
+      Tell me about the project — I reply within two working days.
+    </p>
+  </div>
+  <div class="cta-actions">
+    <a class="btn btn-primary" href={`mailto:${site.email}`}>{site.email}</a>
+    <a class="btn cta-secondary" href={site.resume}>Download CV</a>
+  </div>
+</section>
+
+<style>
+  .cta {
+    display: grid;
+    gap: var(--space-6);
+    width: 100%;
+    max-width: var(--content-max);
+    margin: var(--space-8) auto 0;
+    padding: clamp(var(--space-6), 5vw, var(--space-8));
+    border-radius: var(--radius-lg);
+    background: var(--color-inverse-bg);
+    color: var(--color-inverse-text);
+  }
+
+  @media (min-width: 800px) {
+    .cta {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+  }
+
+  .cta-eyebrow {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+
+  h2 {
+    margin-top: var(--space-3);
+    max-width: 22ch;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.05;
+    color: inherit;
+  }
+
+  .cta-body {
+    margin-top: var(--space-4);
+    max-width: 34rem;
+    color: var(--color-inverse-muted);
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .cta-secondary {
+    border-color: color-mix(in srgb, var(--color-inverse-text) 24%, transparent);
+    color: var(--color-inverse-text);
+  }
+
+  .cta-secondary:hover {
+    background: var(--color-inverse-surface);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .cta-eyebrow {
+      color: var(--color-inverse-muted);
+    }
+
+    .cta .btn-primary {
+      background: var(--color-inverse-text);
+      color: var(--color-inverse-bg);
+    }
+  }
+</style>

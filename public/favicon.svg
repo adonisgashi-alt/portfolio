@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#2f6f4f" />
-  <text x="32" y="42" font-size="28" font-family="Helvetica, Arial, sans-serif" fill="#ffffff" text-anchor="middle">Y</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#a9c8e6"/><text x="32" y="41" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" letter-spacing="-1" fill="#0f1217">AG</text></svg>

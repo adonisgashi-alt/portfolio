@@ -12,23 +12,29 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { Content } = await render(article);
+const d = article.data;
 ---
 
-<Layout title={`${article.data.title} — Your Name`} description={article.data.description}>
+<Layout title={d.title} description={d.description}>
   <article>
-    <h1>{article.data.title}</h1>
-    <time datetime={article.data.publishDate.toISOString()}>
+    <header class="head">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/articles">Writing</a>
+        <span aria-hidden="true">/</span>
+        <time datetime={d.publishDate.toISOString()}>
+          {d.publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      </nav>
+      <h1>{d.title}</h1>
+      <p class="lead">{d.description}</p>
       {
-        article.data.publishDate.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
+        d.tags.length > 0 && (
+          <ul class="chips">
+            {d.tags.map((tag) => <li class="chip">{tag}</li>)}
+          </ul>
+        )
       }
-    </time>
-    <div class="tags">
-      {article.data.tags.map((tag) => <span class="tag">{tag}</span>)}
-    </div>
+    </header>
     <div class="prose">
       <Content />
     </div>
@@ -36,26 +42,38 @@ const { Content } = await render(article);
 </Layout>
 
 <style>
-  time {
-    display: block;
+  article {
+    max-width: var(--reading-max);
+    margin-inline: auto;
+  }
+
+  .head {
+    padding-block: clamp(var(--space-7), 6vw, var(--space-8)) var(--space-6);
+    margin-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .crumbs {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .crumbs a {
     color: var(--color-text-muted);
-    font-size: 0.85rem;
-    margin-top: 0.3rem;
   }
 
-  .tags {
-    margin-top: var(--space-1);
+  h1 {
+    margin-block: var(--space-4);
   }
 
-  .prose {
-    margin-top: var(--space-3);
-  }
-
-  .prose :global(p) {
-    margin: 0 0 var(--space-2);
-  }
-
-  .prose :global(h2) {
-    margin-top: var(--space-4);
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
   }
 </style>

@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Page not found" hideCta>
+  <section class="nf">
+    <p class="eyebrow">404</p>
+    <h1>This page wandered off.</h1>
+    <p class="lead">The link may be old, or the page has moved. Try the work index instead.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/work">See the work</a>
+      <a class="btn btn-ghost" href="/">Go home</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .nf {
+    padding-block: var(--space-9);
+  }
+
+  h1 {
+    margin-block: var(--space-3) var(--space-4);
+    font-size: var(--text-display);
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+</style>
