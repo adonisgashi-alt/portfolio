@@ -216,15 +216,16 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
     grid-area: copy;
   }
 
-  /* Portrait always shares a row with the name: small beside it on phones,
-     a full column beside name and description on desktop. */
+  /* Portrait sits above the name on phones, and in its own column beside
+     name and description on desktop. */
   .intro {
     display: grid;
-    grid-template-columns: 1fr 7rem;
+    grid-template-columns: 1fr;
     grid-template-areas:
-      'head photo'
-      'copy copy';
-    gap: var(--space-layout-md) var(--space-200);
+      'photo'
+      'head'
+      'copy';
+    gap: var(--space-layout-md) var(--space-layout-lg);
     align-items: start;
   }
 
@@ -236,6 +237,7 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
     grid-area: photo;
     display: block;
     width: 100%;
+    max-width: 32rem;
     height: auto;
     aspect-ratio: 4 / 5;
     object-fit: cover;
@@ -342,7 +344,6 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
         'head photo'
         'copy photo';
       grid-template-rows: auto 1fr;
-      column-gap: var(--space-layout-lg);
     }
 
     .capabilities,
