@@ -143,7 +143,7 @@ const { Content } = await render(entry);
         <section class="section">
           <div class="container container--wide">
             <p class="eyebrow--caps gallery__label" data-reveal>Gallery</p>
-            <div class="grid grid--3" style="--grid-gap: clamp(1rem, 2vw, 1.5rem)">
+            <div class="grid grid--3" style="--grid-gap: clamp(var(--space-16), 2vw, var(--space-24))">
               {gallery.map((item, i) => (
                 <div data-reveal style={`--reveal-delay: ${(i % 3) * 80}ms`}>
                   <Placeholder
@@ -185,11 +185,11 @@ const { Content } = await render(entry);
 
 <style>
   .project-title {
-    margin-top: 0.875rem;
+    margin-top: var(--space-16);
   }
 
   .project-summary {
-    margin-top: 1.25rem;
+    margin-top: var(--space-20);
   }
 
   .project-cover {
@@ -197,31 +197,31 @@ const { Content } = await render(entry);
   }
 
   .project-meta {
-    padding-bottom: 2rem;
+    padding-bottom: var(--space-32);
     border-bottom: 1px solid var(--color-line);
   }
 
   .project-overview {
-    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-top: clamp(var(--space-32), 4vw, 3rem);
   }
 
   .project-section__inner {
     display: grid;
-    gap: clamp(2rem, 4vw, 3.5rem);
+    gap: clamp(var(--space-32), 4vw, 3.5rem);
     align-items: center;
   }
 
   .project-section__title {
-    margin-top: 0.875rem;
+    margin-top: var(--space-16);
   }
 
   .project-section__body {
-    margin-top: 1.25rem;
+    margin-top: var(--space-20);
     max-width: 44ch;
   }
 
   .project-section--full .project-section__media {
-    margin-top: clamp(2rem, 4vw, 3rem);
+    margin-top: clamp(var(--space-32), 4vw, 3rem);
   }
 
   .project-section--full .project-section__body {
@@ -229,7 +229,7 @@ const { Content } = await render(entry);
   }
 
   .scope__heading {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-24);
   }
 
   .scope {
@@ -237,7 +237,7 @@ const { Content } = await render(entry);
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 2rem;
+    gap: var(--space-32);
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   }
 
@@ -251,7 +251,7 @@ const { Content } = await render(entry);
 
   .scope__label {
     display: block;
-    margin-top: 0.5rem;
+    margin-top: var(--space-8);
     font-size: var(--text-body);
     color: var(--color-muted);
   }
@@ -267,21 +267,21 @@ const { Content } = await render(entry);
   }
 
   .project-quote__by {
-    margin-top: 1.5rem;
+    margin-top: var(--space-24);
   }
 
   .gallery__label {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-24);
   }
 
   .next {
     display: grid;
-    gap: clamp(2rem, 4vw, 3.5rem);
+    gap: clamp(var(--space-32), 4vw, 3.5rem);
     align-items: center;
   }
 
   .next__title {
-    margin-top: 0.875rem;
+    margin-top: var(--space-16);
   }
 
   .next__title a {
@@ -293,12 +293,12 @@ const { Content } = await render(entry);
   }
 
   .next__summary {
-    margin-top: 1rem;
+    margin-top: var(--space-16);
     max-width: 40ch;
   }
 
   .next__links {
-    margin-top: 1.5rem;
+    margin-top: var(--space-24);
   }
 
   @media (min-width: 900px) {

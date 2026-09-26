@@ -126,7 +126,7 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
       )}
 
       {rest.length > 0 && (
-        <div class="grid grid--2 featured-grid" style="--grid-gap: clamp(2.5rem, 4vw, 3rem) 1rem">
+        <div class="grid grid--2 featured-grid" style="--grid-gap: clamp(var(--space-40), 4vw, 3rem) var(--space-16)">
           {rest.map((entry, i) => (
             <div data-reveal style={`--reveal-delay: ${i * 80}ms`}>
               <WorkCard entry={entry} />
@@ -165,7 +165,7 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
         <h2 class="headline">Three things I hold to when the brief gets complicated</h2>
       </header>
 
-      <div class="grid grid--3" style="--grid-gap: 2rem 1rem">
+      <div class="grid grid--3" style="--grid-gap: var(--space-32) var(--space-16)">
         {
           principles.map((item, i) => (
             <div class="quote-card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
@@ -240,8 +240,8 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
 
   .hero__top {
     display: grid;
-    gap: 1.75rem;
-    margin-top: 1.5rem;
+    gap: var(--space-28);
+    margin-top: var(--space-24);
   }
 
   .hero__headline {
@@ -250,14 +250,14 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
 
   .hero__intro {
     display: grid;
-    gap: 1.25rem;
+    gap: var(--space-20);
     align-self: start;
   }
 
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--space-8);
   }
 
   .hero__sub {
@@ -267,13 +267,13 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
 
   .hero__worked {
     margin-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-top: 1rem;
+    padding-top: var(--space-16);
     border-top: 1px solid var(--color-line);
   }
 
   .wordmarks {
     list-style: none;
-    margin: 1rem 0 0;
+    margin: var(--space-16) 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -286,7 +286,7 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
     display: grid;
     place-items: center;
     min-height: 5.5rem;
-    padding: 1rem;
+    padding: var(--space-16);
     border-right: 1px solid var(--color-line);
     border-bottom: 1px solid var(--color-line);
     font-size: clamp(0.8125rem, 0.7rem + 0.35vw, 1rem);
@@ -319,7 +319,7 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
   }
 
   .section-head__sub {
-    margin-top: 0.75rem;
+    margin-top: var(--space-12);
     max-width: 52ch;
   }
 
@@ -345,15 +345,15 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
   }
 
   .stats__label {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-16);
   }
 
   .principle__markers {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-16);
   }
 
   .principle__body {
-    margin-top: 0.5rem;
+    margin-top: var(--space-8);
   }
 
   .approach-media {
@@ -362,43 +362,43 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
 
   .now {
     display: grid;
-    gap: clamp(2rem, 5vw, 4rem);
+    gap: clamp(var(--space-32), 5vw, var(--space-64));
     align-items: center;
   }
 
   .now__title {
-    margin-top: 1rem;
+    margin-top: var(--space-16);
   }
 
   .now__body {
-    margin-top: 1rem;
+    margin-top: var(--space-16);
     max-width: 46ch;
   }
 
   .now__link {
-    margin-top: 1.5rem;
+    margin-top: var(--space-24);
   }
 
   .cta__badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.625rem;
-    padding: 0.375rem 0.75rem;
+    gap: var(--space-12);
+    padding: var(--space-4) var(--space-12);
     border: 1px solid var(--color-line);
     border-radius: 999px;
     background: var(--color-bg);
   }
 
   .cta__title {
-    margin-top: 1.5rem;
+    margin-top: var(--space-24);
     max-width: 20ch;
   }
 
   .cta__actions {
-    margin-top: 2rem;
+    margin-top: var(--space-32);
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--space-8);
   }
 
   @media (min-width: 720px) {

@@ -87,15 +87,22 @@
   --tracking-body: -0.019em;
   --tracking-small: 0em;
 
-  /* Space --------------------------------------------------------------- */
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2.5rem;
-  --space-5: 4rem;
-  --space-6: 6rem;
-  --section-y: clamp(4rem, 8vw, 7.5rem);
-  --gutter: clamp(1rem, 3vw, 1.5rem);
+  /* Space — one 4px-grid scale, named by pixel value so there's no
+     ambiguity about which step a raw rem value maps to. */
+  --space-4: 0.25rem;   /* 4px */
+  --space-8: 0.5rem;    /* 8px */
+  --space-12: 0.75rem;  /* 12px */
+  --space-16: 1rem;     /* 16px */
+  --space-20: 1.25rem;  /* 20px */
+  --space-24: 1.5rem;   /* 24px */
+  --space-28: 1.75rem;  /* 28px */
+  --space-32: 2rem;     /* 32px */
+  --space-40: 2.5rem;   /* 40px */
+  --space-44: 2.75rem;  /* 44px — WCAG 2.5.8 tap-target minimum */
+  --space-64: 4rem;     /* 64px */
+  --space-96: 6rem;     /* 96px */
+  --section-y: clamp(var(--space-64), 8vw, 7.5rem);
+  --gutter: clamp(var(--space-16), 3vw, var(--space-24));
 
   /* Measure — one centred column, like the reference -------------------- */
   --width-text: 44rem;   /* 704 — reading measure */
@@ -211,7 +218,7 @@ a {
   z-index: 100;
   background: var(--color-ink);
   color: var(--color-bg);
-  padding: 0.625rem 1.25rem;
+  padding: var(--space-12) var(--space-20);
   border-radius: 0 0 12px 12px;
   font-size: var(--text-small);
   text-decoration: none;
@@ -261,7 +268,7 @@ a {
 }
 
 .section--tight {
-  padding-block: clamp(2.5rem, 5vw, 4rem);
+  padding-block: clamp(var(--space-40), 5vw, var(--space-64));
 }
 
 .section--flush-top {
@@ -304,12 +311,12 @@ a {
 }
 
 .stack > * + * {
-  margin-top: var(--flow, 1rem);
+  margin-top: var(--flow, var(--space-16));
 }
 
 .grid {
   display: grid;
-  gap: var(--grid-gap, 1rem);
+  gap: var(--grid-gap, var(--space-16));
 }
 
 @media (min-width: 640px) {
@@ -480,7 +487,7 @@ a {
 .link-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem 1.75rem;
+  gap: var(--space-12) var(--space-28);
 }
 
 .center .link-row {
@@ -491,9 +498,9 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 2.75rem;
-  padding: 0 1.25rem;
+  gap: var(--space-8);
+  min-height: var(--space-44);
+  padding: 0 var(--space-20);
   border: 1px solid transparent;
   border-radius: 999px;
   font-family: inherit;
@@ -521,10 +528,11 @@ a {
   background: var(--color-primary-hover);
 }
 
-/* Text-only — no fill, no border, just the label. */
+/* Text-only — no fill, no border, just the label. The full-height tap
+   target is kept (via min-height) even though the visible box is not,
+   so the hit area still clears the WCAG 2.5.8 minimum. */
 .button--secondary {
-  min-height: auto;
-  padding: 0 0.25rem;
+  padding: 0 var(--space-4);
   background: none;
   border-color: transparent;
   color: var(--color-ink);
@@ -569,9 +577,9 @@ a {
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  min-height: 2rem;
-  padding: 0.25rem 0.75rem;
+  gap: var(--space-8);
+  min-height: var(--space-32);
+  padding: var(--space-4) var(--space-12);
   border: 1px solid var(--color-line);
   border-radius: 999px;
   background: var(--color-card);
@@ -604,8 +612,8 @@ a.pill:hover {
 
 .label-row {
   display: grid;
-  gap: 0.75rem;
-  padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
+  gap: var(--space-12);
+  padding-block: clamp(var(--space-20), 2.5vw, var(--space-28));
   border-top: 1px solid var(--color-line);
 }
 
@@ -632,7 +640,7 @@ a.pill:hover {
 @media (min-width: 768px) {
   .label-row {
     grid-template-columns: minmax(10rem, 16rem) 1fr;
-    gap: 2.5rem;
+    gap: var(--space-40);
     align-items: baseline;
   }
 }
@@ -646,8 +654,8 @@ a.pill:hover {
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 0.5rem 2rem;
-  padding-block: clamp(1rem, 2vw, 1.5rem);
+  gap: var(--space-8) var(--space-32);
+  padding-block: clamp(var(--space-16), 2vw, var(--space-24));
   border-top: 1px solid var(--color-line);
 }
 
@@ -676,8 +684,8 @@ a.pill:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1.5rem;
-  padding: 1.5rem 0 0;
+  gap: var(--space-24);
+  padding: var(--space-24) 0 0;
   border-top: 1px solid var(--color-line);
 }
 
@@ -692,7 +700,7 @@ a.pill:hover {
 .quote-card__cite {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: var(--space-12);
   font-style: normal;
 }
 
@@ -716,7 +724,7 @@ a.pill:hover {
 
 .meta-grid {
   display: grid;
-  gap: 1.5rem 2rem;
+  gap: var(--space-24) var(--space-32);
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
 }
 
@@ -726,7 +734,7 @@ a.pill:hover {
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--color-muted);
-  margin-bottom: 0.375rem;
+  margin-bottom: var(--space-4);
 }
 
 .meta-grid dd {
