@@ -197,11 +197,12 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
   }
 
   .theme-toggle {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--size-tap-target);
-    height: var(--size-tap-target);
+    width: 2rem; /* 32px visible circle */
+    height: 2rem;
     padding: 0;
     border: 1px solid var(--color-line);
     border-radius: 50%;
@@ -209,6 +210,17 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     color: var(--color-ink);
     cursor: pointer;
     transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+  }
+
+  /* Invisible 44px hit area around the smaller visible circle. */
+  .theme-toggle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--size-tap-target);
+    height: var(--size-tap-target);
+    transform: translate(-50%, -50%);
   }
 
   .theme-toggle:hover {
