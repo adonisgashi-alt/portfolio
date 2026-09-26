@@ -36,10 +36,6 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
         </h1>
 
         <div class="work-intro" data-reveal style="--reveal-delay: 120ms">
-          <p class="muted">
-            Brand, campaign, web, event and product marketing work —{' '}
-            {projects.length} projects{span && ` from ${span}`}.
-          </p>
           <dl class="work-meta">
             <div class="work-meta__row">
               <dt>Projects</dt>
@@ -159,36 +155,35 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
     max-width: 14ch;
   }
 
-  .work-intro {
-    display: grid;
-    gap: var(--space-250);
-  }
-
   .work-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 0;
+    border-top: 1px solid var(--color-line);
   }
 
   .work-meta__row {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-200);
-    padding-block: var(--space-100);
-    border-top: 1px solid var(--color-line);
-    font-size: var(--text-small);
+    display: grid;
+    align-content: start;
+    gap: var(--space-050);
+    padding: var(--space-150) var(--space-200) 0 0;
   }
 
-  .work-meta__row:last-child {
-    border-bottom: 1px solid var(--color-line);
+  .work-meta__row + .work-meta__row {
+    padding-left: var(--space-200);
+    border-left: 1px solid var(--color-line);
   }
 
   .work-meta dt {
     color: var(--color-muted);
+    font-size: var(--text-small);
   }
 
   .work-meta dd {
     margin: 0;
     font-weight: 500;
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
   @media (min-width: 720px) {
