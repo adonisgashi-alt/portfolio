@@ -55,7 +55,7 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
         </div>
       )}
 
-      <div class="grid grid--2 work-grid" style="--grid-gap: clamp(var(--space-40), 5vw, var(--space-64))">
+      <div class="grid grid--2 work-grid" style="--grid-gap: var(--space-layout-lg)">
         {
           rest.map((entry, i) => (
             <div data-reveal style={`--reveal-delay: ${(i % 2) * 80}ms`}>
@@ -82,46 +82,46 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
 
 <style>
   .work-title {
-    margin-top: var(--space-12);
+    margin-top: var(--space-150);
   }
 
   .work-sub {
-    margin-top: var(--space-20);
+    margin-top: var(--space-250);
   }
 
   .work-meta {
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-top: var(--space-28);
+    margin-top: var(--space-layout-lg);
+    padding-top: var(--space-300);
     border-top: 1px solid var(--color-line);
   }
 
   .work-lead {
-    margin-bottom: clamp(3rem, 6vw, 5rem);
+    margin-bottom: var(--space-layout-xl);
   }
 
   .discipline-list {
     list-style: none;
-    margin: var(--space-24) 0 0;
+    margin: var(--space-300) 0 0;
     padding: 0;
     display: grid;
     gap: 0;
   }
 
   .discipline-list__item {
-    padding: var(--space-16) 0;
+    padding: var(--space-200) 0;
     border-bottom: 1px solid var(--color-line);
     font-weight: 400;
     color: var(--color-ink);
   }
 
   .discipline-cta {
-    margin-top: var(--space-32);
+    margin-top: var(--space-400);
   }
 
   @media (min-width: 640px) {
     .discipline-list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: clamp(var(--space-32), 5vw, var(--space-64));
+      column-gap: var(--space-layout-lg);
     }
   }
 </style>

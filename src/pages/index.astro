@@ -126,7 +126,7 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
       )}
 
       {rest.length > 0 && (
-        <div class="grid grid--2 featured-grid" style="--grid-gap: clamp(var(--space-40), 4vw, 3rem) var(--space-16)">
+        <div class="grid grid--2 featured-grid" style="--grid-gap: var(--space-layout-md) var(--space-200)">
           {rest.map((entry, i) => (
             <div data-reveal style={`--reveal-delay: ${i * 80}ms`}>
               <WorkCard entry={entry} />
@@ -165,7 +165,7 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
         <h2 class="headline">Three things I hold to when the brief gets complicated</h2>
       </header>
 
-      <div class="grid grid--3" style="--grid-gap: var(--space-32) var(--space-16)">
+      <div class="grid grid--3" style="--grid-gap: var(--space-400) var(--space-200)">
         {
           principles.map((item, i) => (
             <div class="quote-card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
@@ -235,13 +235,13 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
 
 <style>
   .hero {
-    padding-top: clamp(3rem, 7vw, 5.5rem);
+    padding-top: var(--space-layout-xl);
   }
 
   .hero__top {
     display: grid;
-    gap: var(--space-28);
-    margin-top: var(--space-24);
+    gap: var(--space-300);
+    margin-top: var(--space-300);
   }
 
   .hero__headline {
@@ -250,13 +250,13 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
 
   .hero__intro {
     display: grid;
-    gap: var(--space-20);
+    gap: var(--space-250);
   }
 
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-8);
+    gap: var(--space-100);
   }
 
   .hero__sub {
@@ -265,14 +265,14 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
   }
 
   .hero__worked {
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-top: var(--space-16);
+    margin-top: var(--space-layout-lg);
+    padding-top: var(--space-200);
     border-top: 1px solid var(--color-line);
   }
 
   .wordmarks {
     list-style: none;
-    margin: var(--space-16) 0 0;
+    margin: var(--space-200) 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -285,7 +285,7 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
     display: grid;
     place-items: center;
     min-height: 5.5rem;
-    padding: var(--space-16);
+    padding: var(--space-200);
     border-right: 1px solid var(--color-line);
     border-bottom: 1px solid var(--color-line);
     font-size: clamp(0.8125rem, 0.7rem + 0.35vw, 1rem);
@@ -309,27 +309,27 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
   }
 
   .hero__media {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
+    margin-top: var(--space-layout-lg);
   }
 
   .section-head {
     max-width: 44rem;
-    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: var(--space-layout-sm);
   }
 
   .section-head__sub {
-    margin-top: var(--space-12);
+    margin-top: var(--space-150);
     max-width: 52ch;
   }
 
   .featured-lead {
-    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
-    padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    margin-bottom: var(--space-layout-lg);
+    padding-bottom: var(--space-layout-lg);
     border-bottom: 1px solid var(--color-line);
   }
 
   .featured-more {
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    margin-top: var(--space-layout-lg);
   }
 
   .featured-more__button {
@@ -344,60 +344,60 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
   }
 
   .stats__label {
-    margin-bottom: var(--space-16);
+    margin-bottom: var(--space-200);
   }
 
   .principle__markers {
-    margin-bottom: var(--space-16);
+    margin-bottom: var(--space-200);
   }
 
   .principle__body {
-    margin-top: var(--space-8);
+    margin-top: var(--space-100);
   }
 
   .approach-media {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
+    margin-top: var(--space-layout-lg);
   }
 
   .now {
     display: grid;
-    gap: clamp(var(--space-32), 5vw, var(--space-64));
+    gap: var(--space-layout-lg);
     align-items: center;
   }
 
   .now__title {
-    margin-top: var(--space-16);
+    margin-top: var(--space-200);
   }
 
   .now__body {
-    margin-top: var(--space-16);
+    margin-top: var(--space-200);
     max-width: 46ch;
   }
 
   .now__link {
-    margin-top: var(--space-24);
+    margin-top: var(--space-300);
   }
 
   .cta__badge {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-12);
-    padding: var(--space-4) var(--space-12);
+    gap: var(--space-150);
+    padding: var(--space-050) var(--space-150);
     border: 1px solid var(--color-line);
     border-radius: 999px;
     background: var(--color-bg);
   }
 
   .cta__title {
-    margin-top: var(--space-24);
+    margin-top: var(--space-300);
     max-width: 20ch;
   }
 
   .cta__actions {
-    margin-top: var(--space-32);
+    margin-top: var(--space-400);
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-8);
+    gap: var(--space-100);
   }
 
   @media (min-width: 720px) {
