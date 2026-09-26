@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { site } from '../data/site';
 
@@ -80,6 +81,7 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   <section class="section">
     <div class="container container--wide intro">
       <div class="intro__head">
+        <Breadcrumbs items={[{ label: 'About' }]} />
         <h1 class="display intro__name" data-reveal>{site.name}</h1>
         <p class="subhead intro__role" data-reveal style="--reveal-delay: 60ms">
           {site.role}, {site.company}
@@ -231,6 +233,10 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
 
   .intro__head {
     grid-area: head;
+  }
+
+  .intro__name {
+    margin-top: var(--space-200);
   }
 
   .intro__portrait {

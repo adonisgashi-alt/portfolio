@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import WorkCard from '../../components/WorkCard.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../../data/site';
@@ -29,7 +30,7 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
 >
   <section class="section section--flush-bottom">
     <div class="container container--wide">
-      <p class="eyebrow" data-reveal>Work</p>
+      <Breadcrumbs items={[{ label: 'Work' }]} />
       <div class="work-head">
         <h1 class="display work-title" data-reveal style="--reveal-delay: 60ms">
           Everything, in&nbsp;order.

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
@@ -31,7 +32,7 @@ const { Content } = await render(entry);
     <!-- Hero -->
     <header class="section section--flush-bottom">
       <div class="container">
-        <p class="eyebrow--caps" data-reveal>{client} {year}</p>
+        <Breadcrumbs items={[{ label: 'Work', href: '/work' }, { label: title }]} />
         <h1 class="display project-title" data-reveal style="--reveal-delay: 60ms">{title}</h1>
         <p class="subhead measure--wide project-summary" data-reveal style="--reveal-delay: 120ms">
           {summary}

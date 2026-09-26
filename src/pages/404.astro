@@ -1,12 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { site } from '../data/site';
 ---
 
 <Layout title={`Page not found — ${site.name}`} description="That page doesn't exist.">
   <section class="section not-found">
     <div class="container">
-      <p class="eyebrow--caps">Error 404</p>
+      <Breadcrumbs items={[{ label: 'Error 404' }]} />
       <h1 class="display not-found__title">This page moved on.</h1>
       <p class="subhead measure--wide not-found__sub">
         The link is broken or the page no longer exists.

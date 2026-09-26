@@ -1,0 +1,34 @@
+---
+// Trail shown above page titles: "Home / Work / Project". Every item but the
+// last links back up; the last is the current page.
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+const trail: Crumb[] = [{ label: 'Home', href: '/' }, ...items];
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-reveal>
+  <ol class="breadcrumbs__list">
+    {
+      trail.map((crumb, i) => {
+        const last = i === trail.length - 1;
+        return (
+          <li class="breadcrumbs__item">
+            {last ? (
+              <span aria-current="page">{crumb.label}</span>
+            ) : (
+              <a class="breadcrumbs__link" href={crumb.href}>{crumb.label}</a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

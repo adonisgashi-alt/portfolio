@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { site } from '../data/site';
 
@@ -38,7 +39,7 @@ const asks = [
   <!-- Hero -->
   <section class="section section--flush-bottom">
     <div class="container">
-      <p class="eyebrow" data-reveal>Contact</p>
+      <Breadcrumbs items={[{ label: 'Contact' }]} />
       <h1 class="display contact-title" data-reveal style="--reveal-delay: 60ms">
         Say hello.
       </h1>
