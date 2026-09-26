@@ -36,7 +36,9 @@ const href = `/work/${entry.id}`;
     </p>
     {
       disciplines.length > 0 && (
-        <p class="caption work-card__tags">{disciplines.join(' · ')}</p>
+        <ul class="work-card__tags" aria-label="Disciplines">
+          {disciplines.map((d) => <li class="work-card__tag">{d}</li>)}
+        </ul>
       )
     }
   </div>
@@ -93,7 +95,21 @@ const href = `/work/${entry.id}`;
   }
 
   .work-card__tags {
-    margin-top: var(--space-100);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-100);
+    margin-top: var(--space-150);
+    padding: 0;
+    list-style: none;
+  }
+
+  .work-card__tag {
+    padding: var(--space-050) var(--space-100);
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-muted);
+    font-size: var(--text-fine);
+    line-height: 1.4;
   }
 
   /* The lead card is the feature moment — full-width image, then a larger
