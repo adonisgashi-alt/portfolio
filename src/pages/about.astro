@@ -79,38 +79,38 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   <!-- Intro: name, title, description, then portrait -->
   <section class="section">
     <div class="container container--wide intro">
-      <div class="intro__text">
+      <div class="intro__head">
         <h1 class="display intro__name" data-reveal>{site.name}</h1>
         <p class="subhead intro__role" data-reveal style="--reveal-delay: 60ms">
           {site.role}, {site.company}
         </p>
-        <div class="intro__copy prose body-lg measure--wide" data-reveal style="--reveal-delay: 120ms">
-          <p>
-            I'm a {site.role.toLowerCase()} at {site.company} — formerly {site.formerly} —
-            in {site.location}. I lead visual design across brand, digital, web, events, campaigns and product marketing, for the
-            parent brand and the portfolio underneath it.
-          </p>
-          <p>
-            Most of my work is the kind that has to hold up in several places at
-            once: a campaign that's also a landing page, an event that's also a
-            social cut, a product story that's also a sales deck. I partner
-            closely with Brand, UX, Marketing, Web, Product and Engineering to
-            take ideas from early exploration through to what actually ships.
-          </p>
-          <p>
-            I build and maintain digital experiences in Figma, Webflow, Makeswift
-            and other web platforms, which keeps me close to the line between
-            brand and UX — a useful place to stand when the two disagree.
-          </p>
-          <p>
-            Lately that's meant the evolution of the Commerce brand itself, and
-            the work of carrying a well-known name into a broader one.
-          </p>
-          <p>
-            You can see the full career history on{' '}
-            <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
-          </p>
-        </div>
+      </div>
+      <div class="intro__copy prose body-lg measure--wide" data-reveal style="--reveal-delay: 120ms">
+        <p>
+          I'm a {site.role.toLowerCase()} at {site.company} — formerly {site.formerly} —
+          in {site.location}. I lead visual design across brand, digital, web, events, campaigns and product marketing, for the
+          parent brand and the portfolio underneath it.
+        </p>
+        <p>
+          Most of my work is the kind that has to hold up in several places at
+          once: a campaign that's also a landing page, an event that's also a
+          social cut, a product story that's also a sales deck. I partner
+          closely with Brand, UX, Marketing, Web, Product and Engineering to
+          take ideas from early exploration through to what actually ships.
+        </p>
+        <p>
+          I build and maintain digital experiences in Figma, Webflow, Makeswift
+          and other web platforms, which keeps me close to the line between
+          brand and UX — a useful place to stand when the two disagree.
+        </p>
+        <p>
+          Lately that's meant the evolution of the Commerce brand itself, and
+          the work of carrying a well-known name into a broader one.
+        </p>
+        <p>
+          You can see the full career history on{' '}
+          <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
+        </p>
       </div>
       <img
         class="intro__portrait"
@@ -213,19 +213,29 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   }
 
   .intro__copy {
-    margin-top: var(--space-layout-md);
+    grid-area: copy;
   }
 
+  /* Portrait always shares a row with the name: small beside it on phones,
+     a full column beside name and description on desktop. */
   .intro {
     display: grid;
-    gap: var(--space-layout-lg);
+    grid-template-columns: 1fr 7rem;
+    grid-template-areas:
+      'head photo'
+      'copy copy';
+    gap: var(--space-layout-md) var(--space-200);
     align-items: start;
   }
 
+  .intro__head {
+    grid-area: head;
+  }
+
   .intro__portrait {
+    grid-area: photo;
     display: block;
     width: 100%;
-    max-width: 32rem;
     height: auto;
     aspect-ratio: 4 / 5;
     object-fit: cover;
@@ -328,6 +338,11 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   @media (min-width: 900px) {
     .intro {
       grid-template-columns: 1fr 26rem;
+      grid-template-areas:
+        'head photo'
+        'copy photo';
+      grid-template-rows: auto 1fr;
+      column-gap: var(--space-layout-lg);
     }
 
     .capabilities,
