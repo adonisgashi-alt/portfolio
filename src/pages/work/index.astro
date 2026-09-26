@@ -8,10 +8,18 @@ const projects = (await getCollection('work', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order
 );
 
-const [lead, ...rest] = projects;
+/* Group by year, newest first, keeping the curated order within a year. */
+const byYear = new Map<string, typeof projects>();
+for (const p of projects) {
+  const list = byYear.get(p.data.year) ?? [];
+  list.push(p);
+  byYear.set(p.data.year, list);
+}
+const groups = [...byYear.entries()].sort((a, b) => Number(b[0]) - Number(a[0]));
 
 const disciplines = [...new Set(projects.flatMap((p) => p.data.disciplines))].sort();
 const years = projects.map((p) => Number(p.data.year)).filter(Number.isFinite);
+const countFor = (d: string) => projects.filter((p) => p.data.disciplines.includes(d)).length;
 const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '';
 ---
 
@@ -49,21 +57,51 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
 
   <section class="section">
     <div class="container container--wide">
-      {lead && (
-        <div class="work-lead" data-reveal>
-          <WorkCard entry={lead} size="large" ratio="16 / 9" />
-        </div>
-      )}
-
-      <div class="grid grid--2 work-grid" style="--grid-gap: var(--space-layout-lg)">
-        {
-          rest.map((entry, i) => (
-            <div data-reveal style={`--reveal-delay: ${(i % 2) * 80}ms`}>
-              <WorkCard entry={entry} />
-            </div>
-          ))
-        }
+      <div class="work-filter" data-reveal>
+        <p class="eyebrow--caps" id="work-filter-label">Project types</p>
+        <ul class="work-filter__list" aria-labelledby="work-filter-label">
+          <li>
+            <button class="work-filter__button" type="button" data-filter="all" aria-pressed="true">
+              All <span class="work-filter__count">{projects.length}</span>
+            </button>
+          </li>
+          {
+            disciplines.map((d) => (
+              <li>
+                <button class="work-filter__button" type="button" data-filter={d} aria-pressed="false">
+                  {d} <span class="work-filter__count">{countFor(d)}</span>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
       </div>
+
+      {
+        groups.map(([year, entries]) => (
+          <section class="work-year" data-year-group aria-labelledby={`year-${year}`}>
+            <header class="work-year__head" data-reveal>
+              <h2 class="title work-year__title" id={`year-${year}`}>{year}</h2>
+              <p class="caption work-year__count" data-year-count>
+                {entries.length} {entries.length === 1 ? 'project' : 'projects'}
+              </p>
+            </header>
+            <div class="grid grid--2 work-grid" style="--grid-gap: var(--space-layout-lg)">
+              {entries.map((entry, i) => (
+                <div
+                  class="work-grid__item"
+                  data-reveal
+                  data-disciplines={entry.data.disciplines.join('|')}
+                  style={`--reveal-delay: ${(i % 2) * 80}ms`}
+                >
+                  <WorkCard entry={entry} />
+                </div>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+      <p class="subhead work-empty" data-work-empty hidden>Nothing here yet.</p>
     </div>
   </section>
 
@@ -80,6 +118,32 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
   </section>
 </Layout>
 
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.work-filter__button');
+  const groups = document.querySelectorAll<HTMLElement>('[data-year-group]');
+  const empty = document.querySelector<HTMLElement>('[data-work-empty]');
+
+  function applyFilter(filter: string) {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+    let total = 0;
+    groups.forEach((group) => {
+      let shown = 0;
+      group.querySelectorAll<HTMLElement>('.work-grid__item').forEach((item) => {
+        const match = filter === 'all' || (item.dataset.disciplines ?? '').split('|').includes(filter);
+        item.hidden = !match;
+        if (match) shown++;
+      });
+      group.hidden = shown === 0;
+      const count = group.querySelector('[data-year-count]');
+      if (count) count.textContent = `${shown} ${shown === 1 ? 'project' : 'projects'}`;
+      total += shown;
+    });
+    if (empty) empty.hidden = total > 0;
+  }
+
+  buttons.forEach((b) => b.addEventListener('click', () => applyFilter(b.dataset.filter ?? 'all')));
+</script>
+
 <style>
   .work-title {
     margin-top: var(--space-150);
@@ -95,8 +159,71 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
     border-top: 1px solid var(--color-line);
   }
 
-  .work-lead {
-    margin-bottom: var(--space-layout-xl);
+  .work-filter__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-100);
+    margin: var(--space-200) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .work-filter__button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-100);
+    min-height: var(--size-tap-target);
+    padding: 0 var(--space-200);
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: var(--text-small);
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+
+  .work-filter__button:hover {
+    border-color: var(--color-ink);
+  }
+
+  .work-filter__button[aria-pressed='true'] {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-bg);
+  }
+
+  .work-filter__count {
+    color: var(--color-muted);
+    font-size: var(--text-fine);
+  }
+
+  .work-filter__button[aria-pressed='true'] .work-filter__count {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  .work-year {
+    margin-top: var(--space-layout-xl);
+  }
+
+  .work-year__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-200);
+    padding-top: var(--space-300);
+    margin-bottom: var(--space-layout-md);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .work-year__count {
+    color: var(--color-muted);
+  }
+
+  .work-empty {
+    margin-top: var(--space-layout-xl);
+    color: var(--color-muted);
   }
 
   .discipline-list {
