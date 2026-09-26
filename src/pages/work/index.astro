@@ -30,26 +30,30 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
   <section class="section section--flush-bottom">
     <div class="container container--wide">
       <p class="eyebrow" data-reveal>Work</p>
-      <h1 class="display work-title" data-reveal style="--reveal-delay: 60ms">
-        Everything, in&nbsp;order.
-      </h1>
-      <p class="subhead measure--wide work-sub" data-reveal style="--reveal-delay: 120ms">
-        Brand, campaign, web, event and product marketing work —{' '}
-        {projects.length} projects{span && ` from ${span}`}.
-      </p>
+      <div class="work-head">
+        <h1 class="display work-title" data-reveal style="--reveal-delay: 60ms">
+          Everything, in&nbsp;order.
+        </h1>
 
-      <div class="stat-list work-meta" data-reveal style="--reveal-delay: 180ms">
-        <div class="stat-row">
-          <span class="stat-row__label">Projects</span>
-          <span class="stat-row__value">{projects.length}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-row__label">Disciplines</span>
-          <span class="stat-row__value">{disciplines.length}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-row__label">Years</span>
-          <span class="stat-row__value">{span || '—'}</span>
+        <div class="work-intro" data-reveal style="--reveal-delay: 120ms">
+          <p class="muted">
+            Brand, campaign, web, event and product marketing work —{' '}
+            {projects.length} projects{span && ` from ${span}`}.
+          </p>
+          <dl class="work-meta">
+            <div class="work-meta__row">
+              <dt>Projects</dt>
+              <dd>{projects.length}</dd>
+            </div>
+            <div class="work-meta__row">
+              <dt>Disciplines</dt>
+              <dd>{disciplines.length}</dd>
+            </div>
+            <div class="work-meta__row">
+              <dt>Years</dt>
+              <dd>{span || '—'}</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </div>
@@ -145,18 +149,53 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
 </script>
 
 <style>
-  .work-title {
-    margin-top: var(--space-150);
+  .work-head {
+    display: grid;
+    gap: var(--space-300);
+    margin-top: var(--space-300);
   }
 
-  .work-sub {
-    margin-top: var(--space-250);
+  .work-title {
+    max-width: 14ch;
+  }
+
+  .work-intro {
+    display: grid;
+    gap: var(--space-250);
   }
 
   .work-meta {
-    margin-top: var(--space-layout-lg);
-    padding-top: var(--space-300);
+    margin: 0;
+  }
+
+  .work-meta__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-200);
+    padding-block: var(--space-100);
     border-top: 1px solid var(--color-line);
+    font-size: var(--text-small);
+  }
+
+  .work-meta__row:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .work-meta dt {
+    color: var(--color-muted);
+  }
+
+  .work-meta dd {
+    margin: 0;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 720px) {
+    .work-head {
+      grid-template-columns: 1.1fr 1fr;
+      align-items: end;
+    }
   }
 
   .work-filter__list {
