@@ -76,36 +76,18 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   title={`About — ${site.name}`}
   description={`${site.role} at ${site.company}, based in ${site.location}.`}
 >
-  <!-- Hero -->
-  <section class="section section--flush-bottom">
-    <div class="container container--wide">
-      <p class="eyebrow" data-reveal>About</p>
-      <h1 class="display about-title" data-reveal style="--reveal-delay: 60ms">
-        I make things<br />look inevitable.
-      </h1>
-    </div>
-  </section>
-
-  <!-- Bio -->
+  <!-- Intro: name, title, description, then portrait -->
   <section class="section">
-    <div class="container container--wide bio">
-      <div class="bio__media" data-reveal>
-        <img
-          class="bio__portrait"
-          src="/images/adonis-portrait.jpg"
-          width="1200"
-          height="1500"
-          alt={`Portrait of ${site.name}`}
-          loading="eager"
-          decoding="async"
-        />
-      </div>
-      <div class="bio__copy prose body-lg measure--wide" data-reveal style="--reveal-delay: 80ms">
+    <div class="container container--wide intro">
+      <h1 class="display intro__name" data-reveal>{site.name}</h1>
+      <p class="subhead intro__role" data-reveal style="--reveal-delay: 60ms">
+        {site.role}, {site.company}
+      </p>
+      <div class="intro__copy prose body-lg measure--wide" data-reveal style="--reveal-delay: 120ms">
         <p>
-          I'm {site.name}, a {site.role.toLowerCase()} at {site.company} —
-          formerly {site.formerly} — in {site.location}. I lead visual design
-          across brand, digital, web, events, campaigns and product marketing,
-          for the parent brand and the portfolio underneath it.
+          I'm a {site.role.toLowerCase()} at {site.company} — formerly {site.formerly} —
+          in {site.location}. I lead visual design across brand, digital, web, events, campaigns and product marketing, for the
+          parent brand and the portfolio underneath it.
         </p>
         <p>
           Most of my work is the kind that has to hold up in several places at
@@ -128,6 +110,16 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
           <a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.
         </p>
       </div>
+      <img
+        class="intro__portrait"
+        data-reveal
+        src="/images/adonis-portrait.jpg"
+        width="1200"
+        height="1500"
+        alt={`Portrait of ${site.name}`}
+        loading="eager"
+        decoding="async"
+      />
     </div>
   </section>
 
@@ -214,23 +206,22 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
 </Layout>
 
 <style>
-  .about-title {
-    margin-top: var(--space-150);
-    text-wrap: balance;
+  .intro__role {
+    margin-top: var(--space-100);
   }
 
-  .bio {
-    display: grid;
-    gap: var(--space-layout-md);
-    align-items: start;
+  .intro__copy {
+    margin-top: var(--space-layout-md);
   }
 
-  .bio__portrait {
+  .intro__portrait {
     display: block;
     width: 100%;
+    max-width: 32rem;
     height: auto;
     aspect-ratio: 4 / 5;
     object-fit: cover;
+    margin-top: var(--space-layout-lg);
   }
 
   .timeline {
@@ -324,10 +315,6 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
   @media (min-width: 768px) {
     .timeline__item {
       grid-template-columns: 10rem 1fr;
-    }
-
-    .bio {
-      grid-template-columns: 22rem 1fr;
     }
   }
 
