@@ -73,20 +73,22 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
   <!-- Hero -->
   <section class="section section--flush-bottom hero">
     <div class="container">
-      <h1 class="display hero__headline" data-reveal style="--reveal-delay: 60ms">
-        Design that gets<br />out of the way.
-      </h1>
+      <div class="hero__top">
+        <h1 class="display hero__headline" data-reveal style="--reveal-delay: 60ms">
+          Design that gets<br />out of the way.
+        </h1>
 
-      <div class="hero__row" data-reveal style="--reveal-delay: 120ms">
-        <div class="hero__actions">
-          <a class="button button--primary" href="/work">See the work</a>
-          <a class="button button--secondary" href="/contact">Get in touch</a>
+        <div class="hero__intro" data-reveal style="--reveal-delay: 120ms">
+          <p class="hero__sub muted">
+            I'm {site.name.split(' ')[0]} — a visual designer in Austin working
+            across brand, web, campaigns and events. I build systems that make the
+            right choice the easy one.
+          </p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="/work">See the work</a>
+            <a class="button button--secondary" href="/contact">Get in touch</a>
+          </div>
         </div>
-        <p class="hero__sub muted">
-          I'm {site.name.split(' ')[0]} — a visual designer in Austin working
-          across brand, web, campaigns and events. I build systems that make the
-          right choice the easy one.
-        </p>
       </div>
 
       <div class="hero__worked" data-reveal style="--reveal-delay: 180ms">
@@ -236,15 +238,20 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
     padding-top: clamp(3rem, 7vw, 5.5rem);
   }
 
-  .hero__headline {
+  .hero__top {
+    display: grid;
+    gap: 1.75rem;
     margin-top: 1.5rem;
+  }
+
+  .hero__headline {
     max-width: 14ch;
   }
 
-  .hero__row {
+  .hero__intro {
     display: grid;
-    gap: 1.5rem;
-    margin-top: 1.75rem;
+    gap: 1.25rem;
+    align-self: start;
   }
 
   .hero__actions {
@@ -396,9 +403,9 @@ const workplaces = logoSources.map(({ name, svg, scale = 1 }: { name: string; sv
   }
 
   @media (min-width: 720px) {
-    .hero__row {
-      grid-template-columns: 1fr auto;
-      align-items: end;
+    .hero__top {
+      grid-template-columns: 1.1fr 1fr;
+      align-items: start;
     }
 
     .wordmarks {
