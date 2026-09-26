@@ -79,9 +79,11 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
 >
   <!-- Intro: name, title, description, then portrait -->
   <section class="section">
+    <div class="container container--wide">
+      <Breadcrumbs items={[{ label: 'About' }]} />
+    </div>
     <div class="container container--wide intro">
       <div class="intro__head">
-        <Breadcrumbs items={[{ label: 'About' }]} />
         <h1 class="display intro__name" data-reveal>{site.name}</h1>
         <p class="subhead intro__role" data-reveal style="--reveal-delay: 60ms">
           {site.role}, {site.company}
@@ -235,8 +237,8 @@ const tools = ['Figma', 'Webflow', 'Makeswift', 'Illustrator', 'Photoshop', 'InD
     grid-area: head;
   }
 
-  .intro__name {
-    margin-top: var(--space-200);
+  .intro {
+    margin-top: var(--space-300);
   }
 
   .intro__portrait {
