@@ -159,14 +159,13 @@ const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : ''
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 0;
-    border-top: 1px solid var(--color-line);
   }
 
   .work-meta__row {
     display: grid;
     align-content: start;
     gap: var(--space-050);
-    padding: var(--space-150) var(--space-200) 0 0;
+    padding: 0 var(--space-200) 0 0;
   }
 
   .work-meta__row + .work-meta__row {
