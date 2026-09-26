@@ -53,7 +53,7 @@ const asks = [
   <!-- Channels -->
   <section class="section">
     <div class="container container--wide">
-      <div class="grid grid--2" style="--grid-gap: clamp(1.25rem, 3vw, 2rem)">
+      <div class="grid grid--2" style="--grid-gap: clamp(var(--space-20), 3vw, var(--space-32))">
         {
           channels.map((channel, i) => (
             <a
@@ -117,11 +117,11 @@ const asks = [
 
 <style>
   .contact-title {
-    margin-top: 0.875rem;
+    margin-top: var(--space-16);
   }
 
   .contact-sub {
-    margin-top: 1.25rem;
+    margin-top: var(--space-20);
   }
 
   .channel {
@@ -129,7 +129,7 @@ const asks = [
     background: var(--color-card);
     border: 1px solid var(--color-line-soft);
     border-radius: var(--radius-lg);
-    padding: clamp(1.75rem, 4vw, 2.75rem);
+    padding: clamp(var(--space-28), 4vw, 2.75rem);
     text-decoration: none;
     color: inherit;
     transition: transform 0.4s var(--ease), border-color 0.3s var(--ease);
@@ -141,60 +141,60 @@ const asks = [
   }
 
   .channel__value {
-    margin-top: 0.75rem;
+    margin-top: var(--space-12);
     overflow-wrap: anywhere;
   }
 
   .channel__note {
-    margin-top: 0.75rem;
+    margin-top: var(--space-12);
     max-width: 34ch;
   }
 
   .channel__cta {
-    margin-top: 1.25rem;
+    margin-top: var(--space-20);
   }
 
   .asks {
     display: grid;
-    gap: clamp(2rem, 4vw, 3.5rem);
+    gap: clamp(var(--space-32), 4vw, 3.5rem);
     align-items: center;
   }
 
   .asks__title {
-    margin-top: 0.875rem;
+    margin-top: var(--space-16);
   }
 
   .asks__list {
     list-style: none;
-    margin: 1.75rem 0 0;
+    margin: var(--space-28) 0 0;
     padding: 0;
   }
 
   .asks__item {
-    padding: 0.875rem 0;
+    padding: var(--space-16) 0;
     border-bottom: 1px solid var(--color-line);
     font-size: var(--text-body-lg);
     letter-spacing: var(--tracking-body-lg);
   }
 
   .asks__note {
-    margin-top: 1.5rem;
+    margin-top: var(--space-24);
     max-width: 44ch;
   }
 
   .contact-cta__sub {
-    margin-top: 1rem;
+    margin-top: var(--space-16);
   }
 
   .contact-cta__actions {
-    margin-top: 2rem;
+    margin-top: var(--space-32);
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--space-8);
   }
 
   .contact-cta__fine {
-    margin-top: 2rem;
+    margin-top: var(--space-32);
   }
 
   @media (min-width: 900px) {
