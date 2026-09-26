@@ -528,15 +528,12 @@ a {
   background: none;
   border-color: transparent;
   color: var(--color-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--color-line);
+  text-decoration: none;
 }
 
 .button--secondary:hover {
   background: none;
   color: var(--color-primary-ink);
-  text-decoration-color: currentColor;
 }
 
 .button--ghost {
